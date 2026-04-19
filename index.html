@@ -197,6 +197,47 @@
     .feature-card .icon { font-size: 2rem; margin-bottom: 14px; }
     .feature-card p { font-size: 0.875rem; line-height: 1.6; }
 
+    /* Challenge (growth loop) */
+    .challenge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+      margin-top: 36px;
+    }
+    .challenge-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      position: relative;
+      overflow: hidden;
+    }
+    .challenge-card::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--blue), var(--accent));
+      opacity: 0.9;
+    }
+    .challenge-step {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 8px;
+    }
+    .challenge-card p { font-size: 0.88rem; }
+    .challenge-actions {
+      margin-top: 22px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
     /* Download */
     .download-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 16px; margin-top: 40px; }
     .dl-card {
@@ -295,6 +336,7 @@
     <div class="nav-links">
       <a href="#problem">The Problem</a>
       <a href="#features">Features</a>
+      <a href="#challenge">Challenge</a>
       <a href="#download">Download</a>
       <a href="#install">Install</a>
       <a href="https://github.com/felisbinofarms/black-widow-releases/discussions" target="_blank">Community</a>
@@ -491,6 +533,48 @@
           <div><div class="t-name">Jamie T.</div><div class="t-role">Salesforce Admin &middot; Healthcare</div></div>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- Spider Sprint Challenge -->
+<section id="challenge">
+  <div class="container">
+    <div class="section-label">Growth Challenge</div>
+    <h2>Run the <span style="color:var(--accent)">Spider Sprint</span>.<br/>Share your result. Pull more users in.</h2>
+    <p style="max-width:700px; margin-bottom:0">
+      Innovative distribution idea: turn every user into a demo. Give everyone the same sample log, ask them to beat the clock,
+      then share their before/after result publicly. Every shared result becomes social proof and a fresh acquisition post.
+    </p>
+
+    <div class="challenge-grid">
+      <div class="challenge-card">
+        <div class="challenge-step">Step 1</div>
+        <h3>Grab the challenge pack</h3>
+        <p>Use the sample logs from the source repo so everyone runs the same scenario and results are comparable.</p>
+      </div>
+      <div class="challenge-card">
+        <div class="challenge-step">Step 2</div>
+        <h3>Beat the 10-minute mark</h3>
+        <p>Open the log, find the root cause, and capture a screenshot of your result dashboard with your timing.</p>
+      </div>
+      <div class="challenge-card">
+        <div class="challenge-step">Step 3</div>
+        <h3>Share your Spider Sprint</h3>
+        <p>Post your result with <strong>#SpiderSprint</strong> and the download link. This creates a repeatable viral loop for admins and dev teams.</p>
+      </div>
+    </div>
+
+    <div class="challenge-actions">
+      <a class="btn-primary" href="https://github.com/felisbinofarms/salesforce-debug-log-analyzer/tree/master/SampleLogs" target="_blank">
+        &#128194; &nbsp;Open Challenge Pack
+      </a>
+      <a class="btn-secondary" href="https://github.com/felisbinofarms/black-widow-releases/discussions" target="_blank">
+        &#128172; &nbsp;Post Your Result
+      </a>
+      <a class="btn-secondary" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Ffelisbinofarms.github.io%2Fblack-widow-releases%2F" target="_blank">
+        &#128257; &nbsp;Share On LinkedIn
+      </a>
     </div>
   </div>
 </section>
