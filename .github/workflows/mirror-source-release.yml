@@ -1,0 +1,140 @@
+name: Mirror Source Release Assets
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Source tag to mirror (for example v0.9.0-beta.1)"
+        required: true
+        type: string
+      source_repo:
+        description: "Source repo in owner/name format"
+        required: false
+        default: "felisbinofarms/salesforce-debug-log-analyzer"
+        type: string
+      prerelease:
+        description: "Mark mirrored release as prerelease"
+        required: false
+        default: true
+        type: boolean
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  mirror-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Resolve tag and source repo
+        id: resolve
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            TAG="${{ inputs.tag }}"
+            SOURCE_REPO="${{ inputs.source_repo }}"
+            PRERELEASE="${{ inputs.prerelease }}"
+          else
+            TAG="${GITHUB_REF_NAME}"
+            SOURCE_REPO="felisbinofarms/salesforce-debug-log-analyzer"
+            PRERELEASE="true"
+          fi
+
+          echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
+          echo "source_repo=${SOURCE_REPO}" >> "$GITHUB_OUTPUT"
+          echo "prerelease=${PRERELEASE}" >> "$GITHUB_OUTPUT"
+
+      - name: Download source release metadata
+        id: meta
+        env:
+          SOURCE_TOKEN: ${{ secrets.BW_SOURCE_REPO_TOKEN }}
+          SOURCE_REPO: ${{ steps.resolve.outputs.source_repo }}
+          TAG: ${{ steps.resolve.outputs.tag }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [ -z "${SOURCE_TOKEN:-}" ]; then
+            echo "BW_SOURCE_REPO_TOKEN is not configured. Add a repo secret with read access to ${SOURCE_REPO}." >&2
+            exit 1
+          fi
+
+          API_URL="https://api.github.com/repos/${SOURCE_REPO}/releases/tags/${TAG}"
+          curl -fsSL \
+            -H "Authorization: Bearer ${SOURCE_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            "$API_URL" > source-release.json
+
+          ASSET_URL=$(jq -r '.assets[] | select(.name | test("win-x64|windows|setup|zip"; "i")) | .browser_download_url' source-release.json | head -n 1)
+          if [ -z "${ASSET_URL}" ] || [ "${ASSET_URL}" = "null" ]; then
+            ASSET_URL=$(jq -r '.assets[0].browser_download_url' source-release.json)
+          fi
+
+          ASSET_NAME=$(basename "$ASSET_URL")
+          SOURCE_RELEASE_URL=$(jq -r '.html_url' source-release.json)
+          SOURCE_RELEASE_NAME=$(jq -r '.name // .tag_name' source-release.json)
+
+          if [ -z "${ASSET_URL}" ] || [ "${ASSET_URL}" = "null" ]; then
+            echo "No assets found on source release ${TAG}." >&2
+            exit 1
+          fi
+
+          echo "asset_url=${ASSET_URL}" >> "$GITHUB_OUTPUT"
+          echo "asset_name=${ASSET_NAME}" >> "$GITHUB_OUTPUT"
+          echo "source_release_url=${SOURCE_RELEASE_URL}" >> "$GITHUB_OUTPUT"
+          echo "source_release_name=${SOURCE_RELEASE_NAME}" >> "$GITHUB_OUTPUT"
+
+      - name: Download source asset
+        env:
+          SOURCE_TOKEN: ${{ secrets.BW_SOURCE_REPO_TOKEN }}
+          ASSET_URL: ${{ steps.meta.outputs.asset_url }}
+          ASSET_NAME: ${{ steps.meta.outputs.asset_name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fL \
+            -H "Authorization: Bearer ${SOURCE_TOKEN}" \
+            -H "Accept: application/octet-stream" \
+            "$ASSET_URL" \
+            -o "$ASSET_NAME"
+          sha256sum "$ASSET_NAME" > checksums.txt
+
+      - name: Create or update mirrored release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.resolve.outputs.tag }}
+          ASSET_NAME: ${{ steps.meta.outputs.asset_name }}
+          SOURCE_REPO: ${{ steps.resolve.outputs.source_repo }}
+          SOURCE_RELEASE_URL: ${{ steps.meta.outputs.source_release_url }}
+          SOURCE_RELEASE_NAME: ${{ steps.meta.outputs.source_release_name }}
+          PRERELEASE: ${{ steps.resolve.outputs.prerelease }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          NOTES_FILE="release-notes.md"
+          cat > "$NOTES_FILE" <<EOF
+Mirrored build from [${SOURCE_REPO}](${SOURCE_RELEASE_URL}).
+
+Source release: **${SOURCE_RELEASE_NAME}**
+
+Asset: \
+- ${ASSET_NAME}
+- checksums.txt (SHA256)
+EOF
+
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release ${TAG} already exists; updating assets."
+          else
+            if [ "${PRERELEASE}" = "true" ]; then
+              gh release create "$TAG" --title "Black Widow ${TAG}" --notes-file "$NOTES_FILE" --prerelease
+            else
+              gh release create "$TAG" --title "Black Widow ${TAG}" --notes-file "$NOTES_FILE"
+            fi
+          fi
+
+          gh release upload "$TAG" "$ASSET_NAME" checksums.txt --clobber

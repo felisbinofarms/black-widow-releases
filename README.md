@@ -21,6 +21,26 @@ Unlike traditional tools that show one log at a time, Black Widow groups related
 
 → **[See all releases](../../releases)**
 
+### Automated Release Mirroring
+
+This repository now includes a GitHub Actions workflow that mirrors release assets
+from the source repository into this public releases repository:
+
+- Workflow: `.github/workflows/mirror-source-release.yml`
+- Trigger options:
+	- Manual (`workflow_dispatch`) with a tag input
+	- Tag push in this repo (`v*`)
+
+Required secret for automation:
+
+- `BW_SOURCE_REPO_TOKEN`: GitHub token with `repo` read access to
+	`felisbinofarms/salesforce-debug-log-analyzer`
+
+Why this matters:
+
+- LemonSqueezy can import public release asset URLs from this repository,
+	while source code remains private in the main app repository.
+
 ---
 
 ## Installation
