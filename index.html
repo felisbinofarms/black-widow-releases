@@ -328,14 +328,14 @@
 
       <div class="hero-actions">
         <a href="#download" class="btn-primary">
-          &#8595; &nbsp;Download Free &mdash; <span id="hero-version">v1.0.0</span>
+          &#8595; &nbsp;Download Free &mdash; <span id="hero-version">v1.4.0</span>
         </a>
         <a href="#features" class="btn-secondary">See what it does &rarr;</a>
       </div>
 
       <div class="version-line">
         <span class="free-badge">&#10003; Free for v1.0</span>
-        <span class="version-badge" id="version-badge">v1.0.0</span>
+        <span class="version-badge" id="version-badge">v1.4.0</span>
         <span style="font-size:0.8rem; color:var(--muted)">Windows &middot; macOS &middot; Linux</span>
       </div>
     </div>
@@ -530,8 +530,8 @@
     </div>
     <div class="tab-content" id="tab-mac">
       <ol class="install-steps">
-        <li><span class="step-num">1</span><span class="step-text">Download the correct zip:<br/><strong>Apple Silicon (M1/M2/M3)</strong> &rarr; <code>macos-arm64.zip</code> &nbsp;&middot;&nbsp; <strong>Intel</strong> &rarr; <code>macos-x64.zip</code></span></li>
-        <li><span class="step-num">2</span><span class="step-text">Unzip and drag <strong>BlackWidow</strong> to your Applications folder.</span></li>
+        <li><span class="step-num">1</span><span class="step-text">Download the correct disk image:<br/><strong>Apple Silicon (M1/M2/M3)</strong> &rarr; <code>macos-arm64.dmg</code> &nbsp;&middot;&nbsp; <strong>Intel</strong> &rarr; <code>macos-x64.dmg</code></span></li>
+        <li><span class="step-num">2</span><span class="step-text">Open the <code>.dmg</code> and drag <strong>BlackWidow</strong> to your Applications folder.</span></li>
         <li><span class="step-num">3</span><span class="step-text">First launch only: <strong>right-click &rarr; Open</strong> to bypass the Gatekeeper warning (app is not yet Apple-signed).</span></li>
       </ol>
     </div>
@@ -579,15 +579,15 @@ cd ~/blackwidow
   const grid = document.getElementById('download-grid');
   const platforms = [
     { suffix: 'win-x64-Setup.exe', icon: '&#127993;', name: 'Windows (x64)',       sub: 'Installer &middot; no admin required', featured: true },
-    { suffix: 'macos-arm64.zip',   icon: '&#127822;', name: 'macOS Apple Silicon', sub: 'M1 &middot; M2 &middot; M3' },
-    { suffix: 'macos-x64.zip',     icon: '&#127822;', name: 'macOS Intel',         sub: 'x64' },
+    { suffix: 'macos-arm64.dmg',   icon: '&#127822;', name: 'macOS Apple Silicon', sub: 'M1 &middot; M2 &middot; M3' },
+    { suffix: 'macos-x64.dmg',     icon: '&#127822;', name: 'macOS Intel',         sub: 'x64' },
     { suffix: 'linux-x64.tar.gz',  icon: '&#128039;', name: 'Linux (x64)',         sub: 'Ubuntu 22+ &middot; glibc 2.35+' },
   ];
   try {
     const res = await fetch('https://api.github.com/repos/' + REPO + '/releases/latest');
     if (!res.ok) throw new Error(res.status);
     const release = await res.json();
-    const v = release.tag_name || 'v1.0.0';
+    const v = release.tag_name || 'v1.4.0';
     badge.textContent = v;
     heroVer.textContent = v;
     const assets = release.assets || [];
@@ -602,14 +602,22 @@ cd ~/blackwidow
         + '</a>';
     }).join('');
   } catch(e) {
-    badge.textContent = 'v1.0.0';
-    heroVer.textContent = 'v1.0.0';
-    grid.innerHTML = '<a class="dl-card featured" href="https://github.com/' + REPO + '/releases/latest">'
-      + '<span class="dl-platform">&#8659;</span>'
-      + '<span class="dl-name">Download Latest</span>'
-      + '<span class="dl-sub">All platforms &middot; GitHub Releases</span>'
-      + '<span class="dl-arrow">&rarr; Open releases page</span>'
-      + '</a>';
+    const fallbackVersion = 'v1.4.0';
+    badge.textContent = fallbackVersion;
+    heroVer.textContent = fallbackVersion;
+    grid.innerHTML = [
+      { href: 'https://github.com/' + REPO + '/releases/download/v1.4.0/BlackWidow-1.4.0-win-x64-Setup.exe', icon: '&#127993;', name: 'Windows (x64)', sub: 'Installer &middot; no admin required', featured: true },
+      { href: 'https://github.com/' + REPO + '/releases/download/v1.4.0/BlackWidow-1.4.0-macos-arm64.dmg', icon: '&#127822;', name: 'macOS Apple Silicon', sub: 'M1 &middot; M2 &middot; M3' },
+      { href: 'https://github.com/' + REPO + '/releases/download/v1.4.0/BlackWidow-1.4.0-macos-x64.dmg', icon: '&#127822;', name: 'macOS Intel', sub: 'x64' },
+      { href: 'https://github.com/' + REPO + '/releases/download/v1.4.0/BlackWidow-1.4.0-linux-x64.tar.gz', icon: '&#128039;', name: 'Linux (x64)', sub: 'Ubuntu 22+ &middot; glibc 2.35+' },
+    ].map(function(p) {
+      return '<a class="dl-card' + (p.featured ? ' featured' : '') + '" href="' + p.href + '">' 
+        + '<span class="dl-platform">' + p.icon + '</span>'
+        + '<span class="dl-name">' + p.name + '</span>'
+        + '<span class="dl-sub">' + p.sub + '</span>'
+        + '<span class="dl-arrow">&#8595; Download ' + fallbackVersion + '</span>'
+        + '</a>';
+    }).join('');
   }
 })();
 
