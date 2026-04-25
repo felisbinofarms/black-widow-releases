@@ -59,6 +59,17 @@
     .nav-links { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
     .nav-links a { color: var(--muted); font-size: 0.88rem; font-weight: 500; letter-spacing: 0.02em; transition: color .18s; }
     .nav-links a:hover { color: var(--text); text-decoration: none; }
+    .mobile-menu-btn {
+      display: none;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 8px;
+      width: 40px;
+      height: 40px;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
     .nav-cta {
       background: var(--accent); color: #fff !important;
       padding: 8px 18px; border-radius: 8px;
@@ -66,6 +77,35 @@
       transition: background .15s, transform .1s !important;
     }
     .nav-cta:hover { background: #c0152b !important; transform: translateY(-1px); text-decoration: none !important; }
+
+    .mobile-menu {
+      display: none;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 0 16px;
+    }
+    .mobile-menu.active { display: block; }
+    .mobile-menu .container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .mobile-menu a {
+      display: block;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface2);
+      color: var(--text);
+      font-size: 0.92rem;
+    }
+    .mobile-menu a.mobile-cta {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      text-align: center;
+    }
 
     /* Sections */
     section { padding: 88px 0; }
@@ -138,6 +178,20 @@
     }
     .btn-secondary:hover { border-color: var(--accent); transform: translateY(-2px); text-decoration: none; }
     .version-line { margin-top: 40px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .proof-row {
+      margin-top: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .proof-pill {
+      font-size: 0.8rem;
+      color: var(--muted);
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 4px 12px;
+    }
     .version-badge {
       background: var(--surface2); border: 1px solid var(--border);
       border-radius: 100px; padding: 4px 14px; font-size: 0.8rem; font-weight: 600; color: var(--green);
@@ -321,9 +375,37 @@
     .footer-links a { color: var(--muted); transition: color .15s; }
     .footer-links a:hover { color: var(--text); text-decoration: none; }
 
+    .mobile-sticky-cta {
+      display: none;
+    }
+
     @media (max-width: 600px) {
       .nav-links { display: none; }
+      .mobile-menu-btn { display: inline-flex; align-items: center; justify-content: center; }
       .hero { padding: 64px 0 48px; }
+      body { padding-bottom: 80px; }
+      .mobile-sticky-cta {
+        display: block;
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 120;
+        padding: 10px 12px;
+        background: rgba(13,17,23,0.96);
+        backdrop-filter: blur(8px);
+        border-top: 1px solid var(--border);
+      }
+      .mobile-sticky-cta a {
+        display: block;
+        text-align: center;
+        background: var(--accent);
+        color: #fff;
+        border-radius: 10px;
+        padding: 12px 14px;
+        font-weight: 700;
+        text-decoration: none;
+      }
     }
   </style>
 </head>
@@ -333,6 +415,7 @@
 <nav>
   <div class="container">
     <div class="nav-brand"><span class="spider">🕷️</span> Black Widow</div>
+    <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu" aria-expanded="false">☰</button>
     <div class="nav-links">
       <a href="#problem">The Problem</a>
       <a href="#features">Features</a>
@@ -344,6 +427,18 @@
     </div>
   </div>
 </nav>
+
+<div class="mobile-menu" id="mobile-menu">
+  <div class="container">
+    <a href="#problem">The Problem</a>
+    <a href="#features">Features</a>
+    <a href="#challenge">Challenge</a>
+    <a href="#download">Download</a>
+    <a href="#install">Install</a>
+    <a href="https://github.com/felisbinofarms/black-widow-releases/discussions" target="_blank">Community</a>
+    <a href="https://blackwidow.lemonsqueezy.com/checkout" target="_blank" class="mobile-cta">↓ Get Free Edition</a>
+  </div>
+</div>
 
 <!-- Hero -->
 <section class="hero" id="hero">
@@ -373,6 +468,12 @@
           &#8595; &nbsp;Download Free &mdash; <span id="hero-version">v1.4.0</span>
         </a>
         <a href="#features" class="btn-secondary">See what it does &rarr;</a>
+      </div>
+
+      <div class="proof-row">
+        <span class="proof-pill">✓ Open-source</span>
+        <span class="proof-pill">✓ Windows · macOS · Linux</span>
+        <span class="proof-pill">✓ Groups multi-log transactions automatically</span>
       </div>
 
       <div class="version-line">
@@ -655,6 +756,10 @@ cd ~/blackwidow
   <p>Black Widow is free to download and use &nbsp;&middot;&nbsp; Copyright &copy; 2026 Victor Felisbino &nbsp;&middot;&nbsp; All rights reserved.</p>
 </footer>
 
+<div class="mobile-sticky-cta">
+  <a href="https://blackwidow.lemonsqueezy.com/checkout" target="_blank">↓ Get Free Edition (Email Signup)</a>
+</div>
+
 <script>
 (async () => {
   const FREE_CHECKOUT_URL = 'https://blackwidow.lemonsqueezy.com/checkout';
@@ -712,6 +817,26 @@ function showTab(id, btn) {
   document.getElementById('tab-' + id).classList.add('active');
   btn.classList.add('active');
 }
+
+(function () {
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  if (!btn || !menu) return;
+
+  btn.addEventListener('click', function () {
+    const isOpen = menu.classList.toggle('active');
+    btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    btn.textContent = isOpen ? '✕' : '☰';
+  });
+
+  menu.querySelectorAll('a').forEach(function (link) {
+    link.addEventListener('click', function () {
+      menu.classList.remove('active');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.textContent = '☰';
+    });
+  });
+})();
 </script>
 </body>
 </html>
