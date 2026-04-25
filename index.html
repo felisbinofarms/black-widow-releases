@@ -340,7 +340,7 @@
       <a href="#download">Download</a>
       <a href="#install">Install</a>
       <a href="https://github.com/felisbinofarms/black-widow-releases/discussions" target="_blank">Community</a>
-      <a href="#download" class="nav-cta">&#8595; Free Download</a>
+      <a href="https://blackwidow.lemonsqueezy.com/checkout" class="nav-cta" target="_blank">&#8595; Free Download</a>
     </div>
   </div>
 </nav>
@@ -369,7 +369,7 @@
       </div>
 
       <div class="hero-actions">
-        <a href="#download" class="btn-primary">
+        <a href="https://blackwidow.lemonsqueezy.com/checkout" class="btn-primary" target="_blank">
           &#8595; &nbsp;Download Free &mdash; <span id="hero-version">v1.4.0</span>
         </a>
         <a href="#features" class="btn-secondary">See what it does &rarr;</a>
@@ -583,7 +583,7 @@
 <section id="download" style="background:var(--bg)">
   <div class="container">
     <div class="section-label">Download</div>
-    <h2>Free. No license key. No account.<br/>Just download and open a log.</h2>
+    <h2>Free. No license key. Email signup for download.<br/>Then open a log.</h2>
     <p>Self-contained &mdash; no .NET installation required. Runs on Windows 10+, macOS 12+, and Ubuntu 22+.</p>
     <div id="download-grid" class="download-grid">
       <p style="color:var(--muted); font-size:0.9rem; margin-top:16px">Fetching latest release&hellip;</p>
@@ -635,9 +635,9 @@ cd ~/blackwidow
 <div class="cta-section">
   <div class="container">
     <h2>Stop letting debug logs<br/><span style="color:var(--accent)">steal your day.</span></h2>
-    <p>Free download. No sign-up. Open a log in under a minute.</p>
+    <p>Free download. Quick email signup. Open a log in under a minute.</p>
     <div class="cta-buttons">
-      <a href="#download" class="btn-primary">&#8595; &nbsp;Download Free</a>
+      <a href="https://blackwidow.lemonsqueezy.com/checkout" class="btn-primary" target="_blank">&#8595; &nbsp;Download Free</a>
       <a href="https://github.com/felisbinofarms/black-widow-releases/discussions" target="_blank" class="btn-secondary">&#128172; &nbsp;Join the Community</a>
     </div>
   </div>
@@ -657,6 +657,7 @@ cd ~/blackwidow
 
 <script>
 (async () => {
+  const FREE_CHECKOUT_URL = 'https://blackwidow.lemonsqueezy.com/checkout';
   const REPO = 'felisbinofarms/black-widow-releases';
   const badge = document.getElementById('version-badge');
   const heroVer = document.getElementById('hero-version');
@@ -677,12 +678,12 @@ cd ~/blackwidow
     const assets = release.assets || [];
     grid.innerHTML = platforms.map(function(p) {
       const asset = assets.find(function(a) { return a.name.endsWith(p.suffix); });
-      const url = asset ? asset.browser_download_url : release.html_url;
+      const url = p.featured ? FREE_CHECKOUT_URL : (asset ? asset.browser_download_url : release.html_url);
       return '<a class="dl-card' + (p.featured ? ' featured' : '') + '" href="' + url + '">'
         + '<span class="dl-platform">' + p.icon + '</span>'
         + '<span class="dl-name">' + p.name + '</span>'
         + '<span class="dl-sub">' + p.sub + '</span>'
-        + '<span class="dl-arrow">&#8595; Download ' + v + '</span>'
+        + '<span class="dl-arrow">' + (p.featured ? '&#8595; Get Free Edition (Email Signup)' : '&#8595; Download ' + v) + '</span>'
         + '</a>';
     }).join('');
   } catch(e) {
@@ -690,7 +691,7 @@ cd ~/blackwidow
     badge.textContent = fallbackVersion;
     heroVer.textContent = fallbackVersion;
     grid.innerHTML = [
-      { href: 'https://github.com/' + REPO + '/releases/download/v1.4.0/BlackWidow-1.4.0-win-x64-Setup.exe', icon: '&#127993;', name: 'Windows (x64)', sub: 'Installer &middot; no admin required', featured: true },
+      { href: FREE_CHECKOUT_URL, icon: '&#127993;', name: 'Windows (x64)', sub: 'Installer &middot; no admin required', featured: true },
       { href: 'https://github.com/' + REPO + '/releases/download/v1.4.0/BlackWidow-1.4.0-macos-arm64.dmg', icon: '&#127822;', name: 'macOS Apple Silicon', sub: 'M1 &middot; M2 &middot; M3' },
       { href: 'https://github.com/' + REPO + '/releases/download/v1.4.0/BlackWidow-1.4.0-macos-x64.dmg', icon: '&#127822;', name: 'macOS Intel', sub: 'x64' },
       { href: 'https://github.com/' + REPO + '/releases/download/v1.4.0/BlackWidow-1.4.0-linux-x64.tar.gz', icon: '&#128039;', name: 'Linux (x64)', sub: 'Ubuntu 22+ &middot; glibc 2.35+' },
@@ -699,7 +700,7 @@ cd ~/blackwidow
         + '<span class="dl-platform">' + p.icon + '</span>'
         + '<span class="dl-name">' + p.name + '</span>'
         + '<span class="dl-sub">' + p.sub + '</span>'
-        + '<span class="dl-arrow">&#8595; Download ' + fallbackVersion + '</span>'
+        + '<span class="dl-arrow">' + (p.featured ? '&#8595; Get Free Edition (Email Signup)' : '&#8595; Download ' + fallbackVersion) + '</span>'
         + '</a>';
     }).join('');
   }
