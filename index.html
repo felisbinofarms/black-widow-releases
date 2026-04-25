@@ -251,6 +251,106 @@
     .feature-card .icon { font-size: 2rem; margin-bottom: 14px; }
     .feature-card p { font-size: 0.875rem; line-height: 1.6; }
 
+    /* How it works */
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+      margin-top: 34px;
+    }
+    .how-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+    }
+    .how-step {
+      display: inline-block;
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 8px;
+    }
+
+    /* Market snapshot */
+    .market-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+      margin-top: 34px;
+    }
+    .market-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+    }
+    .market-card .num {
+      font-size: 1.8rem;
+      font-weight: 800;
+      line-height: 1.1;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+    .market-note {
+      margin-top: 16px;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    /* Roadmap */
+    .roadmap-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+      margin-top: 34px;
+    }
+    .roadmap-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+    }
+    .roadmap-card.always-free {
+      border-color: rgba(35,209,139,0.45);
+      background: rgba(35,209,139,0.08);
+    }
+    .roadmap-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 100px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .badge-free { background: rgba(35,209,139,0.16); color: var(--green); }
+    .badge-next { background: rgba(88,166,255,0.16); color: var(--blue); }
+    .badge-later { background: rgba(244,196,48,0.16); color: var(--gold); }
+    .roadmap-card ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .roadmap-card li {
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+    .free-pledge {
+      margin-top: 20px;
+      padding: 14px 16px;
+      border: 1px solid rgba(35,209,139,0.35);
+      border-radius: 8px;
+      background: rgba(35,209,139,0.08);
+      color: var(--text);
+      font-size: 0.92rem;
+    }
+
     /* Challenge (growth loop) */
     .challenge-grid {
       display: grid;
@@ -418,7 +518,10 @@
     <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu" aria-expanded="false">☰</button>
     <div class="nav-links">
       <a href="#problem">The Problem</a>
+      <a href="#how">How It Works</a>
       <a href="#features">Features</a>
+      <a href="#market">Competitors</a>
+      <a href="#roadmap">Roadmap</a>
       <a href="#challenge">Challenge</a>
       <a href="#download">Download</a>
       <a href="#install">Install</a>
@@ -431,7 +534,10 @@
 <div class="mobile-menu" id="mobile-menu">
   <div class="container">
     <a href="#problem">The Problem</a>
+    <a href="#how">How It Works</a>
     <a href="#features">Features</a>
+    <a href="#market">Competitors</a>
+    <a href="#roadmap">Roadmap</a>
     <a href="#challenge">Challenge</a>
     <a href="#download">Download</a>
     <a href="#install">Install</a>
@@ -485,6 +591,31 @@
   </div>
 </section>
 
+<!-- How It Works -->
+<section id="how">
+  <div class="container">
+    <div class="section-label">How It Works</div>
+    <h2>Simple on purpose.<br/>Three steps to a root cause.</h2>
+    <div class="how-grid">
+      <div class="how-card">
+        <span class="how-step">Step 1</span>
+        <h3>Drop in one log or a full folder</h3>
+        <p>Upload a single debug log for quick checks, or drag in a folder to analyze a full user transaction chain.</p>
+      </div>
+      <div class="how-card">
+        <span class="how-step">Step 2</span>
+        <h3>Black Widow maps what happened</h3>
+        <p>It groups related logs, builds the execution tree, and highlights where time and limits were actually consumed.</p>
+      </div>
+      <div class="how-card">
+        <span class="how-step">Step 3</span>
+        <h3>You get fixes, not noise</h3>
+        <p>See likely root causes and practical recommendations, then export a report for your team or ticket.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- The Problem -->
 <section id="problem">
   <div class="container">
@@ -514,6 +645,81 @@
         <blockquote>"The log doesn't tell me it's a recursion problem. That diagnosis took me another hour."</blockquote>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- Competitor Snapshot -->
+<section id="market">
+  <div class="container">
+    <div class="section-label">Competitor Snapshot</div>
+    <h2>A real market with clear whitespace.</h2>
+    <p style="max-width:760px; margin-bottom:0">Most alternatives are VS Code extensions for developers. Black Widow stays focused on speed and clarity for both developers and admins in a standalone app.</p>
+
+    <div class="market-grid">
+      <div class="market-card">
+        <div class="num">1.17M</div>
+        <h3>Apex Log Analyzer (LANA)</h3>
+        <p>High-quality VS Code extension with strong adoption (4.8/5), but still extension-first and dev-workflow centric.</p>
+      </div>
+      <div class="market-card">
+        <div class="num">2.04M</div>
+        <h3>Apex Replay Debugger</h3>
+        <p>Large install base in the Salesforce extension ecosystem. Strong for code debugging, less focused on cross-log simplicity.</p>
+      </div>
+      <div class="market-card">
+        <div class="num">1.74M</div>
+        <h3>Apex Interactive Debugger</h3>
+        <p>Official tooling, but lower satisfaction signals (2/5 rating) suggest room for better day-to-day troubleshooting UX.</p>
+      </div>
+      <div class="market-card">
+        <div class="num">0</div>
+        <h3>GitHub topic saturation</h3>
+        <p>The topics <code>apex-log-analyzer</code> and <code>salesforce-debug-log</code> currently show no public repos, leaving discoverability whitespace.</p>
+      </div>
+    </div>
+
+    <p class="market-note">Sources: VS Code Marketplace listings and GitHub topic pages checked Apr 24, 2026.</p>
+  </div>
+</section>
+
+<!-- Roadmap & Pricing Policy -->
+<section id="roadmap">
+  <div class="container">
+    <div class="section-label">Roadmap</div>
+    <h2>Free core forever. Pro features later.</h2>
+    <p style="max-width:760px; margin-bottom:0">We are building a sustainable product. Core troubleshooting stays free; advanced team and automation features are planned as paid tiers.</p>
+
+    <div class="roadmap-grid">
+      <div class="roadmap-card always-free">
+        <span class="roadmap-badge badge-free">Always Free</span>
+        <h3>Manual local troubleshooting</h3>
+        <ul>
+          <li>• Add 1 log manually and analyze it</li>
+          <li>• Add a folder of logs and analyze grouped transactions</li>
+          <li>• Use core timeline/tree/query views for local files</li>
+        </ul>
+      </div>
+      <div class="roadmap-card">
+        <span class="roadmap-badge badge-next">Next</span>
+        <h3>Productivity upgrades</h3>
+        <ul>
+          <li>• Sharper explanations and guided fix paths</li>
+          <li>• Better collaboration exports for teams</li>
+          <li>• More setup automation for faster first use</li>
+        </ul>
+      </div>
+      <div class="roadmap-card">
+        <span class="roadmap-badge badge-later">Later (Paid)</span>
+        <h3>Advanced / team workflows</h3>
+        <ul>
+          <li>• Team features and shared workflows</li>
+          <li>• Deeper org-connected automation and policy tooling</li>
+          <li>• Enterprise-grade controls and integrations</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="free-pledge"><strong>Free Forever Pledge:</strong> manual upload of one log or a folder of logs will remain free in Black Widow.</p>
   </div>
 </section>
 
