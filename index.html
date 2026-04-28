@@ -526,7 +526,7 @@
       <a href="#download">Download</a>
       <a href="#install">Install</a>
       <a href="https://github.com/felisbinofarms/black-widow-releases/discussions" target="_blank">Community</a>
-      <a href="https://blackwidow.lemonsqueezy.com/checkout" class="nav-cta" target="_blank">&#8595; Free Download</a>
+      <a href="#download" class="nav-cta">&#8595; Free Download</a>
     </div>
   </div>
 </nav>
@@ -542,7 +542,7 @@
     <a href="#download">Download</a>
     <a href="#install">Install</a>
     <a href="https://github.com/felisbinofarms/black-widow-releases/discussions" target="_blank">Community</a>
-    <a href="https://blackwidow.lemonsqueezy.com/checkout" target="_blank" class="mobile-cta">↓ Get Free Edition</a>
+    <a href="#download" class="mobile-cta">↓ Get Free Edition</a>
   </div>
 </div>
 
@@ -570,7 +570,7 @@
       </div>
 
       <div class="hero-actions">
-        <a href="https://blackwidow.lemonsqueezy.com/checkout" class="btn-primary" target="_blank">
+        <a href="#download" class="btn-primary">
           &#8595; &nbsp;Download Free &mdash; <span id="hero-version">v1.4.0</span>
         </a>
         <a href="#features" class="btn-secondary">See what it does &rarr;</a>
@@ -890,7 +890,7 @@
 <section id="download" style="background:var(--bg)">
   <div class="container">
     <div class="section-label">Download</div>
-    <h2>Free. No license key. Email signup for download.<br/>Then open a log.</h2>
+    <h2>Free. No license key. No signup.<br/>Pick your platform and open a log.</h2>
     <p>Self-contained &mdash; no .NET installation required. Runs on Windows 10+, macOS 12+, and Ubuntu 22+.</p>
     <div id="download-grid" class="download-grid">
       <p style="color:var(--muted); font-size:0.9rem; margin-top:16px">Fetching latest release&hellip;</p>
@@ -942,9 +942,9 @@ cd ~/blackwidow
 <div class="cta-section">
   <div class="container">
     <h2>Stop letting debug logs<br/><span style="color:var(--accent)">steal your day.</span></h2>
-    <p>Free download. Quick email signup. Open a log in under a minute.</p>
+    <p>Free download. No license key. Open a log in under a minute.</p>
     <div class="cta-buttons">
-      <a href="https://blackwidow.lemonsqueezy.com/checkout" class="btn-primary" target="_blank">&#8595; &nbsp;Download Free</a>
+      <a href="#download" class="btn-primary">&#8595; &nbsp;Download Free</a>
       <a href="https://github.com/felisbinofarms/black-widow-releases/discussions" target="_blank" class="btn-secondary">&#128172; &nbsp;Join the Community</a>
     </div>
   </div>
@@ -963,16 +963,18 @@ cd ~/blackwidow
 </footer>
 
 <div class="mobile-sticky-cta">
-  <a href="https://blackwidow.lemonsqueezy.com/checkout" target="_blank">↓ Get Free Edition (Email Signup)</a>
+  <a href="#download">↓ Get Free Edition</a>
 </div>
 
 <script>
 (async () => {
-  const FREE_CHECKOUT_URL = 'https://blackwidow.lemonsqueezy.com/checkout';
   const REPO = 'felisbinofarms/black-widow-releases';
+  const FALLBACK_VERSION = 'v1.4.6';
   const badge = document.getElementById('version-badge');
   const heroVer = document.getElementById('hero-version');
   const grid = document.getElementById('download-grid');
+  // featured = visually highlighted tile only. All tiles link to the actual
+  // platform installer in the latest GitHub release - no checkout, no email.
   const platforms = [
     { suffix: 'win-x64-Setup.exe', icon: '&#127993;', name: 'Windows (x64)',       sub: 'Installer &middot; no admin required', featured: true },
     { suffix: 'macos-arm64.dmg',   icon: '&#127822;', name: 'macOS Apple Silicon', sub: 'M1 &middot; M2 &middot; M3' },
@@ -983,35 +985,32 @@ cd ~/blackwidow
     const res = await fetch('https://api.github.com/repos/' + REPO + '/releases/latest');
     if (!res.ok) throw new Error(res.status);
     const release = await res.json();
-    const v = release.tag_name || 'v1.4.0';
+    const v = release.tag_name || FALLBACK_VERSION;
     badge.textContent = v;
     heroVer.textContent = v;
     const assets = release.assets || [];
     grid.innerHTML = platforms.map(function(p) {
       const asset = assets.find(function(a) { return a.name.endsWith(p.suffix); });
-      const url = p.featured ? FREE_CHECKOUT_URL : (asset ? asset.browser_download_url : release.html_url);
+      const url = asset ? asset.browser_download_url : release.html_url;
       return '<a class="dl-card' + (p.featured ? ' featured' : '') + '" href="' + url + '">'
         + '<span class="dl-platform">' + p.icon + '</span>'
         + '<span class="dl-name">' + p.name + '</span>'
         + '<span class="dl-sub">' + p.sub + '</span>'
-        + '<span class="dl-arrow">' + (p.featured ? '&#8595; Get Free Edition (Email Signup)' : '&#8595; Download ' + v) + '</span>'
+        + '<span class="dl-arrow">&#8595; Download ' + v + '</span>'
         + '</a>';
     }).join('');
   } catch(e) {
-    const fallbackVersion = 'v1.4.0';
-    badge.textContent = fallbackVersion;
-    heroVer.textContent = fallbackVersion;
-    grid.innerHTML = [
-      { href: FREE_CHECKOUT_URL, icon: '&#127993;', name: 'Windows (x64)', sub: 'Installer &middot; no admin required', featured: true },
-      { href: 'https://github.com/' + REPO + '/releases/download/v1.4.0/BlackWidow-1.4.0-macos-arm64.dmg', icon: '&#127822;', name: 'macOS Apple Silicon', sub: 'M1 &middot; M2 &middot; M3' },
-      { href: 'https://github.com/' + REPO + '/releases/download/v1.4.0/BlackWidow-1.4.0-macos-x64.dmg', icon: '&#127822;', name: 'macOS Intel', sub: 'x64' },
-      { href: 'https://github.com/' + REPO + '/releases/download/v1.4.0/BlackWidow-1.4.0-linux-x64.tar.gz', icon: '&#128039;', name: 'Linux (x64)', sub: 'Ubuntu 22+ &middot; glibc 2.35+' },
-    ].map(function(p) {
-      return '<a class="dl-card' + (p.featured ? ' featured' : '') + '" href="' + p.href + '">' 
+    const v = FALLBACK_VERSION;
+    const versionNoV = v.replace(/^v/, '');
+    badge.textContent = v;
+    heroVer.textContent = v;
+    const releaseBase = 'https://github.com/' + REPO + '/releases/download/' + v + '/BlackWidow-' + versionNoV + '-';
+    grid.innerHTML = platforms.map(function(p) {
+      return '<a class="dl-card' + (p.featured ? ' featured' : '') + '" href="' + releaseBase + p.suffix + '">'
         + '<span class="dl-platform">' + p.icon + '</span>'
         + '<span class="dl-name">' + p.name + '</span>'
         + '<span class="dl-sub">' + p.sub + '</span>'
-        + '<span class="dl-arrow">' + (p.featured ? '&#8595; Get Free Edition (Email Signup)' : '&#8595; Download ' + fallbackVersion) + '</span>'
+        + '<span class="dl-arrow">&#8595; Download ' + v + '</span>'
         + '</a>';
     }).join('');
   }
