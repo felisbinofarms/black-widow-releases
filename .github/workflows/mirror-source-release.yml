@@ -117,15 +117,15 @@ jobs:
           set -euo pipefail
 
           NOTES_FILE="release-notes.md"
-          cat > "$NOTES_FILE" <<EOF
-Mirrored build from [${SOURCE_REPO}](${SOURCE_RELEASE_URL}).
-
-Source release: **${SOURCE_RELEASE_NAME}**
-
-Asset: \
-- ${ASSET_NAME}
-- checksums.txt (SHA256)
-EOF
+          {
+            echo "Mirrored build from [${SOURCE_REPO}](${SOURCE_RELEASE_URL})."
+            echo ""
+            echo "Source release: **${SOURCE_RELEASE_NAME}**"
+            echo ""
+            echo "Assets:"
+            echo "- ${ASSET_NAME}"
+            echo "- checksums.txt (SHA256)"
+          } > "$NOTES_FILE"
 
           if gh release view "$TAG" >/dev/null 2>&1; then
             echo "Release ${TAG} already exists; updating assets."
