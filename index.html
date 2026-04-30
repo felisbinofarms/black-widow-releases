@@ -5,10 +5,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Black Widow — Salesforce Debug Log Analyzer</title>
   <meta name="description" content="The Salesforce troubleshooting tool that actually saves you time. Stop spending hours reading raw logs — Black Widow finds the problem silently, instantly." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Black Widow" />
   <meta property="og:title" content="Black Widow 🕷️ — Salesforce Debug Log Analyzer" />
-  <meta property="og:description" content="Stop spending hours reading raw logs. Black Widow hunts the problem so you don't have to." />
+  <meta property="og:description" content="Stop spending hours reading raw logs. Black Widow groups all the logs from a single user action and tells you exactly where the time went." />
   <meta property="og:image" content="https://felisbinofarms.github.io/black-widow-releases/icon.png" />
+  <meta property="og:image:alt" content="Black Widow spider logo" />
   <meta property="og:url" content="https://felisbinofarms.github.io/black-widow-releases/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Black Widow 🕷️ — Salesforce Debug Log Analyzer" />
+  <meta name="twitter:description" content="Group every log from one user action into a single transaction. See backend vs frontend time. Find the root cause in minutes." />
+  <meta name="twitter:image" content="https://felisbinofarms.github.io/black-widow-releases/icon.png" />
+  <meta name="author" content="Victor Felisbino" />
+  <meta name="keywords" content="Salesforce, debug log, Apex, log analyzer, transaction grouping, governor limits, SOQL, DML, performance, troubleshooting, free, Windows" />
+  <meta name="theme-color" content="#0d1117" />
+  <link rel="canonical" href="https://felisbinofarms.github.io/black-widow-releases/" />
+  <link rel="icon" type="image/png" href="icon.png" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Black Widow",
+    "alternateName": "Black Widow Salesforce Debug Log Analyzer",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Windows 10, Windows 11",
+    "description": "Desktop tool that groups multiple Salesforce debug logs from a single user action into one transaction view, separates backend from frontend time, detects trigger recursion, and surfaces governor-limit pressure.",
+    "url": "https://felisbinofarms.github.io/black-widow-releases/",
+    "image": "https://felisbinofarms.github.io/black-widow-releases/icon.png",
+    "author": { "@type": "Person", "name": "Victor Felisbino" },
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -571,20 +598,20 @@
 
       <div class="hero-actions">
         <a href="#download" class="btn-primary">
-          &#8595; &nbsp;Download Free &mdash; <span id="hero-version">v1.4.0</span>
+          &#8595; &nbsp;Download Free &mdash; <span id="hero-version">v1.4.12</span>
         </a>
         <a href="#features" class="btn-secondary">See what it does &rarr;</a>
       </div>
 
       <div class="proof-row">
-        <span class="proof-pill">✓ Open-source</span>
-        <span class="proof-pill">✓ Windows · macOS · Linux</span>
+        <span class="proof-pill">✓ Free forever for manual analysis</span>
+        <span class="proof-pill">✓ Windows &middot; macOS &middot; Linux</span>
         <span class="proof-pill">✓ Groups multi-log transactions automatically</span>
       </div>
 
       <div class="version-line">
-        <span class="free-badge">&#10003; Free for v1.0</span>
-        <span class="version-badge" id="version-badge">v1.4.0</span>
+        <span class="free-badge">&#10003; 100% Free</span>
+        <span class="version-badge" id="version-badge">v1.4.12</span>
         <span style="font-size:0.8rem; color:var(--muted)">Windows &middot; macOS &middot; Linux</span>
       </div>
     </div>
@@ -873,8 +900,8 @@
     </div>
 
     <div class="challenge-actions">
-      <a class="btn-primary" href="https://github.com/felisbinofarms/salesforce-debug-log-analyzer/tree/master/SampleLogs" target="_blank">
-        &#128194; &nbsp;Open Challenge Pack
+      <a class="btn-primary" href="#download">
+        &#8595; &nbsp;Download Black Widow
       </a>
       <a class="btn-secondary" href="https://github.com/felisbinofarms/black-widow-releases/discussions" target="_blank">
         &#128172; &nbsp;Post Your Result
@@ -914,21 +941,21 @@
     </div>
     <div class="tab-content active" id="tab-win">
       <ol class="install-steps">
-        <li><span class="step-num">1</span><span class="step-text">Download <strong>BlackWidow-win-x64-Setup.exe</strong> from the section above.</span></li>
+        <li><span class="step-num">1</span><span class="step-text">Download <strong>BlackWidow-1.4.12-win-x64-Setup.exe</strong> from the section above.</span></li>
         <li><span class="step-num">2</span><span class="step-text">Run the installer &mdash; <strong>no admin rights needed.</strong> Installs to <code>%LocalAppData%\Black Widow</code>.</span></li>
         <li><span class="step-num">3</span><span class="step-text">Launch from your <strong>Start Menu</strong> or <strong>Desktop shortcut.</strong> Drag a <code>.log</code> file in and go.</span></li>
       </ol>
     </div>
     <div class="tab-content" id="tab-mac">
       <ol class="install-steps">
-        <li><span class="step-num">1</span><span class="step-text">Download the correct disk image:<br/><strong>Apple Silicon (M1/M2/M3)</strong> &rarr; <code>macos-arm64.dmg</code> &nbsp;&middot;&nbsp; <strong>Intel</strong> &rarr; <code>macos-x64.dmg</code></span></li>
+        <li><span class="step-num">1</span><span class="step-text">Download the correct disk image:<br/><strong>Apple Silicon (M1/M2/M3)</strong> &rarr; <code>BlackWidow-1.4.12-macos-arm64.dmg</code> &nbsp;&middot;&nbsp; <strong>Intel</strong> &rarr; <code>BlackWidow-1.4.12-macos-x64.dmg</code></span></li>
         <li><span class="step-num">2</span><span class="step-text">Open the <code>.dmg</code> and drag <strong>BlackWidow</strong> to your Applications folder.</span></li>
         <li><span class="step-num">3</span><span class="step-text">First launch only: <strong>right-click &rarr; Open</strong> to bypass the Gatekeeper warning (app is not yet Apple-signed).</span></li>
       </ol>
     </div>
     <div class="tab-content" id="tab-linux">
       <ol class="install-steps">
-        <li><span class="step-num">1</span><span class="step-text">Download <strong>BlackWidow-linux-x64.tar.gz</strong> from the section above.</span></li>
+        <li><span class="step-num">1</span><span class="step-text">Download <strong>BlackWidow-1.4.12-linux-x64.tar.gz</strong> from the section above.</span></li>
         <li><span class="step-num">2</span><span class="step-text">Extract and run:</span></li>
       </ol>
       <pre>tar -xzf BlackWidow-*-linux-x64.tar.gz -C ~/blackwidow
@@ -955,8 +982,8 @@ cd ~/blackwidow
   <div class="footer-links">
     <a href="https://github.com/felisbinofarms/black-widow-releases/releases" target="_blank">All Releases</a>
     <a href="https://github.com/felisbinofarms/black-widow-releases/discussions" target="_blank">Discussions</a>
-    <a href="https://github.com/felisbinofarms/salesforce-debug-log-analyzer/issues" target="_blank">Bug Reports</a>
-    <a href="https://github.com/felisbinofarms/salesforce-debug-log-analyzer/blob/master/LICENSE" target="_blank">License</a>
+    <a href="https://github.com/felisbinofarms/black-widow-releases/issues" target="_blank">Bug Reports</a>
+    <a href="https://github.com/felisbinofarms/black-widow-releases/blob/main/LICENSE" target="_blank">License</a>
     <a href="mailto:victorfelisbino@gmail.com">Security</a>
   </div>
   <p>Black Widow is free to download and use &nbsp;&middot;&nbsp; Copyright &copy; 2026 Victor Felisbino &nbsp;&middot;&nbsp; All rights reserved.</p>
@@ -969,7 +996,7 @@ cd ~/blackwidow
 <script>
 (async () => {
   const REPO = 'felisbinofarms/black-widow-releases';
-  const FALLBACK_VERSION = 'v1.4.6';
+  const FALLBACK_VERSION = 'v1.4.12';
   const badge = document.getElementById('version-badge');
   const heroVer = document.getElementById('hero-version');
   const grid = document.getElementById('download-grid');
@@ -981,6 +1008,14 @@ cd ~/blackwidow
     { suffix: 'macos-x64.dmg',     icon: '&#127822;', name: 'macOS Intel',         sub: 'x64' },
     { suffix: 'linux-x64.tar.gz',  icon: '&#128039;', name: 'Linux (x64)',         sub: 'Ubuntu 22+ &middot; glibc 2.35+' },
   ];
+  function renderTile(p, url, version) {
+    return '<a class="dl-card' + (p.featured ? ' featured' : '') + '" href="' + url + '" target="_blank" rel="noopener">'
+      + '<span class="dl-platform">' + p.icon + '</span>'
+      + '<span class="dl-name">' + p.name + '</span>'
+      + '<span class="dl-sub">' + p.sub + '</span>'
+      + '<span class="dl-arrow">&#8595; Download ' + version + '</span>'
+      + '</a>';
+  }
   try {
     const res = await fetch('https://api.github.com/repos/' + REPO + '/releases/latest');
     if (!res.ok) throw new Error(res.status);
@@ -992,12 +1027,7 @@ cd ~/blackwidow
     grid.innerHTML = platforms.map(function(p) {
       const asset = assets.find(function(a) { return a.name.endsWith(p.suffix); });
       const url = asset ? asset.browser_download_url : release.html_url;
-      return '<a class="dl-card' + (p.featured ? ' featured' : '') + '" href="' + url + '">'
-        + '<span class="dl-platform">' + p.icon + '</span>'
-        + '<span class="dl-name">' + p.name + '</span>'
-        + '<span class="dl-sub">' + p.sub + '</span>'
-        + '<span class="dl-arrow">&#8595; Download ' + v + '</span>'
-        + '</a>';
+      return renderTile(p, url, v);
     }).join('');
   } catch(e) {
     const v = FALLBACK_VERSION;
@@ -1006,12 +1036,7 @@ cd ~/blackwidow
     heroVer.textContent = v;
     const releaseBase = 'https://github.com/' + REPO + '/releases/download/' + v + '/BlackWidow-' + versionNoV + '-';
     grid.innerHTML = platforms.map(function(p) {
-      return '<a class="dl-card' + (p.featured ? ' featured' : '') + '" href="' + releaseBase + p.suffix + '">'
-        + '<span class="dl-platform">' + p.icon + '</span>'
-        + '<span class="dl-name">' + p.name + '</span>'
-        + '<span class="dl-sub">' + p.sub + '</span>'
-        + '<span class="dl-arrow">&#8595; Download ' + v + '</span>'
-        + '</a>';
+      return renderTile(p, releaseBase + p.suffix, v);
     }).join('');
   }
 })();
