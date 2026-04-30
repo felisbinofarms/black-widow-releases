@@ -189,6 +189,27 @@
       border-left: 3px solid var(--purple); padding-left: 14px;
     }
     .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+    .hero-cta-sub { display: block; margin-top: 14px; font-size: 0.85rem; color: var(--muted); }
+    .hero-split {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+    @media (min-width: 960px) {
+      .hero-split {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+        gap: 56px;
+      }
+    }
+    .hero-shot {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.04);
+      display: block;
+    }
     .btn-primary {
       display: inline-flex; align-items: center; gap: 10px;
       background: var(--accent); color: #fff; padding: 14px 28px;
@@ -544,15 +565,11 @@
     <div class="nav-brand"><span class="spider">🕷️</span> Black Widow</div>
     <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu" aria-expanded="false">☰</button>
     <div class="nav-links">
-      <a href="#problem">The Problem</a>
       <a href="#how">How It Works</a>
       <a href="#features">Features</a>
-      <a href="#market">Competitors</a>
       <a href="#roadmap">Roadmap</a>
-      <a href="#challenge">Challenge</a>
       <a href="#download">Download</a>
-      <a href="#install">Install</a>
-      <a href="https://github.com/felisbinofarms/black-widow-releases/discussions" target="_blank">Community</a>
+      <a href="https://github.com/felisbinofarms/black-widow-releases" target="_blank">GitHub</a>
       <a href="#download" class="nav-cta">&#8595; Free Download</a>
     </div>
   </div>
@@ -560,15 +577,11 @@
 
 <div class="mobile-menu" id="mobile-menu">
   <div class="container">
-    <a href="#problem">The Problem</a>
     <a href="#how">How It Works</a>
     <a href="#features">Features</a>
-    <a href="#market">Competitors</a>
     <a href="#roadmap">Roadmap</a>
-    <a href="#challenge">Challenge</a>
     <a href="#download">Download</a>
-    <a href="#install">Install</a>
-    <a href="https://github.com/felisbinofarms/black-widow-releases/discussions" target="_blank">Community</a>
+    <a href="https://github.com/felisbinofarms/black-widow-releases" target="_blank">GitHub</a>
     <a href="#download" class="mobile-cta">↓ Get Free Edition</a>
   </div>
 </div>
@@ -576,43 +589,46 @@
 <!-- Hero -->
 <section class="hero" id="hero">
   <div class="container">
-    <div class="hero-inner">
-      <div class="hero-eyebrow">🕷️ &nbsp; Free for Salesforce professionals</div>
+    <div class="hero-inner hero-split">
+      <div>
+        <div class="hero-eyebrow">🕷️ &nbsp; Free for Salesforce professionals</div>
 
-      <h1>
-        Stop <span class="red">wasting hours</span><br/>
-        on debug logs.<span class="dim"><br/>Start fixing them.</span>
-      </h1>
+        <h1>
+          See every log from one click<br/>
+          <span class="red">as a single transaction.</span>
+        </h1>
 
-      <p class="hero-sub">
-        Black widows are nature's silent, efficient hunters &mdash; they identify their target
-        and strike with precision. No wasted effort. No noise. Just the result.<br/><br/>
-        <strong>Black Widow does the same for your Salesforce org.</strong>
-        While other tools force you to read thousands of raw log lines, Black Widow silently
-        hunts the root cause and hands it to you in seconds.
-      </p>
+        <p class="hero-sub">
+          Salesforce debug logs were built one file at a time. <strong>Black Widow groups all
+          the logs from a single user action into one transaction view</strong> &mdash;
+          backend phase, frontend phase, recursion, and governor pressure, all on one screen.
+        </p>
 
-      <div class="hero-tagline">
-        "The only Salesforce troubleshooting tool that actually kills your bugs &mdash; not your afternoon."
+        <div class="hero-actions">
+          <a href="#download" class="btn-primary" id="hero-cta">
+            &#8595; &nbsp;Download for <span id="hero-cta-os">Windows</span> &mdash; Free
+          </a>
+          <a href="https://github.com/felisbinofarms/black-widow-releases" target="_blank" rel="noopener" class="btn-secondary">View on GitHub &rarr;</a>
+        </div>
+        <span class="hero-cta-sub" id="hero-cta-sub">v1.4.12 &middot; ~41 MB &middot; No admin required</span>
+
+        <div class="proof-row">
+          <span class="proof-pill">&#10003; Free forever for manual analysis</span>
+          <span class="proof-pill">&#10003; Windows &middot; macOS &middot; Linux</span>
+          <span class="proof-pill">&#10003; No signup, no license key</span>
+        </div>
       </div>
 
-      <div class="hero-actions">
-        <a href="#download" class="btn-primary">
-          &#8595; &nbsp;Download Free &mdash; <span id="hero-version">v1.4.12</span>
-        </a>
-        <a href="#features" class="btn-secondary">See what it does &rarr;</a>
-      </div>
-
-      <div class="proof-row">
-        <span class="proof-pill">✓ Free forever for manual analysis</span>
-        <span class="proof-pill">✓ Windows &middot; macOS &middot; Linux</span>
-        <span class="proof-pill">✓ Groups multi-log transactions automatically</span>
-      </div>
-
-      <div class="version-line">
-        <span class="free-badge">&#10003; 100% Free</span>
-        <span class="version-badge" id="version-badge">v1.4.12</span>
-        <span style="font-size:0.8rem; color:var(--muted)">Windows &middot; macOS &middot; Linux</span>
+      <div>
+        <img
+          class="hero-shot"
+          src="hero-overview.jpg"
+          alt="Black Widow Overview tab showing the result of analyzing a failed Apex transaction: 75/100 score, 2.0s duration, 3 grouped errors, root cause chain, and a 'What Happened' summary in plain English."
+          width="1087"
+          height="893"
+          loading="eager"
+          decoding="async"
+        />
       </div>
     </div>
   </div>
@@ -672,40 +688,6 @@
         <blockquote>"The log doesn't tell me it's a recursion problem. That diagnosis took me another hour."</blockquote>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- Competitor Snapshot -->
-<section id="market">
-  <div class="container">
-    <div class="section-label">Competitor Snapshot</div>
-    <h2>A real market with clear whitespace.</h2>
-    <p style="max-width:760px; margin-bottom:0">Most alternatives are VS Code extensions for developers. Black Widow stays focused on speed and clarity for both developers and admins in a standalone app.</p>
-
-    <div class="market-grid">
-      <div class="market-card">
-        <div class="num">1.17M</div>
-        <h3>Apex Log Analyzer (LANA)</h3>
-        <p>High-quality VS Code extension with strong adoption (4.8/5), but still extension-first and dev-workflow centric.</p>
-      </div>
-      <div class="market-card">
-        <div class="num">2.04M</div>
-        <h3>Apex Replay Debugger</h3>
-        <p>Large install base in the Salesforce extension ecosystem. Strong for code debugging, less focused on cross-log simplicity.</p>
-      </div>
-      <div class="market-card">
-        <div class="num">1.74M</div>
-        <h3>Apex Interactive Debugger</h3>
-        <p>Official tooling, but lower satisfaction signals (2/5 rating) suggest room for better day-to-day troubleshooting UX.</p>
-      </div>
-      <div class="market-card">
-        <div class="num">0</div>
-        <h3>GitHub topic saturation</h3>
-        <p>The topics <code>apex-log-analyzer</code> and <code>salesforce-debug-log</code> currently show no public repos, leaving discoverability whitespace.</p>
-      </div>
-    </div>
-
-    <p class="market-note">Sources: VS Code Marketplace listings and GitHub topic pages checked Apr 24, 2026.</p>
   </div>
 </section>
 
@@ -840,37 +822,6 @@
   </div>
 </section>
 
-<!-- Testimonials -->
-<section>
-  <div class="container">
-    <div class="section-label">Community</div>
-    <h2>Built by a Salesforce developer.<br/>For Salesforce developers.</h2>
-    <div class="testimonial-grid">
-      <div class="testimonial">
-        <blockquote>What used to be a half-day detective job is now a ten-minute task. The transaction grouping alone is worth the download.</blockquote>
-        <div class="t-author">
-          <div class="t-avatar">AK</div>
-          <div><div class="t-name">Alex K.</div><div class="t-role">Salesforce Architect &middot; Financial Services</div></div>
-        </div>
-      </div>
-      <div class="testimonial">
-        <blockquote>I didn't realise how much time I was wasting on raw logs until I saw the execution tree. This is what Salesforce should have shipped.</blockquote>
-        <div class="t-author">
-          <div class="t-avatar">MP</div>
-          <div><div class="t-name">Maria P.</div><div class="t-role">Senior Apex Developer &middot; ISV Partner</div></div>
-        </div>
-      </div>
-      <div class="testimonial">
-        <blockquote>The PII scanner saved me from emailing a client log with production email addresses in it. That alone makes this tool indispensable.</blockquote>
-        <div class="t-author">
-          <div class="t-avatar">JT</div>
-          <div><div class="t-name">Jamie T.</div><div class="t-role">Salesforce Admin &middot; Healthcare</div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- Spider Sprint Challenge -->
 <section id="challenge">
   <div class="container">
@@ -965,18 +916,6 @@ cd ~/blackwidow
   </div>
 </section>
 
-<!-- CTA -->
-<div class="cta-section">
-  <div class="container">
-    <h2>Stop letting debug logs<br/><span style="color:var(--accent)">steal your day.</span></h2>
-    <p>Free download. No license key. Open a log in under a minute.</p>
-    <div class="cta-buttons">
-      <a href="#download" class="btn-primary">&#8595; &nbsp;Download Free</a>
-      <a href="https://github.com/felisbinofarms/black-widow-releases/discussions" target="_blank" class="btn-secondary">&#128172; &nbsp;Join the Community</a>
-    </div>
-  </div>
-</div>
-
 <!-- Footer -->
 <footer>
   <div class="footer-links">
@@ -994,12 +933,32 @@ cd ~/blackwidow
 </div>
 
 <script>
+// Detect OS for hero CTA. Falls back to Windows.
+(function () {
+  const ua = navigator.userAgent || '';
+  const platform = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || '';
+  let os = 'Windows';
+  let assetSuffix = 'win-x64-Setup.exe';
+  if (/Mac|macOS|Macintosh/i.test(platform) || /Mac OS X/i.test(ua)) {
+    // Treat all Macs as Apple Silicon by default — most installs since 2021 are arm64.
+    os = 'macOS';
+    assetSuffix = 'macos-arm64.dmg';
+  } else if (/Linux/i.test(platform) || /Linux/i.test(ua)) {
+    os = 'Linux';
+    assetSuffix = 'linux-x64.tar.gz';
+  }
+  const osEl = document.getElementById('hero-cta-os');
+  if (osEl) osEl.textContent = os;
+  // Stash the chosen suffix so the release fetcher below can update the hero CTA href.
+  window.__bwHeroAssetSuffix = assetSuffix;
+})();
+
 (async () => {
   const REPO = 'felisbinofarms/black-widow-releases';
   const FALLBACK_VERSION = 'v1.4.12';
-  const badge = document.getElementById('version-badge');
-  const heroVer = document.getElementById('hero-version');
   const grid = document.getElementById('download-grid');
+  const heroCta = document.getElementById('hero-cta');
+  const heroCtaSub = document.getElementById('hero-cta-sub');
   // featured = visually highlighted tile only. All tiles link to the actual
   // platform installer in the latest GitHub release - no checkout, no email.
   const platforms = [
@@ -1016,28 +975,39 @@ cd ~/blackwidow
       + '<span class="dl-arrow">&#8595; Download ' + version + '</span>'
       + '</a>';
   }
+  function updateHeroCta(assets, version, releaseHtmlUrl) {
+    const suffix = window.__bwHeroAssetSuffix || 'win-x64-Setup.exe';
+    const match = (assets || []).find(function(a) { return a.name.endsWith(suffix); });
+    if (heroCta) heroCta.setAttribute('href', match ? match.browser_download_url : releaseHtmlUrl || '#download');
+    if (heroCtaSub && match && typeof match.size === 'number') {
+      const mb = Math.round(match.size / 1024 / 1024);
+      heroCtaSub.textContent = version + ' \u00b7 ~' + mb + ' MB \u00b7 No admin required';
+    } else if (heroCtaSub) {
+      heroCtaSub.textContent = version + ' \u00b7 ~41 MB \u00b7 No admin required';
+    }
+  }
   try {
     const res = await fetch('https://api.github.com/repos/' + REPO + '/releases/latest');
     if (!res.ok) throw new Error(res.status);
     const release = await res.json();
     const v = release.tag_name || FALLBACK_VERSION;
-    badge.textContent = v;
-    heroVer.textContent = v;
     const assets = release.assets || [];
     grid.innerHTML = platforms.map(function(p) {
       const asset = assets.find(function(a) { return a.name.endsWith(p.suffix); });
       const url = asset ? asset.browser_download_url : release.html_url;
       return renderTile(p, url, v);
     }).join('');
+    updateHeroCta(assets, v, release.html_url);
   } catch(e) {
     const v = FALLBACK_VERSION;
     const versionNoV = v.replace(/^v/, '');
-    badge.textContent = v;
-    heroVer.textContent = v;
     const releaseBase = 'https://github.com/' + REPO + '/releases/download/' + v + '/BlackWidow-' + versionNoV + '-';
     grid.innerHTML = platforms.map(function(p) {
       return renderTile(p, releaseBase + p.suffix, v);
     }).join('');
+    // Best-effort fallback hero href without a real asset list.
+    const suffix = window.__bwHeroAssetSuffix || 'win-x64-Setup.exe';
+    if (heroCta) heroCta.setAttribute('href', releaseBase + suffix);
   }
 })();
 
