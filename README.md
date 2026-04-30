@@ -12,52 +12,36 @@ Unlike traditional tools that show one log at a time, Black Widow groups related
 
 ## Download
 
-| Platform | File | Notes |
-|----------|------|-------|
-| 🪟 **Windows (x64)** | `BlackWidow-{version}-win-x64-Setup.exe` | Installer, no admin required |
-| 🍎 **macOS Apple Silicon** (M1/M2/M3) | `BlackWidow-{version}-macos-arm64.zip` | ARM64 native |
-| 🍎 **macOS Intel** | `BlackWidow-{version}-macos-x64.zip` | x64 |
-| 🐧 **Linux (x64)** | `BlackWidow-{version}-linux-x64.tar.gz` | Ubuntu 22+ tested |
+**[→ Get the latest installer](https://github.com/felisbinofarms/black-widow-releases/releases/latest)**
 
-→ **[See all releases](../../releases)**
+| Platform | File |
+|----------|------|
+| 🪟 **Windows (x64)** | `BlackWidow-<version>-win-x64-Setup.exe` (Installer, no admin required) |
+| 🍎 **macOS Apple Silicon** (M1/M2/M3) | `BlackWidow-<version>-macos-arm64.dmg` (ARM64 native) |
+| 🍎 **macOS Intel** | `BlackWidow-<version>-macos-x64.dmg` (x64) |
+| 🐧 **Linux (x64)** | `BlackWidow-<version>-linux-x64.tar.gz` (Ubuntu 22+ tested) |
 
-### Automated Release Mirroring
-
-This repository now includes a GitHub Actions workflow that mirrors release assets
-from the source repository into this public releases repository:
-
-- Workflow: `.github/workflows/mirror-source-release.yml`
-- Trigger options:
-	- Manual (`workflow_dispatch`) with a tag input
-	- Tag push in this repo (`v*`)
-
-Required secret for automation:
-
-- `BW_SOURCE_REPO_TOKEN`: GitHub token with `repo` read access to
-	`felisbinofarms/salesforce-debug-log-analyzer`
-
-Why this matters:
-
-- LemonSqueezy can import public release asset URLs from this repository,
-	while source code remains private in the main app repository.
+→ **[See all releases](../../releases)**  ·  [Latest release notes](../../releases/latest)
 
 ---
 
 ## Installation
 
 ### Windows
-1. Download `BlackWidow-{version}-win-x64-Setup.exe`
-2. Run it — no admin rights needed, installs to `%LocalAppData%\Black Widow`
-3. Launch from Start Menu or Desktop shortcut
+1. Download `BlackWidow-<version>-win-x64-Setup.exe` from the [latest release](../../releases/latest).
+2. Run it — no admin rights needed, installs to `%LocalAppData%\Black Widow`.
+3. Launch from Start Menu or Desktop shortcut.
+
+> **SmartScreen warning?** The installer is not yet code-signed. Click **More info → Run anyway**. Code-signing is in progress.
 
 ### macOS
-1. Download the `.zip` matching your chip (M1/M2/M3 → arm64, older Mac → x64)
-2. Unzip and drag `BlackWidow` to your Applications folder
-3. First launch: right-click → **Open** (bypasses Gatekeeper warning for unsigned apps)
+1. Download the `.dmg` matching your chip (M1/M2/M3 → `arm64`, older Mac → `x64`).
+2. Open the `.dmg` and drag **BlackWidow** to your Applications folder.
+3. First launch only: **right-click → Open** to bypass the Gatekeeper warning (app is not yet Apple-signed).
 
 ### Linux
 ```bash
-tar -xzf BlackWidow-{version}-linux-x64.tar.gz -C ~/blackwidow
+tar -xzf BlackWidow-*-linux-x64.tar.gz -C ~/blackwidow
 cd ~/blackwidow
 ./BlackWidow
 ```
@@ -86,20 +70,17 @@ cd ~/blackwidow
 
 ---
 
-## Feedback & Support
+## Feedback &amp; Support
 
-- **💬 Discussions** — questions, ideas, and show & tell → [Discussions](../../discussions)
-- **🐛 Bug reports & feature requests** → [open an issue](https://github.com/felisbinofarms/salesforce-debug-log-analyzer/issues) in the source repo
+- **💬 Discussions** — questions, ideas, and show &amp; tell → [Discussions](../../discussions)
+- **🐛 Bug reports &amp; feature requests** → [open an issue](../../issues)
 - **🔐 Security vulnerabilities** → email victorfelisbino@gmail.com (do not open a public issue)
 
 ---
 
 ## Source Code
 
-This is the distribution repo — **releases only**.
-
-The source code is developed at:
-**[felisbinofarms/salesforce-debug-log-analyzer](https://github.com/felisbinofarms/salesforce-debug-log-analyzer)**
+This is the public **distribution repo** — releases, landing page, and community channels live here. The application source is currently private during the v1.x MVP.
 
 ---
 
@@ -107,5 +88,4 @@ The source code is developed at:
 
 Black Widow is **proprietary software** — Copyright © 2026 Victor Felisbino. All rights reserved.
 
-Free to download and use. Redistribution, modification, or reverse engineering is not permitted.
-See the [LICENSE](https://github.com/felisbinofarms/salesforce-debug-log-analyzer/blob/master/LICENSE) for full terms.
+Free to download and use. Redistribution, modification, or reverse engineering is not permitted. See the [LICENSE](LICENSE) file for full terms.
