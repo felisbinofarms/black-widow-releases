@@ -1,0 +1,76 @@
+﻿name: Track Downloads
+
+on:
+  schedule:
+    # Run daily at 06:00 UTC (1 AM ET / 10 PM PT previous day)
+    - cron: '0 6 * * *'
+  workflow_dispatch: # Allow manual trigger
+
+permissions:
+  contents: write
+
+jobs:
+  log-downloads:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch download counts
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Get latest release download counts
+          DATE=$(date -u +%Y-%m-%d)
+          
+          # Fetch all assets from latest release
+          COUNTS=$(gh api repos/${{ github.repository }}/releases/latest \
+            --jq '{
+              tag: .tag_name,
+              win: (.assets[] | select(.name | test("win-x64")) | .download_count),
+              mac_arm: (.assets[] | select(.name | test("macos-arm64")) | .download_count),
+              mac_x64: (.assets[] | select(.name | test("macos-x64")) | .download_count),
+              linux: (.assets[] | select(.name | test("linux-x64")) | .download_count)
+            }')
+          
+          TAG=$(echo "$COUNTS" | jq -r '.tag')
+          WIN=$(echo "$COUNTS" | jq -r '.win')
+          MAC_ARM=$(echo "$COUNTS" | jq -r '.mac_arm')
+          MAC_X64=$(echo "$COUNTS" | jq -r '.mac_x64')
+          LINUX=$(echo "$COUNTS" | jq -r '.linux')
+          TOTAL=$((WIN + MAC_ARM + MAC_X64 + LINUX))
+          
+          # Create metrics directory if not exists
+          mkdir -p metrics
+          
+          # Create CSV header if file doesn't exist
+          if [ ! -f metrics/downloads.csv ]; then
+            echo "date,version,win,mac_arm,mac_x64,linux,total" > metrics/downloads.csv
+          fi
+          
+          # Append today's counts
+          echo "${DATE},${TAG},${WIN},${MAC_ARM},${MAC_X64},${LINUX},${TOTAL}" >> metrics/downloads.csv
+          
+          # Also update a summary JSON for quick access
+          cat > metrics/latest.json << EOF
+          {
+            "date": "${DATE}",
+            "version": "${TAG}",
+            "downloads": {
+              "windows": ${WIN},
+              "macos_arm": ${MAC_ARM},
+              "macos_x64": ${MAC_X64},
+              "linux": ${LINUX},
+              "total": ${TOTAL}
+            }
+          }
+          EOF
+          
+          echo "📊 ${DATE}: ${TAG} — Win:${WIN} macARM:${MAC_ARM} macX64:${MAC_X64} Linux:${LINUX} Total:${TOTAL}"
+
+      - name: Commit metrics
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add metrics/
+          git diff --cached --quiet || git commit -m "metrics: daily download snapshot $(date -u +%Y-%m-%d)"
+          git push
