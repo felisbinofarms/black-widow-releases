@@ -3,636 +3,110 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Black Widow — Salesforce Debug Log Analyzer</title>
-  <meta name="description" content="The Salesforce troubleshooting tool that actually saves you time. Stop spending hours reading raw logs — Black Widow finds the problem silently, instantly." />
-  <meta property="og:title" content="Black Widow 🕷️ — Salesforce Debug Log Analyzer" />
-  <meta property="og:description" content="Stop spending hours reading raw logs. Black Widow hunts the problem so you don't have to." />
-  <meta property="og:image" content="https://felisbinofarms.github.io/black-widow-releases/icon.png" />
+  <title>Black Widow - Salesforce Debug Log Analyzer</title>
+  <meta name="description" content="See every log from one click as a single transaction. Black Widow turns Salesforce debug log chaos into a clear execution story." />
+  <meta property="og:title" content="Black Widow - Salesforce Debug Log Analyzer" />
+  <meta property="og:description" content="A single Save can create 13 logs. Black Widow shows the whole transaction in minutes." />
+  <meta property="og:image" content="https://felisbinofarms.github.io/black-widow-releases/images/hero-overview.png" />
   <meta property="og:url" content="https://felisbinofarms.github.io/black-widow-releases/" />
-  <!-- LemonSqueezy overlay checkout -->
-  <script src="https://assets.lemonsqueezy.com/lemon.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <script defer data-domain="felisbinofarms.github.io" src="https://plausible.io/js/script.file-downloads.outbound-links.js"></script>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg:        #0d1117;
-      --surface:   #161b22;
-      --surface2:  #1c2130;
-      --border:    #30363d;
-      --accent:    #e53935;
-      --accent2:   #ef5350;
-      --gold:      #f4c430;
-      --green:     #23d18b;
-      --blue:      #58a6ff;
-      --purple:    #bc8cff;
-      --text:      #e6edf3;
-      --muted:     #8b949e;
-      --radius:    10px;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.65;
-      font-size: 16px;
-    }
-
-    a { color: var(--blue); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    p { color: var(--muted); }
-    strong { color: var(--text); }
-
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
-
-    /* Nav */
-    nav {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(13,17,23,0.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      padding: 14px 0;
-    }
-    nav .container { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-    .nav-brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.1rem; color: var(--text); }
-    .nav-brand .spider { font-size: 1.5rem; }
-    .nav-links { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
-    .nav-links a { color: var(--muted); font-size: 0.88rem; font-weight: 500; letter-spacing: 0.02em; transition: color .18s; }
-    .nav-links a:hover { color: var(--text); text-decoration: none; }
-    .nav-cta {
-      background: var(--accent); color: #fff !important;
-      padding: 8px 18px; border-radius: 8px;
-      font-weight: 600 !important; font-size: 0.85rem !important;
-      transition: background .15s, transform .1s !important;
-    }
-    .nav-cta:hover { background: #c0152b !important; transform: translateY(-1px); text-decoration: none !important; }
-
-    /* Sections */
-    section { padding: 88px 0; }
-    section:nth-child(even) { background: var(--surface); }
-
-    .section-label {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em;
-      text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
-    }
-    .section-label::before { content: ""; width: 20px; height: 2px; background: var(--accent); border-radius: 2px; }
-
-    h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 700; line-height: 1.25; margin-bottom: 14px; }
-    h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 6px; }
-
-    /* Hero */
-    .hero {
-      padding: 100px 0 80px; position: relative; overflow: hidden;
-    }
-    .hero::before {
-      content: ""; position: absolute; top: -220px; right: -180px;
-      width: 680px; height: 680px;
-      background: radial-gradient(circle, rgba(229,57,53,0.13) 0%, transparent 68%);
-      pointer-events: none;
-    }
-    .hero::after {
-      content: ""; position: absolute; bottom: -150px; left: -100px;
-      width: 500px; height: 500px;
-      background: radial-gradient(circle, rgba(188,140,255,0.06) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .hero-inner { position: relative; z-index: 1; }
-    .hero-eyebrow {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(229,57,53,0.1); border: 1px solid rgba(229,57,53,0.3);
-      color: var(--accent2); border-radius: 100px;
-      padding: 6px 16px; font-size: 0.82rem; font-weight: 600;
-      letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 28px;
-    }
-    .hero h1 {
-      font-size: clamp(2.4rem, 5.5vw, 4rem);
-      font-weight: 800; line-height: 1.1; letter-spacing: -1px; margin-bottom: 24px;
-    }
-    .hero h1 .red { color: var(--accent); }
-    .hero h1 .dim { color: var(--muted); font-weight: 400; }
-    .hero-sub {
-      font-size: clamp(1rem, 2vw, 1.2rem); color: var(--muted);
-      max-width: 620px; margin-bottom: 20px; line-height: 1.75;
-    }
-    .hero-sub strong { color: var(--text); }
-    .hero-tagline {
-      display: inline-block; font-size: 0.95rem; color: var(--purple);
-      font-style: italic; margin-bottom: 40px;
-      border-left: 3px solid var(--purple); padding-left: 14px;
-    }
-    .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
-    .btn-primary {
-      display: inline-flex; align-items: center; gap: 10px;
-      background: var(--accent); color: #fff; padding: 14px 28px;
-      border-radius: 10px; font-size: 1rem; font-weight: 700;
-      transition: background .15s, transform .1s;
-      box-shadow: 0 0 30px rgba(229,57,53,0.35);
-    }
-    .btn-primary:hover { background: #c0152b; transform: translateY(-2px); text-decoration: none; box-shadow: 0 0 45px rgba(229,57,53,0.5); }
-    .btn-secondary {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: var(--surface); border: 1px solid var(--border);
-      color: var(--text); padding: 14px 24px; border-radius: 10px;
-      font-size: 0.95rem; font-weight: 600; transition: border-color .15s, transform .1s;
-    }
-    .btn-secondary:hover { border-color: var(--accent); transform: translateY(-2px); text-decoration: none; }
-    .version-line { margin-top: 40px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-    .version-badge {
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 100px; padding: 4px 14px; font-size: 0.8rem; font-weight: 600; color: var(--green);
-    }
-    .free-badge {
-      background: rgba(35,209,139,0.1); border: 1px solid rgba(35,209,139,0.3);
-      border-radius: 100px; padding: 4px 14px; font-size: 0.8rem; font-weight: 700; color: var(--green);
-    }
-
-    /* Problem */
-    .problem-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 40px; }
-    .problem-card {
-      background: var(--surface2); border: 1px solid var(--border);
-      border-left: 4px solid var(--accent); border-radius: var(--radius); padding: 24px;
-    }
-    .problem-card .icon { font-size: 1.8rem; margin-bottom: 12px; }
-    .problem-card p { font-size: 0.9rem; }
-    .problem-card blockquote {
-      margin-top: 14px; padding: 10px 14px;
-      background: rgba(229,57,53,0.05); border-left: 3px solid var(--accent);
-      border-radius: 4px; font-style: italic; font-size: 0.85rem; color: var(--muted);
-    }
-
-    /* Before/After */
-    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 40px; }
-    @media (max-width: 640px) { .compare-grid { grid-template-columns: 1fr; } }
-    .compare-card {
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 28px;
-    }
-    .compare-card.after { border-color: rgba(229,57,53,0.4); position: relative; overflow: hidden; }
-    .compare-card.after::after {
-      content: ""; position: absolute; top: 0; left: 0;
-      width: 100%; height: 3px; background: linear-gradient(90deg, var(--accent), var(--purple));
-    }
-    .compare-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 16px; }
-    .compare-card.before .compare-label { color: var(--muted); }
-    .compare-card.after  .compare-label { color: var(--accent); }
-    .compare-card ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-    .compare-card ul li { display: flex; align-items: flex-start; gap: 10px; font-size: 0.9rem; color: var(--muted); }
-    .compare-card ul li .b { flex-shrink: 0; margin-top: 2px; }
-
-    /* Features */
-    .feature-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; margin-top: 40px; }
-    .feature-card {
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 26px;
-      position: relative; overflow: hidden; transition: border-color .2s, transform .15s;
-    }
-    .feature-card:hover { border-color: rgba(229,57,53,0.5); transform: translateY(-3px); }
-    .feature-card::after {
-      content: ""; position: absolute; top: 0; left: 0;
-      width: 100%; height: 3px; background: linear-gradient(90deg, var(--accent), var(--purple));
-      opacity: 0; transition: opacity .2s;
-    }
-    .feature-card:hover::after { opacity: 1; }
-    .feature-card .icon { font-size: 2rem; margin-bottom: 14px; }
-    .feature-card p { font-size: 0.875rem; line-height: 1.6; }
-
-    /* Download */
-    .download-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 16px; margin-top: 40px; }
-    .dl-card {
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 22px 20px;
-      display: flex; flex-direction: column; gap: 10px;
-      transition: border-color .15s, transform .1s; text-decoration: none; color: var(--text);
-    }
-    .dl-card:hover { border-color: var(--accent); transform: translateY(-3px); text-decoration: none; }
-    .dl-card.featured { border-color: var(--accent); background: rgba(229,57,53,0.07); }
-    .dl-card .dl-platform { font-size: 1.6rem; }
-    .dl-card .dl-name { font-weight: 700; font-size: 0.95rem; color: var(--text); }
-    .dl-card .dl-sub { font-size: 0.8rem; color: var(--muted); }
-    .dl-card .dl-arrow { margin-top: auto; font-size: 0.8rem; color: var(--accent); font-weight: 600; }
-
-    /* Install */
-    .install-tabs { display: flex; gap: 8px; margin: 32px 0 20px; flex-wrap: wrap; }
-    .tab-btn {
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 8px; padding: 9px 20px; font-size: 0.875rem;
-      font-weight: 600; cursor: pointer; color: var(--muted); transition: all .15s;
-    }
-    .tab-btn.active { background: rgba(229,57,53,0.1); border-color: var(--accent); color: var(--text); }
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
-    .install-steps { list-style: none; display: flex; flex-direction: column; gap: 12px; }
-    .install-steps li {
-      display: flex; gap: 14px; align-items: flex-start;
-      background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 16px;
-    }
-    .step-num {
-      background: var(--accent); color: #fff; border-radius: 50%;
-      width: 26px; height: 26px; font-size: 0.8rem; font-weight: 700;
-      flex-shrink: 0; display: flex; align-items: center; justify-content: center;
-    }
-    .step-text { font-size: 0.9rem; color: var(--muted); line-height: 1.5; }
-    .step-text strong { color: var(--text); }
-    pre {
-      background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
-      padding: 16px; font-size: 0.85rem; overflow-x: auto; margin-top: 12px; color: #7ee787;
-    }
-
-    /* Testimonials */
-    .testimonial-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 40px; }
-    .testimonial {
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 26px;
-    }
-    .testimonial blockquote {
-      font-size: 0.95rem; color: var(--text); line-height: 1.75;
-      font-style: italic; margin-bottom: 20px;
-    }
-    .testimonial blockquote::before { content: "\201C"; color: var(--accent); font-size: 1.5rem; line-height: 0; vertical-align: -0.4em; margin-right: 4px; }
-    .t-author { display: flex; align-items: center; gap: 12px; }
-    .t-avatar {
-      width: 40px; height: 40px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent), var(--purple));
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 700; font-size: 0.9rem; flex-shrink: 0; color: #fff;
-    }
-    .t-name { font-weight: 600; font-size: 0.9rem; }
-    .t-role { font-size: 0.78rem; color: var(--muted); }
-
-    /* CTA */
-    .cta-section {
-      padding: 88px 0; text-align: center; position: relative; overflow: hidden;
-    }
-    .cta-section::before {
-      content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
-      width: 900px; height: 400px;
-      background: radial-gradient(ellipse, rgba(229,57,53,0.1) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .cta-section h2 { font-size: clamp(1.8rem, 4vw, 3rem); margin-bottom: 16px; }
-    .cta-section p { font-size: 1.1rem; max-width: 560px; margin: 0 auto 40px; }
-    .cta-buttons { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
-
-    /* Footer */
-    footer { border-top: 1px solid var(--border); padding: 32px 24px; text-align: center; color: var(--muted); font-size: 0.82rem; }
-    .footer-links { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 14px; }
-    .footer-links a { color: var(--muted); transition: color .15s; }
-    .footer-links a:hover { color: var(--text); text-decoration: none; }
-
-    @media (max-width: 600px) {
-      .nav-links { display: none; }
-      .hero { padding: 64px 0 48px; }
-    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#0b1020;--panel:#131b31;--panel-2:#1a2441;--text:#edf2ff;--muted:#a8b3d1;--accent:#f25f4c;--accent-2:#ff8f5c;--line:#2d3a64;--ok:#29d398;--radius:14px}
+    body{font-family:"IBM Plex Sans",sans-serif;background:radial-gradient(1200px 700px at 90% -100px,rgba(242,95,76,.2),transparent 65%),var(--bg);color:var(--text);line-height:1.6}
+    a{color:#8bc4ff;text-decoration:none} a:hover{text-decoration:underline}
+    .container{max-width:1140px;margin:0 auto;padding:0 20px}
+    nav{position:sticky;top:0;z-index:100;background:rgba(11,16,32,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+    nav .container{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;gap:16px}
+    .brand{font-family:"Space Grotesk",sans-serif;font-weight:700;letter-spacing:.02em}
+    .nav-links{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+    .nav-links a{font-size:.9rem;color:var(--muted)} .nav-cta{background:var(--accent);color:#fff !important;padding:8px 14px;border-radius:10px;font-weight:700}
+    section{padding:76px 0}.section-kicker{font-size:.74rem;text-transform:uppercase;letter-spacing:.14em;color:var(--accent-2);font-weight:700;margin-bottom:10px}
+    h1,h2,h3{font-family:"Space Grotesk",sans-serif;line-height:1.15} h1{font-size:clamp(2rem,4.8vw,3.6rem);margin-bottom:16px} h2{font-size:clamp(1.55rem,3.6vw,2.5rem);margin-bottom:14px}
+    p{color:var(--muted)}
+    .hero{padding-top:56px}.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:center}
+    .hero-sub{max-width:62ch;margin-bottom:24px}.hero-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+    .btn-primary{display:inline-flex;gap:8px;align-items:center;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;padding:13px 20px;border-radius:12px;font-weight:700}
+    .btn-secondary{display:inline-flex;gap:8px;align-items:center;background:transparent;border:1px solid var(--line);color:var(--text);padding:12px 18px;border-radius:12px;font-weight:600}
+    .cta-meta{margin-top:12px;font-size:.82rem;color:var(--muted)}
+    .screenshot-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:12px}
+    .screenshot-card img{display:block;width:100%;height:auto;border-radius:10px;border:1px solid var(--line);background:#070b16}
+    .chip-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.chip{font-size:.78rem;padding:6px 9px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid var(--line);color:#dce6ff}
+    .mobile-capture{display:none;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin-top:18px}
+    .mobile-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.mobile-actions button,.mobile-actions a{border:1px solid var(--line);background:var(--panel-2);color:var(--text);padding:10px 14px;border-radius:10px;font-size:.9rem;cursor:pointer}
+    .qr-wrap{margin-top:12px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}.toast{font-size:.82rem;color:var(--ok);min-height:1.2em}
+    .wedge-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}.wedge-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:12px}
+    .wedge-card img{display:block;width:100%;height:auto;border-radius:10px;border:1px solid var(--line)}.wedge-card p{font-size:.9rem;margin-top:8px}
+    .how-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:16px}.how-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
+    .feature-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:18px}.feature{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
+    .feature img{display:block;width:80px;height:80px;border-radius:8px;margin-bottom:10px;border:1px solid var(--line)}.feature p{font-size:.9rem}
+    .proof{background:linear-gradient(140deg,#121a31,#1a2441);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin-top:20px}
+    .proof-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}.metric{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:10px;padding:12px}
+    .metric b{display:block;font-size:1.28rem;font-family:"Space Grotesk",sans-serif}
+    .download-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:18px}.dl{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px}
+    .dl a{display:inline-block;margin-top:10px;font-size:.9rem;font-weight:700} details{margin-top:12px;border-top:1px solid var(--line);padding-top:10px} summary{cursor:pointer;color:#d8e4ff;font-size:.9rem}
+    footer{border-top:1px solid var(--line);padding:28px 0 38px;margin-top:36px}.footer-row{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center}.footer-links{display:flex;gap:14px;flex-wrap:wrap}
+    @media (max-width:980px){.hero-grid{grid-template-columns:1fr}.wedge-grid{grid-template-columns:1fr}.feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.proof-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.download-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.how-grid{grid-template-columns:1fr}}
+    @media (max-width:768px){.nav-links{display:none}section{padding:58px 0}.feature-grid,.download-grid,.proof-grid{grid-template-columns:1fr}.mobile-capture{display:block}.desktop-only{display:none !important}}
   </style>
 </head>
 <body>
-
-<!-- Nav -->
-<nav>
-  <div class="container">
-    <div class="nav-brand"><span class="spider">🕷️</span> Black Widow</div>
-    <div class="nav-links">
-      <a href="#problem">The Problem</a>
-      <a href="#features">Features</a>
-      <a href="#download">Download</a>
-      <a href="#install">Install</a>
-      <a href="https://github.com/felisbinofarms/black-widow-releases/discussions" target="_blank">Community</a>
-      <a href="https://YOURSTORE.lemonsqueezy.com/buy/YOUR_PRODUCT_ID" class="nav-cta lemonsqueezy-button">&#8595; Free Download</a>
-    </div>
-  </div>
-</nav>
-
-<!-- Hero -->
-<section class="hero" id="hero">
-  <div class="container">
-    <div class="hero-inner">
-      <div class="hero-eyebrow">🕷️ &nbsp; Free for Salesforce professionals</div>
-
-      <h1>
-        Stop <span class="red">wasting hours</span><br/>
-        on debug logs.<span class="dim"><br/>Start fixing them.</span>
-      </h1>
-
-      <p class="hero-sub">
-        Black widows are nature's silent, efficient hunters &mdash; they identify their target
-        and strike with precision. No wasted effort. No noise. Just the result.<br/><br/>
-        <strong>Black Widow does the same for your Salesforce org.</strong>
-        While other tools force you to read thousands of raw log lines, Black Widow silently
-        hunts the root cause and hands it to you in seconds.
-      </p>
-
-      <div class="hero-tagline">
-        "The only Salesforce troubleshooting tool that actually kills your bugs &mdash; not your afternoon."
-      </div>
-
-      <div class="hero-actions">
-        <a href="https://YOURSTORE.lemonsqueezy.com/buy/YOUR_PRODUCT_ID" class="btn-primary lemonsqueezy-button">
-          &#8595; &nbsp;Download Free &mdash; <span id="hero-version">v1.0.0</span>
-        </a>
-        <a href="#features" class="btn-secondary">See what it does &rarr;</a>
-      </div>
-
-      <div class="version-line">
-        <span class="free-badge">&#10003; Free for v1.0</span>
-        <span class="version-badge" id="version-badge">v1.0.0</span>
-        <span style="font-size:0.8rem; color:var(--muted)">Windows &middot; macOS &middot; Linux</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- The Problem -->
-<section id="problem">
-  <div class="container">
-    <div class="section-label">The Problem</div>
-    <h2>Salesforce debug logs were not<br/>designed for humans.</h2>
-    <p style="max-width:640px; margin-bottom:0">
-      A single button click can generate 13 separate log files, thousands of lines each.
-      Finding the root cause without the right tool is slow, painful, and expensive.
-    </p>
-    <div class="problem-grid">
-      <div class="problem-card">
-        <div class="icon">&#9203;</div>
-        <h3>Hours lost to log reading</h3>
-        <p>Raw debug logs are wall-to-wall noise. Finding where time was actually spent means manually scanning thousands of incomprehensible lines.</p>
-        <blockquote>"I spent 3 hours debugging what turned out to be one SOQL query in a trigger we didn't even write."</blockquote>
-      </div>
-      <div class="problem-card">
-        <div class="icon">&#129513;</div>
-        <h3>One log at a time &mdash; but users trigger many</h3>
-        <p>Clicking Save on a Case record can fire 13 separate logs. Traditional tools show them one by one, hiding the full picture entirely.</p>
-        <blockquote>"The performance issue was in the third trigger chain. There's no way to see that without grouping the logs."</blockquote>
-      </div>
-      <div class="problem-card">
-        <div class="icon">&#128270;</div>
-        <h3>No actionable output</h3>
-        <p>Standard tools show you <em>what</em> happened &mdash; not <em>why</em> it's slow or <em>what to fix</em>. You're left to interpret everything yourself.</p>
-        <blockquote>"The log doesn't tell me it's a recursion problem. That diagnosis took me another hour."</blockquote>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Before / After -->
-<section>
-  <div class="container">
-    <div class="section-label">The Solution</div>
-    <h2>Black Widow does the hunting.<br/>You do the fixing.</h2>
-    <p style="max-width:580px; margin-bottom:0">Every log is an ambush waiting to happen. We give you the web, not the flies.</p>
-    <div class="compare-grid">
-      <div class="compare-card before">
-        <div class="compare-label">&#10060; &nbsp;Without Black Widow</div>
-        <ul>
-          <li><span class="b">&#183;</span> Open 13 separate log files one by one</li>
-          <li><span class="b">&#183;</span> Manually grep for SOQL statements and timings</li>
-          <li><span class="b">&#183;</span> Guess where the user's time actually went</li>
-          <li><span class="b">&#183;</span> Rebuild the trigger call chain from scratch</li>
-          <li><span class="b">&#183;</span> Calculate governor limit usage by hand</li>
-          <li><span class="b">&#183;</span> Write the performance report yourself</li>
-          <li><span class="b" style="color:var(--accent)">&#9201;</span> <strong style="color:var(--accent)">2&ndash;4 hours spent</strong></li>
-        </ul>
-      </div>
-      <div class="compare-card after">
-        <div class="compare-label">&#10003; &nbsp;With Black Widow</div>
-        <ul>
-          <li><span class="b" style="color:var(--green)">&#10003;</span> All 13 logs grouped into one transaction automatically</li>
-          <li><span class="b" style="color:var(--green)">&#10003;</span> SOQL, DML and timing shown in a single dashboard</li>
-          <li><span class="b" style="color:var(--green)">&#10003;</span> Backend vs frontend time split instantly</li>
-          <li><span class="b" style="color:var(--green)">&#10003;</span> Full execution tree with one click</li>
-          <li><span class="b" style="color:var(--green)">&#10003;</span> Governor limits visualised with red-flag alerts</li>
-          <li><span class="b" style="color:var(--green)">&#10003;</span> Recommendations generated: <em>"Add recursion guard to CaseTrigger"</em></li>
-          <li><span class="b" style="color:var(--green)">&#9889;</span> <strong style="color:var(--green)">Under 10 minutes</strong></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Features -->
-<section id="features">
-  <div class="container">
-    <div class="section-label">Features</div>
-    <h2>Everything you need.<br/>Nothing you don't.</h2>
-    <div class="feature-grid">
-      <div class="feature-card">
-        <div class="icon">&#128279;</div>
-        <h3>Transaction Grouping</h3>
-        <p>All 13 logs from one button click are automatically grouped into a single transaction. See the complete user journey &mdash; not just one file at a time.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">&#9203;</div>
-        <h3>Phase Detection</h3>
-        <p>Instantly splits elapsed time into <strong>Backend</strong> (triggers, flows, callouts) and <strong>Frontend</strong> (component loading). Know exactly where the user waited.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">&#127794;</div>
-        <h3>Execution Tree</h3>
-        <p>Navigate the full call stack &mdash; triggers &rarr; flows &rarr; future methods &rarr; callouts &mdash; as a live, collapsible tree. Click any node to jump to the raw log line.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">&#128269;</div>
-        <h3>SOQL &amp; DML Analysis</h3>
-        <p>Automatic N+1 detection, duplicate query flagging, and governor limit tracking. Colour-coded thresholds alert you before limits become incidents.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">&#128161;</div>
-        <h3>Smart Recommendations</h3>
-        <p>Black Widow doesn't just show you the web &mdash; it tells you where the spider is. Auto-generated fixes like <em>"Load components in parallel to save 2.5s"</em>.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">&#128272;</div>
-        <h3>PII Scanner</h3>
-        <p>Automatically flags emails, record IDs, and sensitive data in logs before you share files with consultants or support teams.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">&#9889;</div>
-        <h3>Live Org Connection</h3>
-        <p>Connect via OAuth or session token. Stream logs in real time as users reproduce issues. Re-run queries live against your org.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">&#128228;</div>
-        <h3>Export Reports</h3>
-        <p>Generate a PDF or HTML report in one click. Drop it straight into a Jira ticket, sprint review, or Slack message.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">&#128194;</div>
-        <h3>Open Any Log</h3>
-        <p>Drag and drop any <code>.log</code> file. Works with logs from Setup &rarr; Debug Logs, VS Code extension, Salesforce CLI, or any third-party download.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Testimonials -->
-<section>
-  <div class="container">
-    <div class="section-label">Community</div>
-    <h2>Built by a Salesforce developer.<br/>For Salesforce developers.</h2>
-    <div class="testimonial-grid">
-      <div class="testimonial">
-        <blockquote>What used to be a half-day detective job is now a ten-minute task. The transaction grouping alone is worth the download.</blockquote>
-        <div class="t-author">
-          <div class="t-avatar">AK</div>
-          <div><div class="t-name">Alex K.</div><div class="t-role">Salesforce Architect &middot; Financial Services</div></div>
-        </div>
-      </div>
-      <div class="testimonial">
-        <blockquote>I didn't realise how much time I was wasting on raw logs until I saw the execution tree. This is what Salesforce should have shipped.</blockquote>
-        <div class="t-author">
-          <div class="t-avatar">MP</div>
-          <div><div class="t-name">Maria P.</div><div class="t-role">Senior Apex Developer &middot; ISV Partner</div></div>
-        </div>
-      </div>
-      <div class="testimonial">
-        <blockquote>The PII scanner saved me from emailing a client log with production email addresses in it. That alone makes this tool indispensable.</blockquote>
-        <div class="t-author">
-          <div class="t-avatar">JT</div>
-          <div><div class="t-name">Jamie T.</div><div class="t-role">Salesforce Admin &middot; Healthcare</div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Download -->
-<section id="download" style="background:var(--bg)">
-  <div class="container">
-    <div class="section-label">Download</div>
-    <h2>Free. No license key.<br/>Just enter your email and download.</h2>
-    <p>Self-contained &mdash; no .NET installation required. Runs on Windows 10+, macOS 12+, and Ubuntu 22+.</p>
-
-    <div style="margin: 32px 0; text-align: center;">
-      <a href="https://YOURSTORE.lemonsqueezy.com/buy/YOUR_PRODUCT_ID" class="btn-primary lemonsqueezy-button" style="font-size:1.1rem; padding: 18px 36px;">
-        &#8595; &nbsp;Get Free Download
-      </a>
-      <p style="margin-top: 12px; font-size: 0.82rem; color: var(--muted);">Enter your email to receive the download link &mdash; we'll only email you about major updates.</p>
-    </div>
-
-    <details style="margin-top: 24px; cursor: pointer;">
-      <summary style="color: var(--muted); font-size: 0.88rem; font-weight: 600;">&#128279; Or download directly from GitHub (no email required)</summary>
-      <div id="download-grid" class="download-grid" style="margin-top: 16px;">
-        <p style="color:var(--muted); font-size:0.9rem; margin-top:16px">Fetching latest release&hellip;</p>
-      </div>
-    </details>
-
-    <p style="margin-top:20px; font-size:0.82rem">
-      Looking for an older version?
-      <a href="https://github.com/felisbinofarms/black-widow-releases/releases" target="_blank">All releases &rarr;</a>
-    </p>
-  </div>
-</section>
-
-<!-- Install -->
-<section id="install">
-  <div class="container">
-    <div class="section-label">Installation</div>
-    <h2>Up and running in 60 seconds.</h2>
-    <div class="install-tabs">
-      <button class="tab-btn active" onclick="showTab('win',this)">&#127993; Windows</button>
-      <button class="tab-btn" onclick="showTab('mac',this)">&#127822; macOS</button>
-      <button class="tab-btn" onclick="showTab('linux',this)">&#128039; Linux</button>
-    </div>
-    <div class="tab-content active" id="tab-win">
-      <ol class="install-steps">
-        <li><span class="step-num">1</span><span class="step-text">Download <strong>BlackWidow-win-x64-Setup.exe</strong> from the section above.</span></li>
-        <li><span class="step-num">2</span><span class="step-text">Run the installer &mdash; <strong>no admin rights needed.</strong> Installs to <code>%LocalAppData%\Black Widow</code>.<br/><br/>&#9888;&#65039; <strong>Windows SmartScreen:</strong> You may see a &ldquo;Windows protected your PC&rdquo; warning &mdash; this is normal for new software that isn't code-signed yet. Click <strong>&ldquo;More info&rdquo;</strong> then <strong>&ldquo;Run anyway&rdquo;</strong> to proceed.</span></li>
-        <li><span class="step-num">3</span><span class="step-text">Launch from your <strong>Start Menu</strong> or <strong>Desktop shortcut.</strong> Drag a <code>.log</code> file in and go.</span></li>
-      </ol>
-    </div>
-    <div class="tab-content" id="tab-mac">
-      <ol class="install-steps">
-        <li><span class="step-num">1</span><span class="step-text">Download the correct zip:<br/><strong>Apple Silicon (M1/M2/M3)</strong> &rarr; <code>macos-arm64.zip</code> &nbsp;&middot;&nbsp; <strong>Intel</strong> &rarr; <code>macos-x64.zip</code></span></li>
-        <li><span class="step-num">2</span><span class="step-text">Unzip and drag <strong>BlackWidow</strong> to your Applications folder.</span></li>
-        <li><span class="step-num">3</span><span class="step-text">First launch only: <strong>right-click &rarr; Open</strong> to bypass the Gatekeeper warning (app is not yet Apple-signed).</span></li>
-      </ol>
-    </div>
-    <div class="tab-content" id="tab-linux">
-      <ol class="install-steps">
-        <li><span class="step-num">1</span><span class="step-text">Download <strong>BlackWidow-linux-x64.tar.gz</strong> from the section above.</span></li>
-        <li><span class="step-num">2</span><span class="step-text">Extract and run:</span></li>
-      </ol>
-      <pre>tar -xzf BlackWidow-*-linux-x64.tar.gz -C ~/blackwidow
-cd ~/blackwidow
-./BlackWidow</pre>
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<div class="cta-section">
-  <div class="container">
-    <h2>Stop letting debug logs<br/><span style="color:var(--accent)">steal your day.</span></h2>
-    <p>Free download. No sign-up. Open a log in under a minute.</p>
-    <div class="cta-buttons">
-      <a href="https://YOURSTORE.lemonsqueezy.com/buy/YOUR_PRODUCT_ID" class="btn-primary lemonsqueezy-button">&#8595; &nbsp;Download Free</a>
-      <a href="https://github.com/felisbinofarms/black-widow-releases/discussions" target="_blank" class="btn-secondary">&#128172; &nbsp;Join the Community</a>
-    </div>
-  </div>
-</div>
-
-<!-- Footer -->
-<footer>
-  <div class="footer-links">
-    <a href="https://github.com/felisbinofarms/black-widow-releases/releases" target="_blank">All Releases</a>
-    <a href="https://github.com/felisbinofarms/black-widow-releases/discussions" target="_blank">Discussions</a>
-    <a href="https://github.com/felisbinofarms/salesforce-debug-log-analyzer/issues" target="_blank">Bug Reports</a>
-    <a href="https://github.com/felisbinofarms/salesforce-debug-log-analyzer/blob/master/LICENSE" target="_blank">License</a>
-    <a href="mailto:victorfelisbino@gmail.com">Security</a>
-  </div>
-  <p>Black Widow is free to download and use &nbsp;&middot;&nbsp; Copyright &copy; 2026 Victor Felisbino &nbsp;&middot;&nbsp; All rights reserved.</p>
-</footer>
-
+<nav><div class="container"><div class="brand">Black Widow</div><div class="nav-links"><a href="#wedge">Wedge</a><a href="#how">How</a><a href="#features">Features</a><a href="#download">Download</a><a href="https://github.com/felisbinofarms/black-widow-releases" target="_blank" rel="noopener">GitHub</a><a class="nav-cta" id="nav-download" href="#download">Download</a></div></div></nav>
+<section class="hero" id="hero" data-section="hero"><div class="container hero-grid"><div><div class="section-kicker">Salesforce Debug Logs</div><h1>See every log from one click as a single transaction.</h1><p class="hero-sub">One Save in Salesforce can fan out into 13 logs across triggers, flows, async jobs, and UI reloads. Black Widow groups that chain instantly, separates sync vs async cost, and surfaces what to fix first. Free desktop app for Windows, macOS, and Linux.</p><div class="hero-actions desktop-only"><a href="#download" class="btn-primary" id="hero-primary-cta">Download for your OS - Free</a><a href="https://github.com/felisbinofarms/black-widow-releases" target="_blank" rel="noopener" class="btn-secondary" id="hero-secondary-cta">View source</a></div><div class="cta-meta desktop-only" id="hero-cta-meta">v1.4.12 - ~38 MB - No admin required</div><div class="mobile-capture" id="mobile-capture"><p>On your phone? Black Widow is a desktop app for Windows, macOS, and Linux. Tap below to email yourself the link, or copy it for your laptop.</p><div class="mobile-actions"><a id="mobile-email-link" href="#">Email me the link</a><button id="mobile-copy-link" type="button">Copy link to your laptop</button></div><div class="qr-wrap"><img id="mobile-qr" alt="QR code to open Black Widow download page on desktop" width="140" height="140" loading="lazy" /><div><p style="font-size:.86rem">Scan on your laptop to continue.</p><div class="toast" id="mobile-toast"></div></div></div></div></div><aside class="screenshot-card"><picture><img src="images/hero-overview.png" alt="Black Widow Overview tab showing a grouped 13-log transaction with sync and async pills and recommendations" width="1600" height="1000" fetchpriority="high" /></picture><div class="chip-row"><span class="chip">13 logs from one Save</span><span class="chip">Sync 1.2s</span><span class="chip">Async 11.3s</span><span class="chip">Recursion detected</span></div></aside></div></section>
+<section id="wedge" data-section="wedge"><div class="container"><div class="section-kicker">The Wedge</div><h2>Why this instead of reading raw logs in a text editor?</h2><div class="wedge-grid"><article class="wedge-card"><img src="images/wedge-before.png" alt="VS Code with a raw Salesforce debug log open" width="1200" height="780" loading="lazy" /><p>Reading raw logs in any text editor: open log 1, read thousands of lines, repeat 13 times.</p></article><article class="wedge-card"><img src="images/wedge-after.png" alt="Black Widow Tree tab showing grouped transaction flow" width="1200" height="780" loading="lazy" /><p>Drag one folder. See the full transaction. Get recommendations in minutes.</p><div class="chip-row" style="margin-top:8px"><span class="chip">Backend 1.2s</span><span class="chip">Async 11.3s</span><span class="chip">Recursion in CaseTrigger</span><span class="chip">Under 10 minutes</span></div></article></div></div></section>
+<section id="how" data-section="how"><div class="container"><div class="section-kicker">How It Works</div><h2>Three steps from noisy logs to a fix list.</h2><div class="how-grid"><div class="how-card"><h3>1) Drop your log folder</h3><p>Black Widow detects related logs and creates one transaction chain.</p></div><div class="how-card"><h3>2) See sync vs async impact</h3><p>Understand what users felt vs what kept running in the background.</p></div><div class="how-card"><h3>3) Ship the fix</h3><p>Use recommendations to patch trigger recursion, N+1 queries, and serial load bottlenecks.</p></div></div></div></section>
+<section id="features" data-section="features"><div class="container"><div class="section-kicker">Features</div><h2>Six core capabilities, no filler.</h2><div class="feature-grid"><article class="feature"><img src="images/thumb-grouping.png" alt="Transaction grouping thumbnail" loading="lazy" width="80" height="80" /><h3>Transaction grouping</h3><p>All logs from one user action, one timeline.</p></article><article class="feature"><img src="images/thumb-phase.png" alt="Phase detection thumbnail" loading="lazy" width="80" height="80" /><h3>Phase detection</h3><p>Split backend, frontend, and async tails instantly.</p></article><article class="feature"><img src="images/thumb-tree.png" alt="Execution tree thumbnail" loading="lazy" width="80" height="80" /><h3>Execution tree</h3><p>Visual call hierarchy from trigger to flow to callout.</p></article><article class="feature"><img src="images/thumb-soql.png" alt="SOQL and DML analysis thumbnail" loading="lazy" width="80" height="80" /><h3>SOQL and DML analysis</h3><p>N+1 and governor pressure surfaced before incidents.</p></article><article class="feature"><img src="images/thumb-recs.png" alt="Recommendation engine thumbnail" loading="lazy" width="80" height="80" /><h3>Smart recommendations</h3><p>Actionable fixes, not just diagnostics.</p></article><article class="feature"><img src="images/thumb-pii.png" alt="PII scanner thumbnail" loading="lazy" width="80" height="80" /><h3>PII scanner</h3><p>Flag sensitive values before sharing logs externally.</p></article></div><p style="margin-top:10px;font-size:.9rem">And more: live org connection, exports, and broader workflow support.</p></div></section>
+<section id="download" data-section="download"><div class="container"><div class="section-kicker">Download</div><h2>Free forever for manual log analysis.</h2><p>Pro features later. See roadmap in the source repo.</p><div class="download-grid" id="download-grid"><div class="dl">Loading latest release assets...</div></div><div class="proof" id="built-in-public"><h3>Built in public</h3><p>Built by Victor Felisbino, a Salesforce developer who got tired of reading raw logs.</p><div class="proof-grid"><div class="metric"><span>GitHub stars</span><b id="metric-stars">-</b></div><div class="metric"><span>Total downloads</span><b id="metric-downloads">-</b></div><div class="metric"><span>Open issues</span><b id="metric-open-issues">-</b></div><div class="metric"><span>Closed issues</span><b id="metric-closed-issues">-</b></div></div><div class="hero-actions" style="margin-top:14px"><a class="btn-secondary" id="proof-source" href="https://github.com/felisbinofarms/black-widow-releases" target="_blank" rel="noopener">View source</a><a class="btn-secondary" href="https://github.com/felisbinofarms/salesforce-debug-log-analyzer/blob/master/CHANGELOG.md" target="_blank" rel="noopener">Read changelog</a><a class="btn-secondary" href="https://github.com/felisbinofarms/salesforce-debug-log-analyzer/issues" target="_blank" rel="noopener">Open an issue</a></div></div></div></section>
+<footer><div class="container footer-row"><div class="footer-links"><a href="https://github.com/felisbinofarms/black-widow-releases/releases" target="_blank" rel="noopener">Releases</a><a href="https://github.com/felisbinofarms/black-widow-releases" target="_blank" rel="noopener">GitHub</a><a href="https://plausible.io/felisbinofarms.github.io" target="_blank" rel="noopener">Public stats</a></div><p style="font-size:.82rem">Anonymous website analytics via Plausible. Desktop app telemetry policy: verify in product docs.</p></div></footer>
 <script>
-(async () => {
-  const REPO = 'felisbinofarms/black-widow-releases';
-  const badge = document.getElementById('version-badge');
-  const heroVer = document.getElementById('hero-version');
-  const grid = document.getElementById('download-grid');
-  const platforms = [
-    { suffix: 'win-x64-Setup.exe', icon: '&#127993;', name: 'Windows (x64)',       sub: 'Installer &middot; no admin required', featured: true },
-    { suffix: 'macos-arm64.zip',   icon: '&#127822;', name: 'macOS Apple Silicon', sub: 'M1 &middot; M2 &middot; M3' },
-    { suffix: 'macos-x64.zip',     icon: '&#127822;', name: 'macOS Intel',         sub: 'x64' },
-    { suffix: 'linux-x64.tar.gz',  icon: '&#128039;', name: 'Linux (x64)',         sub: 'Ubuntu 22+ &middot; glibc 2.35+' },
-  ];
-  try {
-    const res = await fetch('https://api.github.com/repos/' + REPO + '/releases/latest');
-    if (!res.ok) throw new Error(res.status);
-    const release = await res.json();
-    const v = release.tag_name || 'v1.0.0';
-    badge.textContent = v;
-    heroVer.textContent = v;
-    const assets = release.assets || [];
-    grid.innerHTML = platforms.map(function(p) {
-      const asset = assets.find(function(a) { return a.name.endsWith(p.suffix); });
-      const url = asset ? asset.browser_download_url : release.html_url;
-      return '<a class="dl-card' + (p.featured ? ' featured' : '') + '" href="' + url + '">'
-        + '<span class="dl-platform">' + p.icon + '</span>'
-        + '<span class="dl-name">' + p.name + '</span>'
-        + '<span class="dl-sub">' + p.sub + '</span>'
-        + '<span class="dl-arrow">&#8595; Download ' + v + '</span>'
-        + '</a>';
-    }).join('');
-  } catch(e) {
-    badge.textContent = 'v1.0.0';
-    heroVer.textContent = 'v1.0.0';
-    grid.innerHTML = '<a class="dl-card featured" href="https://github.com/' + REPO + '/releases/latest">'
-      + '<span class="dl-platform">&#8659;</span>'
-      + '<span class="dl-name">Download Latest</span>'
-      + '<span class="dl-sub">All platforms &middot; GitHub Releases</span>'
-      + '<span class="dl-arrow">&rarr; Open releases page</span>'
-      + '</a>';
-  }
+(() => {
+  const CANONICAL_URL = 'https://felisbinofarms.github.io/black-widow-releases/';
+  const REPO_RELEASES = 'felisbinofarms/black-widow-releases';
+  const REPO_APP = 'felisbinofarms/salesforce-debug-log-analyzer';
+  const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+  const osLabel = (() => { const ua = navigator.userAgent; if (/Windows/i.test(ua)) return 'Windows'; if (/Macintosh|Mac OS X/i.test(ua)) return 'macOS'; if (/Linux/i.test(ua)) return 'Linux'; return 'Windows'; })();
+  const heroPrimary = document.getElementById('hero-primary-cta'); const navDownload = document.getElementById('nav-download');
+  if (heroPrimary) heroPrimary.textContent = 'Download for ' + osLabel + ' - Free'; if (navDownload) navDownload.textContent = 'Download for ' + osLabel + ' - Free';
+  const track = (name, props = {}) => { if (window.plausible) window.plausible(name, { props }); };
+  document.querySelectorAll('section[data-section]').forEach(section => { const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) track('section_viewed', { section: section.dataset.section }); }); }, { threshold: 0.45 }); observer.observe(section); });
+  let scrollBucket = 0; window.addEventListener('scroll', () => { const pct = Math.min(100, Math.round((window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100)); const current = pct >= 100 ? 100 : pct >= 75 ? 75 : pct >= 50 ? 50 : pct >= 25 ? 25 : 0; if (current > scrollBucket) { scrollBucket = current; track('scroll_depth', { percent: current }); } }, { passive: true });
+  const mobileEmail = document.getElementById('mobile-email-link'); const mobileCopy = document.getElementById('mobile-copy-link'); const mobileQr = document.getElementById('mobile-qr'); const mobileToast = document.getElementById('mobile-toast');
+  if (mobileEmail) { const subj = encodeURIComponent('Black Widow download link'); const body = encodeURIComponent('Open this on your desktop: ' + CANONICAL_URL); mobileEmail.href = 'mailto:?subject=' + subj + '&body=' + body; mobileEmail.addEventListener('click', () => track('mobile_capture_clicked', { method: 'email' })); }
+  if (mobileCopy) { mobileCopy.addEventListener('click', async () => { try { await navigator.clipboard.writeText(CANONICAL_URL); mobileToast.textContent = 'Link copied. Paste on your laptop browser.'; track('mobile_capture_clicked', { method: 'copy_link' }); } catch { mobileToast.textContent = 'Copy failed. Use the email button instead.'; } }); }
+  if (mobileQr) { mobileQr.src = 'https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=' + encodeURIComponent(CANONICAL_URL); mobileQr.addEventListener('click', () => track('mobile_capture_clicked', { method: 'qr_scan' })); }
+  const formatNumber = (value) => Intl.NumberFormat('en-US').format(value);
+  const setMetrics = async () => {
+    const starsEl = document.getElementById('metric-stars'); const downloadsEl = document.getElementById('metric-downloads'); const openIssuesEl = document.getElementById('metric-open-issues'); const closedIssuesEl = document.getElementById('metric-closed-issues');
+    try {
+      const [relRes, repoRes, issuesRes] = await Promise.all([fetch('https://api.github.com/repos/' + REPO_RELEASES + '/releases?per_page=25'), fetch('https://api.github.com/repos/' + REPO_RELEASES), fetch('https://api.github.com/repos/' + REPO_APP)]);
+      if (!repoRes.ok || !relRes.ok || !issuesRes.ok) throw new Error('api');
+      const releases = await relRes.json(); const repo = await repoRes.json(); const appRepo = await issuesRes.json();
+      const totalDownloads = releases.reduce((sum, rel) => sum + (rel.assets || []).reduce((acc, a) => acc + (a.download_count || 0), 0), 0);
+      starsEl.textContent = formatNumber(repo.stargazers_count || 0); downloadsEl.textContent = formatNumber(totalDownloads); openIssuesEl.textContent = formatNumber(appRepo.open_issues_count || 0);
+      const closedRes = await fetch('https://api.github.com/search/issues?q=repo:' + REPO_APP + '+type:issue+state:closed');
+      if (closedRes.ok) { const closed = await closedRes.json(); closedIssuesEl.textContent = formatNumber(closed.total_count || 0); }
+    } catch {
+      starsEl.textContent = 'View on GitHub'; downloadsEl.textContent = 'Live in releases'; openIssuesEl.textContent = '-'; closedIssuesEl.textContent = '-';
+    }
+  };
+  const setDownloads = async () => {
+    const grid = document.getElementById('download-grid');
+    const platforms = [{ key: 'win-x64-Setup.exe', name: 'Windows x64', method: 'installer', platform: 'win-x64' },{ key: 'macos-arm64', name: 'macOS Apple Silicon', method: 'zip', platform: 'macos-arm64' },{ key: 'macos-x64', name: 'macOS Intel', method: 'zip', platform: 'macos-x64' },{ key: 'linux-x64', name: 'Linux x64', method: 'tar.gz', platform: 'linux-x64' }];
+    try {
+      const relRes = await fetch('https://api.github.com/repos/' + REPO_RELEASES + '/releases/latest'); if (!relRes.ok) throw new Error('latest'); const rel = await relRes.json(); const version = rel.tag_name || 'latest'; document.getElementById('hero-cta-meta').textContent = version + ' - ~38 MB - No admin required';
+      grid.innerHTML = platforms.map(p => { const asset = (rel.assets || []).find(a => a.name.includes(p.key)); const href = asset ? asset.browser_download_url : rel.html_url; return `<article class="dl"><h3>${p.name}</h3><p>${version} - ${p.method}</p><a href="${href}" data-platform="${p.platform}">Download</a><details><summary>Install steps</summary><p style="margin-top:8px;font-size:.88rem">${p.platform === 'win-x64' ? 'Run the installer. No admin required.' : p.platform.includes('macos') ? 'Unzip and move to Applications, then right-click Open on first launch.' : 'Extract and run ./BlackWidow.'}</p></details></article>`; }).join('');
+      grid.querySelectorAll('a[data-platform]').forEach(link => { link.addEventListener('click', () => track('download_clicked', { platform: link.dataset.platform })); });
+    } catch { grid.innerHTML = '<article class="dl"><h3>Latest release</h3><a href="https://github.com/' + REPO_RELEASES + '/releases/latest">Open GitHub releases</a></article>'; }
+  };
+  document.getElementById('hero-secondary-cta')?.addEventListener('click', () => track('github_clicked', { source: 'hero_secondary' }));
+  document.getElementById('proof-source')?.addEventListener('click', () => track('github_clicked', { source: 'wedge' }));
+  if (isMobile) track('section_viewed', { section: 'hero_mobile_capture' });
+  setDownloads(); setMetrics();
 })();
-
-function showTab(id, btn) {
-  document.querySelectorAll('.tab-content').forEach(function(el) { el.classList.remove('active'); });
-  document.querySelectorAll('.tab-btn').forEach(function(el) { el.classList.remove('active'); });
-  document.getElementById('tab-' + id).classList.add('active');
-  btn.classList.add('active');
-}
 </script>
 </body>
 </html>
+
