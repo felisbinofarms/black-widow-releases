@@ -11,7 +11,9 @@
   <meta property="og:url" content="https://felisbinofarms.github.io/black-widow-releases/" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" /></noscript>
   <script defer data-domain="felisbinofarms.github.io" src="https://plausible.io/js/script.file-downloads.outbound-links.js"></script>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -37,7 +39,7 @@
     .chip-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.chip{font-size:.78rem;padding:6px 9px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid var(--line);color:#dce6ff}
     .mobile-capture{display:none;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin-top:18px}
     .mobile-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.mobile-actions button,.mobile-actions a{border:1px solid var(--line);background:var(--panel-2);color:var(--text);padding:10px 14px;border-radius:10px;font-size:.9rem;cursor:pointer}
-    .qr-wrap{margin-top:12px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}.toast{font-size:.82rem;color:var(--ok);min-height:1.2em}
+    .qr-wrap{margin-top:12px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}.qr-wrap #mobile-qr{width:140px;height:140px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px}.qr-wrap #mobile-qr img,.qr-wrap #mobile-qr canvas{display:block;width:100% !important;height:100% !important}.toast{font-size:.82rem;color:var(--ok);min-height:1.2em}
     .wedge-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}.wedge-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:12px}
     .wedge-card img{display:block;width:100%;height:auto;border-radius:10px;border:1px solid var(--line)}.wedge-card p{font-size:.9rem;margin-top:8px}
     .how-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:16px}.how-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
@@ -54,13 +56,13 @@
   </style>
 </head>
 <body>
-<nav><div class="container"><div class="brand">Black Widow</div><div class="nav-links"><a href="#wedge">Wedge</a><a href="#how">How</a><a href="#features">Features</a><a href="#download">Download</a><a href="https://github.com/felisbinofarms/black-widow-releases" target="_blank" rel="noopener">GitHub</a><a class="nav-cta" id="nav-download" href="#download">Download</a></div></div></nav>
-<section class="hero" id="hero" data-section="hero"><div class="container hero-grid"><div><div class="section-kicker">Salesforce Debug Logs</div><h1>See every log from one click as a single transaction.</h1><p class="hero-sub">One Save in Salesforce can fan out into 13 logs across triggers, flows, async jobs, and UI reloads. Black Widow groups that chain instantly, separates sync vs async cost, and surfaces what to fix first. Free desktop app for Windows, macOS, and Linux.</p><div class="hero-actions desktop-only"><a href="#download" class="btn-primary" id="hero-primary-cta">Download for your OS - Free</a><a href="https://github.com/felisbinofarms/black-widow-releases" target="_blank" rel="noopener" class="btn-secondary" id="hero-secondary-cta">View source</a></div><div class="cta-meta desktop-only" id="hero-cta-meta">v1.4.12 - ~38 MB - No admin required</div><div class="mobile-capture" id="mobile-capture"><p>On your phone? Black Widow is a desktop app for Windows, macOS, and Linux. Tap below to email yourself the link, or copy it for your laptop.</p><div class="mobile-actions"><a id="mobile-email-link" href="#">Email me the link</a><button id="mobile-copy-link" type="button">Copy link to your laptop</button></div><div class="qr-wrap"><img id="mobile-qr" alt="QR code to open Black Widow download page on desktop" width="140" height="140" loading="lazy" /><div><p style="font-size:.86rem">Scan on your laptop to continue.</p><div class="toast" id="mobile-toast"></div></div></div></div></div><aside class="screenshot-card"><picture><img src="images/hero-overview.png" alt="Black Widow Overview tab showing a grouped 13-log transaction with sync and async pills and recommendations" width="1600" height="1000" fetchpriority="high" /></picture><div class="chip-row"><span class="chip">13 logs from one Save</span><span class="chip">Sync 1.2s</span><span class="chip">Async 11.3s</span><span class="chip">Recursion detected</span></div></aside></div></section>
-<section id="wedge" data-section="wedge"><div class="container"><div class="section-kicker">The Wedge</div><h2>Why this instead of reading raw logs in a text editor?</h2><div class="wedge-grid"><article class="wedge-card"><img src="images/wedge-before.png" alt="VS Code with a raw Salesforce debug log open" width="1200" height="780" loading="lazy" /><p>Reading raw logs in any text editor: open log 1, read thousands of lines, repeat 13 times.</p></article><article class="wedge-card"><img src="images/wedge-after.png" alt="Black Widow Tree tab showing grouped transaction flow" width="1200" height="780" loading="lazy" /><p>Drag one folder. See the full transaction. Get recommendations in minutes.</p><div class="chip-row" style="margin-top:8px"><span class="chip">Backend 1.2s</span><span class="chip">Async 11.3s</span><span class="chip">Recursion in CaseTrigger</span><span class="chip">Under 10 minutes</span></div></article></div></div></section>
+<nav><div class="container"><div class="brand">Black Widow</div><div class="nav-links"><a href="#wedge">Wedge</a><a href="#how">How</a><a href="#features">Features</a><a class="nav-cta" id="nav-download" href="#download">Download</a><a id="nav-github" href="https://github.com/felisbinofarms/black-widow-releases" target="_blank" rel="noopener">GitHub</a></div></div></nav>
+<section class="hero" id="hero" data-section="hero"><div class="container hero-grid"><div><div class="section-kicker">Salesforce Debug Logs</div><h1>See every log from one click as a single transaction.</h1><p class="hero-sub">One Save in Salesforce can fan out into 13 logs across triggers, flows, async jobs, and UI reloads. Black Widow groups that chain instantly, separates sync vs async cost, and surfaces what to fix first. Free desktop app for Windows, macOS, and Linux.</p><div class="hero-actions desktop-only"><a href="#download" class="btn-primary" id="hero-primary-cta">Download for your OS - Free</a><a href="https://github.com/felisbinofarms/black-widow-releases" target="_blank" rel="noopener" class="btn-secondary" id="hero-secondary-cta">View source</a></div><div class="cta-meta desktop-only" id="hero-cta-meta">v1.4.12 - ~38 MB - No admin required</div><div class="mobile-capture" id="mobile-capture"><p>On your phone? Black Widow is a desktop app for Windows, macOS, and Linux. Tap below to email yourself the link, or copy it for your laptop.</p><div class="mobile-actions"><a id="mobile-email-link" href="#">Email me the link</a><button id="mobile-copy-link" type="button">Copy link to your laptop</button></div><div class="qr-wrap"><div id="mobile-qr" role="img" aria-label="QR code to open Black Widow download page on desktop"></div><div><p style="font-size:.86rem">Scan on your laptop to continue.</p><div class="toast" id="mobile-toast"></div></div></div></div></div><aside class="screenshot-card"><picture><source srcset="images/hero-overview.webp" type="image/webp" /><img src="images/hero-overview.png" alt="Black Widow Overview tab showing a grouped 13-log transaction with sync and async pills and recommendations" width="460" height="460" loading="eager" fetchpriority="high" /></picture><div class="chip-row"><span class="chip">13 logs from one Save</span><span class="chip">Sync 1.2s</span><span class="chip">Async 11.3s</span><span class="chip">Recursion detected</span></div></aside></div></section>
+<section id="wedge" data-section="wedge"><div class="container"><div class="section-kicker">The Wedge</div><h2>Why this instead of reading raw logs in a text editor?</h2><p><a id="wedge-github" href="https://github.com/felisbinofarms/black-widow-releases" target="_blank" rel="noopener">See the project in GitHub</a></p><div class="wedge-grid"><article class="wedge-card"><picture><source srcset="images/wedge-before.webp" type="image/webp" /><img src="images/wedge-before.png" alt="VS Code with a raw Salesforce debug log open" width="560" height="560" loading="lazy" /></picture><p>Reading raw logs in any text editor: open log 1, read thousands of lines, repeat 13 times.</p></article><article class="wedge-card"><picture><source srcset="images/wedge-after.webp" type="image/webp" /><img src="images/wedge-after.png" alt="Black Widow Tree tab showing grouped transaction flow" width="560" height="560" loading="lazy" /></picture><p>Drag one folder. See the full transaction. Get recommendations in minutes.</p><div class="chip-row" style="margin-top:8px"><span class="chip">Backend 1.2s</span><span class="chip">Async 11.3s</span><span class="chip">Recursion in CaseTrigger</span><span class="chip">Under 10 minutes</span></div></article></div></div></section>
 <section id="how" data-section="how"><div class="container"><div class="section-kicker">How It Works</div><h2>Three steps from noisy logs to a fix list.</h2><div class="how-grid"><div class="how-card"><h3>1) Drop your log folder</h3><p>Black Widow detects related logs and creates one transaction chain.</p></div><div class="how-card"><h3>2) See sync vs async impact</h3><p>Understand what users felt vs what kept running in the background.</p></div><div class="how-card"><h3>3) Ship the fix</h3><p>Use recommendations to patch trigger recursion, N+1 queries, and serial load bottlenecks.</p></div></div></div></section>
 <section id="features" data-section="features"><div class="container"><div class="section-kicker">Features</div><h2>Six core capabilities, no filler.</h2><div class="feature-grid"><article class="feature"><img src="images/thumb-grouping.png" alt="Transaction grouping thumbnail" loading="lazy" width="80" height="80" /><h3>Transaction grouping</h3><p>All logs from one user action, one timeline.</p></article><article class="feature"><img src="images/thumb-phase.png" alt="Phase detection thumbnail" loading="lazy" width="80" height="80" /><h3>Phase detection</h3><p>Split backend, frontend, and async tails instantly.</p></article><article class="feature"><img src="images/thumb-tree.png" alt="Execution tree thumbnail" loading="lazy" width="80" height="80" /><h3>Execution tree</h3><p>Visual call hierarchy from trigger to flow to callout.</p></article><article class="feature"><img src="images/thumb-soql.png" alt="SOQL and DML analysis thumbnail" loading="lazy" width="80" height="80" /><h3>SOQL and DML analysis</h3><p>N+1 and governor pressure surfaced before incidents.</p></article><article class="feature"><img src="images/thumb-recs.png" alt="Recommendation engine thumbnail" loading="lazy" width="80" height="80" /><h3>Smart recommendations</h3><p>Actionable fixes, not just diagnostics.</p></article><article class="feature"><img src="images/thumb-pii.png" alt="PII scanner thumbnail" loading="lazy" width="80" height="80" /><h3>PII scanner</h3><p>Flag sensitive values before sharing logs externally.</p></article></div><p style="margin-top:10px;font-size:.9rem">And more: live org connection, exports, and broader workflow support.</p></div></section>
 <section id="download" data-section="download"><div class="container"><div class="section-kicker">Download</div><h2>Free forever for manual log analysis.</h2><p>Pro features later. See roadmap in the source repo.</p><div class="download-grid" id="download-grid"><div class="dl">Loading latest release assets...</div></div><div class="proof" id="built-in-public"><h3>Built in public</h3><p>Built by Victor Felisbino, a Salesforce developer who got tired of reading raw logs.</p><div class="proof-grid"><div class="metric"><span>GitHub stars</span><b id="metric-stars">-</b></div><div class="metric"><span>Total downloads</span><b id="metric-downloads">-</b></div><div class="metric"><span>Open issues</span><b id="metric-open-issues">-</b></div><div class="metric"><span>Closed issues</span><b id="metric-closed-issues">-</b></div></div><div class="hero-actions" style="margin-top:14px"><a class="btn-secondary" id="proof-source" href="https://github.com/felisbinofarms/black-widow-releases" target="_blank" rel="noopener">View source</a><a class="btn-secondary" href="https://github.com/felisbinofarms/salesforce-debug-log-analyzer/blob/master/CHANGELOG.md" target="_blank" rel="noopener">Read changelog</a><a class="btn-secondary" href="https://github.com/felisbinofarms/salesforce-debug-log-analyzer/issues" target="_blank" rel="noopener">Open an issue</a></div></div></div></section>
-<footer><div class="container footer-row"><div class="footer-links"><a href="https://github.com/felisbinofarms/black-widow-releases/releases" target="_blank" rel="noopener">Releases</a><a href="https://github.com/felisbinofarms/black-widow-releases" target="_blank" rel="noopener">GitHub</a><a href="https://plausible.io/felisbinofarms.github.io" target="_blank" rel="noopener">Public stats</a></div><p style="font-size:.82rem">Anonymous website analytics via Plausible. Desktop app telemetry policy: verify in product docs.</p></div></footer>
+<footer><div class="container footer-row"><div class="footer-links"><a href="https://github.com/felisbinofarms/black-widow-releases/releases" target="_blank" rel="noopener">Releases</a><a id="footer-github" href="https://github.com/felisbinofarms/black-widow-releases" target="_blank" rel="noopener">GitHub</a><a href="https://plausible.io/felisbinofarms.github.io" target="_blank" rel="noopener">Public stats</a></div><p style="font-size:.82rem">Anonymous website analytics via Plausible. Desktop app telemetry policy: verify in product docs.</p></div></footer>
 <script>
 (() => {
   const CANONICAL_URL = 'https://felisbinofarms.github.io/black-widow-releases/';
@@ -76,7 +78,20 @@
   const mobileEmail = document.getElementById('mobile-email-link'); const mobileCopy = document.getElementById('mobile-copy-link'); const mobileQr = document.getElementById('mobile-qr'); const mobileToast = document.getElementById('mobile-toast');
   if (mobileEmail) { const subj = encodeURIComponent('Black Widow download link'); const body = encodeURIComponent('Open this on your desktop: ' + CANONICAL_URL); mobileEmail.href = 'mailto:?subject=' + subj + '&body=' + body; mobileEmail.addEventListener('click', () => track('mobile_capture_clicked', { method: 'email' })); }
   if (mobileCopy) { mobileCopy.addEventListener('click', async () => { try { await navigator.clipboard.writeText(CANONICAL_URL); mobileToast.textContent = 'Link copied. Paste on your laptop browser.'; track('mobile_capture_clicked', { method: 'copy_link' }); } catch { mobileToast.textContent = 'Copy failed. Use the email button instead.'; } }); }
-  if (mobileQr) { mobileQr.src = 'https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=' + encodeURIComponent(CANONICAL_URL); mobileQr.addEventListener('click', () => track('mobile_capture_clicked', { method: 'qr_scan' })); }
+  if (isMobile && mobileQr) {
+    const initQr = () => {
+      if (!window.QRCode) return;
+      new QRCode(mobileQr, { text: CANONICAL_URL, width: 128, height: 128, correctLevel: QRCode.CorrectLevel.M });
+      const qrVisual = mobileQr.querySelector('img,canvas');
+      qrVisual?.addEventListener('click', () => track('mobile_capture_clicked', { method: 'qr_scan' }));
+    };
+
+    const qrScript = document.createElement('script');
+    qrScript.src = 'scripts/qrcode.min.js';
+    qrScript.defer = true;
+    qrScript.onload = initQr;
+    document.head.appendChild(qrScript);
+  }
   const formatNumber = (value) => Intl.NumberFormat('en-US').format(value);
   const setMetrics = async () => {
     const starsEl = document.getElementById('metric-stars'); const downloadsEl = document.getElementById('metric-downloads'); const openIssuesEl = document.getElementById('metric-open-issues'); const closedIssuesEl = document.getElementById('metric-closed-issues');
@@ -102,9 +117,34 @@
     } catch { grid.innerHTML = '<article class="dl"><h3>Latest release</h3><a href="https://github.com/' + REPO_RELEASES + '/releases/latest">Open GitHub releases</a></article>'; }
   };
   document.getElementById('hero-secondary-cta')?.addEventListener('click', () => track('github_clicked', { source: 'hero_secondary' }));
-  document.getElementById('proof-source')?.addEventListener('click', () => track('github_clicked', { source: 'wedge' }));
+  document.getElementById('nav-github')?.addEventListener('click', () => track('github_clicked', { source: 'nav' }));
+  document.getElementById('wedge-github')?.addEventListener('click', () => track('github_clicked', { source: 'wedge' }));
+  document.getElementById('footer-github')?.addEventListener('click', () => track('github_clicked', { source: 'footer' }));
   if (isMobile) track('section_viewed', { section: 'hero_mobile_capture' });
-  setDownloads(); setMetrics();
+
+  let downloadDataInitialized = false;
+  const initDownloadData = () => {
+    if (downloadDataInitialized) return;
+    downloadDataInitialized = true;
+    setDownloads();
+    setMetrics();
+  };
+
+  const downloadSection = document.getElementById('download');
+  if (downloadSection && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          initDownloadData();
+          io.disconnect();
+        }
+      });
+    }, { rootMargin: '150px 0px' });
+    io.observe(downloadSection);
+  } else {
+    // Fallback for very old browsers: defer until main thread is likely idle.
+    setTimeout(initDownloadData, 1200);
+  }
 })();
 </script>
 </body>
