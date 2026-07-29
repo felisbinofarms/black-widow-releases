@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Security &amp; Privacy - Black Widow</title>
+  <meta name="description" content="Exactly what data Black Widow sends off your machine (almost nothing), how AI analysis works, and our written 30-day refund policy." />
+  <link rel="icon" href="icon.png" />
+  <style>
+    :root{--bg:#0b1020;--panel:#131b31;--panel-2:#1a2441;--text:#edf2ff;--muted:#a8b3d1;--accent:#f25f4c;--accent-2:#ff8f5c;--line:#2d3a64;--ok:#29d398;--radius:14px}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.65}
+    a{color:var(--accent-2);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .container{max-width:860px;margin:0 auto;padding:0 20px}
+    nav{position:sticky;top:0;z-index:100;background:rgba(11,16,32,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+    nav .container{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;max-width:1100px}
+    .brand{font-weight:700;font-size:1.05rem}
+    nav a.back{font-size:.9rem;color:var(--muted)}
+    header.page{padding:56px 0 8px}
+    h1{font-size:2rem;margin-bottom:8px}
+    .kicker{color:var(--accent-2);text-transform:uppercase;letter-spacing:.12em;font-size:.78rem;font-weight:700}
+    .lede{color:var(--muted);font-size:1.05rem;margin-top:10px}
+    section{padding:28px 0}
+    h2{font-size:1.35rem;margin-bottom:14px;padding-top:14px;border-top:1px solid var(--line)}
+    h3{font-size:1.02rem;margin:18px 0 6px}
+    p{color:var(--muted);margin-bottom:12px}
+    ul{color:var(--muted);margin:0 0 12px 22px}
+    li{margin-bottom:6px}
+    strong{color:var(--text)}
+    .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;margin:14px 0}
+    .card.ok{border-color:rgba(41,211,152,.45)}
+    .card h3{margin-top:0}
+    table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.92rem}
+    th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);color:var(--muted);vertical-align:top}
+    th{color:var(--text);font-size:.85rem;text-transform:uppercase;letter-spacing:.06em}
+    code{background:var(--panel-2);border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:.88em}
+    .updated{color:var(--muted);font-size:.82rem;margin-top:6px}
+    footer{border-top:1px solid var(--line);padding:28px 0 48px;margin-top:36px;color:var(--muted);font-size:.88rem}
+  </style>
+</head>
+<body>
+  <nav><div class="container"><div class="brand">Black Widow</div><a class="back" href="index.html">&larr; Back to home</a></div></nav>
+
+  <header class="page"><div class="container">
+    <div class="kicker">Security &amp; Privacy</div>
+    <h1>Your logs stay on your machine.</h1>
+    <p class="lede">Black Widow is a desktop app that parses, groups, and analyzes Salesforce debug logs <strong>locally</strong>. This page lists every network call the app can make, exactly what each one carries, and the one feature that is an explicit exception. No lawyer-speak.</p>
+    <p class="updated">Last updated: July 28, 2026 &middot; Applies to Black Widow v1.7 and later.</p>
+  </div></header>
+
+  <div class="container">
+
+    <section id="local-first">
+      <h2>The default: everything runs locally</h2>
+      <p>Parsing, transaction grouping, phase detection, execution trees, SOQL/DML analysis, recommendations, health scoring, and plain-English explanations are all computed on your machine. Your debug log files are read from your disk and are <strong>never uploaded</strong> to us or anyone else by these features. There is no server-side log processing. There are no accounts.</p>
+      <p>If your security team bans pasting production logs into cloud tools, Black Widow's core analyzer is compatible with that policy out of the box.</p>
+    </section>
+
+    <section id="network">
+      <h2>Every network call the app can make</h2>
+      <table>
+        <tr><th>Call</th><th>When</th><th>What it carries</th></tr>
+        <tr><td><strong>Update check</strong></td><td>On launch</td><td>Version metadata request to GitHub releases. No log data.</td></tr>
+        <tr><td><strong>Your Salesforce org</strong></td><td>Only if you connect an org (OAuth)</td><td>Standard Salesforce API calls you initiate (download logs, manage trace flags). Credentials go to Salesforce, not to us.</td></tr>
+        <tr><td><strong>License validation</strong></td><td>Only if you activate a license key</td><td>Your license key and email to LemonSqueezy / our license server. No log data.</td></tr>
+        <tr><td><strong>Usage telemetry</strong></td><td>Only if you opt in (off by default, asked once)</td><td>Anonymous feature-usage events (e.g. &ldquo;export clicked&rdquo;). <strong>Never log content, org names, record IDs, or file names.</strong></td></tr>
+        <tr><td><strong>AI analysis (Pro)</strong></td><td>Only when you click an AI action, after explicit consent</td><td>See the exception below.</td></tr>
+      </table>
+      <p>That is the complete list. If it's not in this table, the app doesn't send it.</p>
+    </section>
+
+    <section id="ai">
+      <h2>The one exception: AI analysis</h2>
+      <div class="card">
+        <h3>AI analysis sends the selected log's content to Anthropic</h3>
+        <p>The optional Pro feature &ldquo;AI analysis&rdquo; works by sending content from the log you're analyzing, plus your questions about it, to Anthropic's Claude API &mdash; using <strong>your own API key</strong>, under <a href="https://www.anthropic.com/legal/commercial-terms" rel="noopener">Anthropic's commercial terms</a>. We never see this traffic; it goes from your machine to Anthropic directly.</p>
+        <ul>
+          <li>It never runs without your explicit, revocable consent (first use shows a plain-language dialog; a Settings toggle turns it off).</li>
+          <li>With AI analysis off &mdash; or never consented &mdash; <strong>no log data ever leaves your machine.</strong></li>
+          <li>All non-AI features, including the built-in plain-English explanations, are template-based and fully local.</li>
+        </ul>
+      </div>
+      <p>If your organization prohibits sending log data to third-party AI services: don't enter an API key and don't grant consent. Everything else works fully.</p>
+    </section>
+
+    <section id="telemetry">
+      <h2>Telemetry, in detail</h2>
+      <ul>
+        <li><strong>Opt-in only.</strong> You're asked once on first launch; declining is a first-class choice and nothing nags you afterwards.</li>
+        <li><strong>What's collected when on:</strong> anonymous app-level events (feature clicked, version, OS platform) to learn which features matter.</li>
+        <li><strong>What's never collected:</strong> log content, log file names, org identifiers, usernames, queries, record IDs.</li>
+        <li><strong>Revocable:</strong> turn it off any time in Settings.</li>
+      </ul>
+      <p>This website uses <a href="https://plausible.io" rel="noopener">Plausible</a> for anonymous, cookieless page analytics.</p>
+    </section>
+
+    <section id="pii">
+      <h2>Sharing logs safely</h2>
+      <p>Black Widow includes a <strong>PII scanner</strong> that flags sensitive values (emails, phone numbers, names) inside logs <em>before</em> you share them with a colleague or attach them to a support ticket. That scan is local too.</p>
+    </section>
+
+    <section id="refunds">
+      <h2>Refund policy &mdash; 30-day money-back guarantee</h2>
+      <div class="card ok">
+        <p><strong>If Black Widow Pro isn't useful to you, you get your money back. No hoops.</strong></p>
+        <ul>
+          <li>Request a refund within <strong>30 days</strong> of any Pro purchase (monthly or annual) and we refund it in full.</li>
+          <li>Email <a href="mailto:victorfelisbino@gmail.com">victorfelisbino@gmail.com</a> with the email you purchased under &mdash; that's the whole process. No justification required (though we'd love to know what fell short).</li>
+          <li>Refunds are processed through LemonSqueezy, our merchant of record, back to your original payment method (typically 5&ndash;10 business days to appear).</li>
+          <li>Subscriptions can be cancelled any time from the <a href="https://app.lemonsqueezy.com/my-orders" rel="noopener">customer portal</a>; you keep Pro until the end of the paid period.</li>
+        </ul>
+      </div>
+      <p><strong>For procurement teams:</strong> purchases are handled by <a href="https://www.lemonsqueezy.com" rel="noopener">Lemon Squeezy, LLC</a> as merchant of record &mdash; they issue tax-compliant invoices and handle VAT/sales tax. LemonSqueezy's <a href="https://www.lemonsqueezy.com/buyer-terms" rel="noopener">buyer terms</a> apply to the transaction.</p>
+    </section>
+
+    <section id="reporting">
+      <h2>Reporting a vulnerability</h2>
+      <p>Found a security issue? Please email <a href="mailto:victorfelisbino@gmail.com">victorfelisbino@gmail.com</a> privately rather than opening a public issue (see <a href="https://github.com/felisbinofarms/black-widow-releases/blob/main/SECURITY.md" rel="noopener">SECURITY.md</a>). We take reports seriously and respond fast.</p>
+    </section>
+
+  </div>
+
+  <footer><div class="container">
+    Black Widow &mdash; built by Victor Felisbino. Questions about anything on this page: <a href="mailto:victorfelisbino@gmail.com">victorfelisbino@gmail.com</a> &middot; <a href="index.html">Home</a>
+  </div></footer>
+</body>
+</html>
