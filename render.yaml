@@ -1,0 +1,27 @@
+﻿# Render deploy blueprint — same pattern as clientscore (render.yaml + connect
+# repo in the Render dashboard, or `render blueprint launch`).
+# Static site = free plan. GitHub Pages stays live in parallel; absolute URLs
+# (canonical/OG/sitemap/Plausible) still point at felisbinofarms.github.io and
+# switch over only when a custom domain is attached (see
+# docs/marketing/custom-domain-setup.md in the source repo).
+services:
+  - type: web
+    name: black-widow-site
+    runtime: static
+    buildCommand: ""
+    staticPublishPath: .
+    previews:
+      generation: automatic
+    headers:
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+      - path: /images/*
+        name: Cache-Control
+        value: public, max-age=86400
