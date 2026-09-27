@@ -6,7 +6,7 @@
   <title>Black Widow - Monitoramento de Org Salesforce &amp; Analisador Local de Debug Logs</title>
   <meta name="description" content="Veja o que está falhando silenciosamente no seu org Salesforce - flows com erro, batch jobs falhando, anomalias de login - ranqueado por prioridade, sem licença de Shield. Análise completa de debug logs, 100% na sua máquina. Compatível com a LGPD por design." />
   <meta property="og:title" content="Black Widow - Monitoramento de Org Salesforce &amp; Analisador Local de Debug Logs" />
-  <meta property="og:description" content="Seu org falha em silêncio: flows morrem sob o Automated Process, batch jobs 'concluem' com erros, logins falham em padrão suspeito. O Black Widow mostra tudo, ranqueado - sem Shield, sem SIEM, 100% local." />
+  <meta property="og:description" content="Um flow acabou de falhar em produção. Nenhum alerta saiu. O Black Widow ranqueia as falhas que o Salesforce nunca anuncia e explica os debug logs por trás delas - localmente, de graça." />
   <meta property="og:image" content="https://felisbinofarms.github.io/black-widow-releases/images/monitoring-with-shield.png" />
   <meta property="og:url" content="https://felisbinofarms.github.io/black-widow-releases/pt/" />
   <meta property="og:type" content="website" />
@@ -20,57 +20,225 @@
   <link rel="alternate" hreflang="en" href="https://felisbinofarms.github.io/black-widow-releases/" />
   <link rel="alternate" hreflang="pt-BR" href="https://felisbinofarms.github.io/black-widow-releases/pt/" />
   <link rel="alternate" hreflang="x-default" href="https://felisbinofarms.github.io/black-widow-releases/" />
-  <meta name="theme-color" content="#0b1020" />
+  <meta name="theme-color" content="#0a0d14" />
   <meta name="keywords" content="monitoramento org Salesforce, monitorar erros de flow Salesforce, analisador de debug log Salesforce, debug log Salesforce, analisar log Apex, governor limits, LGPD Salesforce logs, Vlocity OmniStudio debug, análise local de logs" />
   <link rel="icon" href="../icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" /></noscript>
   <script defer data-domain="felisbinofarms.github.io" src="https://plausible.io/js/script.file-downloads.outbound-links.js"></script>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{--bg:#0b1020;--panel:#131b31;--panel-2:#1a2441;--text:#edf2ff;--muted:#a8b3d1;--accent:#f25f4c;--accent-2:#ff8f5c;--line:#2d3a64;--ok:#29d398;--radius:14px}
-    body{font-family:"IBM Plex Sans",sans-serif;background:radial-gradient(1200px 700px at 90% -100px,rgba(242,95,76,.2),transparent 65%),var(--bg);color:var(--text);line-height:1.6}
-    a{color:#8bc4ff;text-decoration:none} a:hover{text-decoration:underline}
-    .container{max-width:1140px;margin:0 auto;padding:0 20px}
-    nav{position:sticky;top:0;z-index:100;background:rgba(11,16,32,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-    nav .container{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;gap:16px}
-    .brand{font-family:"Space Grotesk",sans-serif;font-weight:700;letter-spacing:.02em}
-    .nav-links{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
-    .nav-links a{font-size:.9rem;color:var(--muted)} .nav-cta{background:var(--accent);color:#fff !important;padding:8px 14px;border-radius:10px;font-weight:700}
-    section{padding:76px 0}.section-kicker{font-size:.74rem;text-transform:uppercase;letter-spacing:.14em;color:var(--accent-2);font-weight:700;margin-bottom:10px}
-    h1,h2,h3{font-family:"Space Grotesk",sans-serif;line-height:1.15} h1{font-size:clamp(2rem,4.8vw,3.6rem);margin-bottom:16px} h2{font-size:clamp(1.55rem,3.6vw,2.5rem);margin-bottom:14px}
-    p{color:var(--muted)}
-    .hero{padding-top:56px}.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:center}
-    .hero-sub{max-width:62ch;margin-bottom:24px}.hero-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
-    .btn-primary{display:inline-flex;gap:8px;align-items:center;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;padding:13px 20px;border-radius:12px;font-weight:700}
-    .btn-secondary{display:inline-flex;gap:8px;align-items:center;background:transparent;border:1px solid var(--line);color:var(--text);padding:12px 18px;border-radius:12px;font-weight:600}
-    .cta-meta{margin-top:12px;font-size:.82rem;color:var(--muted)}
-    .chip-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.chip{font-size:.78rem;padding:6px 9px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid var(--line);color:#dce6ff}
-    .wedge-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}.wedge-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:12px;min-width:0;overflow:hidden}
-    .wedge-card img{display:block;width:100%;height:auto;border-radius:10px;border:1px solid var(--line)}.wedge-card p{font-size:.9rem;margin-top:8px}
-    .wedge-card h3{font-size:1.04rem;margin-bottom:3px}
-    .how-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:16px}.how-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
-    .how-card,.dl{transition:transform .16s ease,border-color .16s ease}.how-card:hover,.dl:hover{transform:translateY(-2px);border-color:rgba(242,95,76,.4)}
-    .proof{background:linear-gradient(140deg,#121a31,#1a2441);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin-top:20px}
-    .download-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:18px}.dl{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px}
-    .dl a{display:inline-block;margin-top:10px;font-size:.9rem;font-weight:700} details{margin-top:12px;border-top:1px solid var(--line);padding-top:10px} summary{cursor:pointer;color:#d8e4ff;font-size:.9rem}
-    footer{border-top:1px solid var(--line);padding:28px 0 38px;margin-top:36px}.footer-row{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center}.footer-links{display:flex;gap:14px;flex-wrap:wrap}
-    .product-frame{border-radius:14px;border:1px solid rgba(255,255,255,.08);background:#16171f;box-shadow:0 26px 64px -22px rgba(0,0,0,.78),0 0 0 1px rgba(242,95,76,.07);overflow:hidden}
-    .product-frame__chrome{height:34px;background:#1b1c24;display:flex;align-items:center;gap:7px;padding:0 13px;border-bottom:1px solid rgba(255,255,255,.05)}
+    :root{--bg:#0a0d14;--surface:#10141d;--surface-2:#151b27;--line:rgba(255,255,255,.07);--line-strong:rgba(255,255,255,.14);--text:#f4f6fb;--text-2:#c3cad6;--muted:#8f99ad;--accent:#f25f4c;--accent-hover:#ff7361;--accent-soft:rgba(242,95,76,.12);--ok:#34d399;--warn:#fbbf24;--info:#60a5fa;--radius:14px;--radius-sm:10px;--display:"Space Grotesk",system-ui,sans-serif;--body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
+    html{scroll-behavior:smooth;scroll-padding-top:72px}
+    body{font-family:var(--body);background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%}
+    .container{max-width:1120px;margin:0 auto;padding:0 24px}
+    h1,h2,h3{font-family:var(--display);line-height:1.1;letter-spacing:-.02em;color:var(--text)}
+    h1{font-size:clamp(2.3rem,5vw,3.6rem);font-weight:700;margin-bottom:20px}
+    h2{font-size:clamp(1.7rem,3.2vw,2.5rem);font-weight:700;margin-bottom:14px;max-width:24ch}
+    h3{font-size:1.05rem;font-weight:600;letter-spacing:-.01em}
+    p{color:var(--text-2)}
+    .muted{color:var(--muted)}
+    code{font-family:ui-monospace,"Cascadia Code",Consolas,monospace;font-size:.9em;padding:1px 6px;border-radius:6px;background:rgba(255,255,255,.06);color:var(--text)}
+    .kicker{font-size:.76rem;text-transform:uppercase;letter-spacing:.14em;color:var(--accent);font-weight:600;margin-bottom:14px}
+    .lede{font-size:1.1rem;max-width:62ch;color:var(--text-2)}
+    section{padding:76px 0}
+    section+section{border-top:1px solid var(--line)}
+    .section-head{margin-bottom:32px}
+
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:46px;padding:0 20px;border-radius:var(--radius-sm);font-weight:600;font-size:.96rem;border:1px solid transparent;cursor:pointer;transition:background .15s,border-color .15s,color .15s;white-space:nowrap;font-family:inherit}
+    .btn-primary{background:var(--accent);color:#fff;box-shadow:0 8px 24px -10px rgba(242,95,76,.6)}
+    .btn-primary:hover{background:var(--accent-hover)}
+    .btn-secondary{background:rgba(255,255,255,.03);border-color:var(--line-strong);color:var(--text)}
+    .btn-secondary:hover{background:rgba(255,255,255,.07)}
+    .btn-sm{height:38px;padding:0 14px;font-size:.88rem}
+    .btn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+    nav{position:sticky;top:0;z-index:100;background:rgba(10,13,20,.82);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+    nav .container{display:flex;justify-content:space-between;align-items:center;height:64px;gap:16px}
+    .brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:700;font-size:1.05rem;letter-spacing:-.01em}
+    .brand img{width:26px;height:26px;border-radius:7px}
+    .nav-links{display:flex;gap:26px;align-items:center}
+    .nav-links a{font-size:.92rem;color:var(--text-2)}
+    .nav-links a:hover{color:var(--text)}
+    .nav-right{display:flex;align-items:center;gap:10px}
+
+    .hero{padding:64px 0 48px;border-top:0}
+    .hero-grid{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:44px;align-items:center}
+    .hero-copy .kicker{margin-bottom:16px}
+    .hero-sub{font-size:1.12rem;max-width:52ch;margin-bottom:26px}
+    .hero-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+    .cta-meta{margin-top:16px;font-size:.86rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px 14px}
+    .cta-meta span::before{content:"";display:inline-block;width:4px;height:4px;border-radius:50%;background:var(--muted);margin-right:8px;vertical-align:middle;opacity:.7}
+    .cta-meta span:first-child::before{display:none}
+    .hero-visual{position:relative;min-width:0}
+    .hero-visual::before{content:"";position:absolute;inset:-12% -8%;background:radial-gradient(60% 60% at 60% 40%,rgba(242,95,76,.16),transparent 70%);filter:blur(30px);z-index:0;pointer-events:none}
+    .hero-visual .product-frame{position:relative;z-index:1}
+    .hero-caption{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;position:relative;z-index:1}
+    .tag{font-size:.78rem;padding:5px 10px;border-radius:999px;border:1px solid var(--line-strong);color:var(--text-2);background:rgba(255,255,255,.03)}
+    .tag--act{border-color:rgba(242,95,76,.5);color:#ffb3a8;background:var(--accent-soft)}
+    .tag--live{border-color:rgba(52,211,153,.4);color:#8ff0c6}
+
+    .product-frame{border-radius:var(--radius);border:1px solid var(--line-strong);background:#14161e;box-shadow:0 30px 80px -30px rgba(0,0,0,.9);overflow:hidden}
+    .product-frame__chrome{height:34px;background:#1a1d27;display:flex;align-items:center;gap:7px;padding:0 13px;border-bottom:1px solid var(--line)}
     .pf-dot{width:11px;height:11px;border-radius:50%}.pf-dot--r{background:#ff5f57}.pf-dot--y{background:#febc2e}.pf-dot--g{background:#28c840}
-    .product-frame__title{margin-left:8px;font-size:.72rem;color:var(--muted);font-family:"Space Grotesk",sans-serif;letter-spacing:.02em}
+    .product-frame__title{margin-left:8px;font-size:.74rem;color:var(--muted);font-family:var(--display);letter-spacing:.02em}
     .product-frame img{display:block;width:100%;height:auto}
-    .trust-strip{border-block:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.015)}
-    .trust-strip .container{display:flex;justify-content:center;gap:14px 30px;flex-wrap:wrap;padding:16px 20px}
-    .trust-item{display:flex;align-items:center;gap:8px;color:#b5bac1;font-size:.82rem;letter-spacing:.01em}
-    .trust-item svg{width:16px;height:16px;stroke:var(--accent-2);fill:none;stroke-width:1.7;flex:0 0 auto}
+
+    .trust-row{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:rgba(255,255,255,.012)}
+    .trust-row .container{display:flex;justify-content:center;flex-wrap:wrap;gap:12px 36px;padding:16px 24px}
+    .trust-item{display:flex;align-items:center;gap:9px;color:var(--text-2);font-size:.86rem}
+    .trust-item svg{width:16px;height:16px;stroke:var(--accent);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+
+    .proof-band{padding:56px 0;background:linear-gradient(180deg,rgba(242,95,76,.05),transparent 80%)}
+    .proof-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center}
+    .stat-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+    .stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px 18px}
+    .stat b{display:block;font-family:var(--display);font-size:clamp(1.8rem,3vw,2.4rem);font-weight:700;letter-spacing:-.03em;line-height:1;margin-bottom:8px;color:var(--text)}
+    .stat b.act{color:#ffb3a8}
+    .stat span{font-size:.88rem;color:var(--muted)}
+    .proof-quote{font-size:1.15rem;color:var(--text);max-width:44ch;line-height:1.5}
+    .proof-quote strong{color:var(--accent)}
+    .proof-note{margin-top:14px;font-size:.9rem}
+
+    .mon-grid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:44px;align-items:start}
+    .signal-list{display:grid;gap:12px;margin-top:6px}
+    .signal{display:grid;grid-template-columns:38px 1fr;gap:14px;align-items:start;padding:14px 16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius)}
+    .signal-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.04);border:1px solid var(--line)}
+    .signal-icon svg{width:19px;height:19px;fill:none;stroke:var(--accent);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+    .signal b{display:block;color:var(--text);font-family:var(--display);font-weight:600;margin-bottom:2px}
+    .signal span{font-size:.9rem;color:var(--muted);line-height:1.5}
+    .compare{position:relative}
+    .compare input{position:absolute;opacity:0;pointer-events:none}
+    .seg{display:inline-flex;padding:4px;border-radius:999px;background:var(--surface);border:1px solid var(--line-strong);margin-bottom:14px}
+    .seg label{padding:8px 16px;border-radius:999px;font-size:.88rem;font-weight:600;color:var(--muted);cursor:pointer;transition:background .15s,color .15s}
+    .seg label:hover{color:var(--text)}
+    #cmp-without:checked~.seg label[for="cmp-without"],#cmp-with:checked~.seg label[for="cmp-with"]{background:rgba(255,255,255,.1);color:var(--text)}
+    .cmp-pane{display:none}
+    #cmp-without:checked~.cmp-pane--without,#cmp-with:checked~.cmp-pane--with{display:block}
+    .cmp-pane p{margin-top:14px;font-size:.94rem}
+    .cmp-pane p strong{color:var(--text)}
+    .honesty{margin-top:16px;padding:12px 14px;border-radius:var(--radius-sm);background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.25);font-size:.88rem;color:var(--text-2)}
+    .honesty b{color:#ffd98a}
+
+    .ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+    .ba-card{min-width:0}
+    .ba-label{display:flex;align-items:center;gap:8px;font-size:.8rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:600;margin-bottom:10px}
+    .ba-label i{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+    .ba-label i.after{background:var(--ok)}
+    .ba-card>p{margin-top:12px;font-size:.94rem}
+    .rawlog{display:flex;flex-direction:column;height:360px;border-radius:var(--radius);border:1px solid var(--line-strong);background:#0b0e16;overflow:hidden;box-shadow:0 30px 80px -30px rgba(0,0,0,.9)}
+    .rawlog-bar{display:flex;align-items:center;gap:7px;padding:0 13px;height:34px;background:#1a1d27;border-bottom:1px solid var(--line);flex:0 0 auto}
+    .rawlog-title{margin-left:8px;font-size:.74rem;color:var(--muted);font-family:var(--display)}
+    .rawlog-body{flex:1;overflow:hidden;padding:10px 0 0;font-family:ui-monospace,"Cascadia Code",Consolas,"Courier New",monospace;font-size:.64rem;line-height:1.7;color:#6f7da6;-webkit-mask-image:linear-gradient(180deg,#000 70%,transparent);mask-image:linear-gradient(180deg,#000 70%,transparent)}
+    .rawlog-body .rl{display:block;white-space:pre;padding:0 12px}
+    .rawlog-body .ln{display:inline-block;width:26px;text-align:right;margin-right:14px;color:#36426a;user-select:none}
+    .rawlog-body .kw{color:#7aa2f7}.rawlog-body .sq{color:#56c7b3}.rawlog-body .db{color:#e0af68}.rawlog-body .mp{color:#bb6bd9}
+    .feature-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:32px}
+    .feature{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+    .feature-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;background:var(--accent-soft);border:1px solid rgba(242,95,76,.25)}
+    .feature-icon svg{width:17px;height:17px;fill:none;stroke:var(--accent);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+    .feature h3{margin-bottom:4px;font-size:1rem}
+    .feature p{font-size:.9rem;color:var(--muted)}
+    .feature .pill{display:inline-block;margin-left:6px;font-size:.66rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:999px;vertical-align:middle;border:1px solid rgba(96,165,250,.45);color:#9cc2ff}
+    .vlocity{margin-top:20px;display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:center;padding:18px 22px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius)}
+    .vlocity h3{font-size:1.05rem;margin-bottom:4px}
+    .vlocity p{font-size:.9rem}
+    .vlocity form{display:flex;gap:10px;flex-wrap:wrap}
+    .vlocity input[type=email]{flex:1;min-width:200px;height:46px;background:rgba(255,255,255,.04);border:1px solid var(--line-strong);color:var(--text);padding:0 14px;border-radius:var(--radius-sm);font-size:.96rem;font-family:inherit}
+    .vlocity input[type=email]:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
+
+    .local-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:4px}
+    .local-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px}
+    .local-card .num{font-family:var(--display);font-size:.78rem;color:var(--accent);font-weight:600;letter-spacing:.08em;margin-bottom:10px}
+    .local-card h3{margin-bottom:6px}
+    .local-card p{font-size:.9rem;color:var(--muted)}
+    .local-link{display:inline-flex;align-items:center;gap:6px;margin-top:20px;font-weight:600;color:var(--text)}
+    .local-link:hover{color:var(--accent)}
+
+    .price-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:900px}
+    .plan{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:26px;display:flex;flex-direction:column}
+    .plan--pro{border-color:rgba(242,95,76,.45);background:linear-gradient(180deg,rgba(242,95,76,.07),var(--surface) 60%)}
+    .plan-name{font-family:var(--display);font-weight:600;font-size:1rem;color:var(--text-2);margin-bottom:10px;display:flex;align-items:center;gap:10px}
+    .plan-badge{font-size:.66rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:var(--accent);color:#fff}
+    .price{font-family:var(--display);font-size:2.6rem;font-weight:700;letter-spacing:-.03em;line-height:1;color:var(--text)}
+    .price small{font-family:var(--body);font-size:.95rem;font-weight:500;color:var(--muted);letter-spacing:0;margin-left:4px}
+    .price-alt{margin-top:6px;font-size:.9rem;color:var(--muted)}
+    .plan-desc{margin:14px 0 20px;font-size:.94rem;min-height:2.8em}
+    .plan ul{list-style:none;display:grid;gap:10px;margin-bottom:26px;flex:1}
+    .plan li{display:flex;gap:10px;align-items:flex-start;font-size:.94rem;color:var(--text-2);line-height:1.45}
+    .plan li svg{width:17px;height:17px;flex:0 0 auto;margin-top:3px;fill:none;stroke:var(--ok);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+    .plan--pro li svg{stroke:var(--accent)}
+    .plan .btn{width:100%}
+    .plan-foot{margin-top:12px;font-size:.82rem;color:var(--muted);text-align:center}
+
+    .download-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:8px}
+    .dl{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;transition:border-color .15s}
+    .dl:hover{border-color:var(--line-strong)}
+    .dl h3{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:1rem}
+    .dl .you{font-size:.66rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ok);border:1px solid rgba(52,211,153,.5);border-radius:999px;padding:2px 7px}
+    .dl p{font-size:.86rem;color:var(--muted);margin-top:4px}
+    .dl .btn{margin-top:14px;width:100%}
+    .dl details{margin-top:14px;border-top:1px solid var(--line);padding-top:10px}
+    .dl summary{cursor:pointer;color:var(--text-2);font-size:.86rem;list-style:none;display:flex;align-items:center;gap:6px}
+    .dl summary::-webkit-details-marker{display:none}
+    .dl summary::before{content:"";width:6px;height:6px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(-45deg);transition:transform .15s;margin-left:2px}
+    .dl details[open] summary::before{transform:rotate(45deg)}
+    .dl details p{margin-top:8px;font-size:.86rem;line-height:1.5}
     .skel{position:relative;overflow:hidden;background:rgba(255,255,255,.05)}
     .skel::after{content:"";position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.07),transparent);animation:skel 1.3s ease-in-out infinite}
     @keyframes skel{100%{transform:translateX(100%)}}
     .skel-line{height:12px;border-radius:6px;margin:9px 0}
-    @media (max-width:980px){.hero-grid{grid-template-columns:1fr}.wedge-grid{grid-template-columns:1fr}.download-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.how-grid{grid-template-columns:1fr}}
-    @media (max-width:768px){.nav-links{display:none}section{padding:58px 0}.download-grid{grid-template-columns:1fr}.trust-strip .container{gap:10px 18px}}
+    .dl-note{margin-top:22px;font-size:.88rem;color:var(--muted);max-width:70ch}
+    .dl-note a{color:var(--text-2);text-decoration:underline;text-decoration-color:var(--line-strong)}
+
+    .faq{max-width:780px}
+    .faq details{border-top:1px solid var(--line);padding:18px 0}
+    .faq details:last-child{border-bottom:1px solid var(--line)}
+    .faq summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px;font-family:var(--display);font-weight:600;font-size:1.05rem;color:var(--text)}
+    .faq summary::-webkit-details-marker{display:none}
+    .faq summary::after{content:"+";font-size:1.4rem;line-height:1;color:var(--muted);flex:0 0 auto;transition:transform .15s}
+    .faq details[open] summary::after{transform:rotate(45deg)}
+    .faq details p{margin-top:12px;max-width:66ch;font-size:.96rem}
+    .faq a{color:var(--text);text-decoration:underline;text-decoration-color:var(--line-strong)}
+
+    footer{border-top:1px solid var(--line);padding:56px 0 40px}
+    .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px}
+    .foot-story h3{font-size:1.1rem;margin-bottom:10px}
+    .foot-story p{font-size:.92rem;color:var(--muted);max-width:52ch}
+    .foot-col b{display:block;font-family:var(--display);font-size:.8rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:14px;font-weight:600}
+    .foot-col a{display:block;font-size:.92rem;color:var(--text-2);margin-bottom:10px}
+    .foot-col a:hover{color:var(--text)}
+    .foot-legal{margin-top:40px;padding-top:20px;border-top:1px solid var(--line);font-size:.8rem;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+    .foot-legal a{color:var(--text-2);text-decoration:underline;text-decoration-color:var(--line-strong)}
+
+    @media (max-width:980px){
+      .hero-grid,.proof-grid,.mon-grid,.ba-grid,.price-grid,.vlocity{grid-template-columns:1fr}
+      .hero{padding:56px 0 40px}
+      .feature-grid,.local-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .download-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .foot-grid{grid-template-columns:1fr 1fr}
+      .foot-story{grid-column:1/-1}
+      h2{max-width:none}
+    }
+    @media (max-width:640px){
+      .nav-links{display:none}
+      nav .container{height:58px}
+      section{padding:56px 0}
+      .hero{padding:40px 0 28px}
+      .hero-sub{font-size:1.04rem}
+      .hero-actions .btn{width:100%}
+      .stat-row,.feature-grid,.local-grid,.download-grid{grid-template-columns:1fr}
+      .stat{padding:16px}
+      .rawlog{height:280px}
+      .desktop-only{display:none !important}
+      .foot-grid{grid-template-columns:1fr}
+      .plan{padding:22px}
+    }
   </style>
   <script type="application/ld+json">
   {
@@ -84,85 +252,171 @@
     "url": "https://felisbinofarms.github.io/black-widow-releases/pt/",
     "downloadUrl": "https://github.com/felisbinofarms/black-widow-releases/releases/latest",
     "softwareVersion": "latest",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "offers": [
+      { "@type": "Offer", "name": "Free", "price": "0", "priceCurrency": "USD" },
+      { "@type": "Offer", "name": "Pro (mensal)", "price": "19.99", "priceCurrency": "USD" },
+      { "@type": "Offer", "name": "Pro (anual)", "price": "190", "priceCurrency": "USD" }
+    ],
     "author": { "@type": "Person", "name": "Victor Felisbino" }
   }
   </script>
 </head>
 <body>
-<nav><div class="container"><div class="brand">Black Widow</div><div class="nav-links"><a href="#monitoring">Monitoramento</a><a href="#lgpd">LGPD</a><a href="#how">Como funciona</a><a href="#vlocity">Vlocity</a><a href="../security.html">Segurança</a><a class="nav-cta" id="nav-download" href="#download">Baixar</a><a id="nav-en" href="../" hreflang="en">English</a></div></div></nav>
+<nav><div class="container">
+  <a class="brand" href="#hero"><img src="../icon.png" alt="" width="26" height="26" />Black Widow</a>
+  <div class="nav-links"><a href="#monitoring">Monitoramento</a><a href="#logs">Análise de logs</a><a href="#pricing">Preços</a><a href="#lgpd">LGPD</a><a href="../security.html">Segurança</a><a id="nav-en" href="../" hreflang="en" lang="en">English</a></div>
+  <div class="nav-right"><a class="btn btn-secondary btn-sm desktop-only" id="nav-github" href="https://github.com/felisbinofarms/black-widow-releases" target="_blank" rel="noopener">GitHub</a><a class="btn btn-primary btn-sm" id="nav-download" href="#download">Baixar</a></div>
+</div></nav>
 
-<section class="hero" id="hero" data-section="hero_pt"><div class="container hero-grid"><div>
-  <div class="section-kicker">Monitoramento de Org Salesforce &amp; Debug Logs</div>
-  <h1>Um flow acabou de falhar em produção. Nenhum alerta saiu. Ninguém ficou sabendo.</h1>
-  <p class="hero-sub">O Salesforce fica em silêncio quando um flow morre sob o usuário Automated Process, um batch job &ldquo;conclui&rdquo; com erros, ou logins começam a falhar num padrão suspeito. O Black Widow conecta no seu org e mostra tudo isso &mdash; ranqueado pelo que corrigir primeiro &mdash; sem licença de Shield, sem trace flags, sem SIEM. E quando você precisa da análise profunda, ele costura todos os debug logs de uma ação do usuário em uma única linha do tempo. 100% na sua máquina: dado do org nunca sai dela. App desktop gratuito para Windows, macOS e Linux.</p>
-  <div class="hero-actions"><a href="#download" class="btn-primary" id="hero-primary-cta">Baixar &mdash; Grátis</a><a href="../security.html" class="btn-secondary" id="hero-secondary-cta">Segurança &amp; LGPD</a></div>
-  <div class="cta-meta" id="hero-cta-meta">Windows · macOS · Linux · Grátis · Sem precisar de admin</div>
-</div><aside><figure class="product-frame"><div class="product-frame__chrome"><span class="pf-dot pf-dot--r"></span><span class="pf-dot pf-dot--y"></span><span class="pf-dot pf-dot--g"></span><span class="product-frame__title">Black Widow &mdash; Monitoring</span></div><img src="../images/monitoring-with-shield.png" alt="Black Widow Monitoring mostrando uma fila de triagem ranqueada (ACT NOW) de falhas silenciosas do org Salesforce" width="1200" height="800" loading="eager" /></figure><div class="chip-row"><span class="chip">Falhas ranqueadas por risco</span><span class="chip">Sem Shield</span><span class="chip">100% local</span></div></aside></div></section>
+<section class="hero" id="hero" data-section="hero_pt"><div class="container hero-grid">
+  <div class="hero-copy">
+    <div class="kicker">Monitoramento de org Salesforce &amp; triagem de debug logs</div>
+    <h1>Um flow acabou de falhar em produção. Nenhum alerta saiu. Ninguém ficou sabendo.</h1>
+    <p class="hero-sub">O Black Widow conecta no seu org e ranqueia as falhas que o Salesforce nunca anuncia &mdash; flows com erro, batch jobs que &ldquo;concluíram&rdquo; com falhas, logins suspeitos &mdash; e depois explica os debug logs por trás delas. Sem licença de Shield, e nada sai da sua máquina.</p>
+    <div class="hero-actions"><a href="#download" class="btn btn-primary" id="hero-primary-cta">Baixar grátis<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg></a><a href="#monitoring" class="btn btn-secondary" id="hero-secondary-cta">Veja o que ele pega</a></div>
+    <div class="cta-meta" id="hero-cta-meta"><span>Windows</span><span>macOS</span><span>Linux</span><span>Núcleo grátis, sem conta</span></div>
+  </div>
+  <aside class="hero-visual">
+    <figure class="product-frame"><div class="product-frame__chrome"><span class="pf-dot pf-dot--r"></span><span class="pf-dot pf-dot--y"></span><span class="pf-dot pf-dot--g"></span><span class="product-frame__title">Black Widow &mdash; Monitoring</span></div><img src="../images/monitoring-with-shield.png" alt="Black Widow Monitoring mostrando uma fila ranqueada Act Now: uma exceção Apex de null pointer com 94 ocorrências em 12 usuários no topo, com um veredito verificável" width="1200" height="800" loading="eager" fetchpriority="high" /></figure>
+    <div class="hero-caption"><span class="tag tag--act">Ranqueado: Agir agora &rarr; Investigar &rarr; Monitorar</span><span class="tag tag--live">Checagens ao vivo no org</span><span class="tag">Toda contagem é verificável</span></div>
+  </aside>
+</div></section>
 
-<div class="trust-strip" data-section="trust_pt"><div class="container">
+<div class="trust-row" data-section="trust_pt"><div class="container">
   <span class="trust-item"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Local-first</span>
-  <span class="trust-item"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 3l19 19"/><path d="M6 7.5A6 6 0 0 0 8 19h9a4 4 0 0 0 1.7-7.6"/></svg>Nenhum upload, nunca</span>
+  <span class="trust-item"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 3l19 19"/><path d="M6 7.5A6 6 0 0 0 8 19h9a4 4 0 0 0 1.7-7.6"/></svg>Logs nunca são enviados</span>
   <span class="trust-item"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>Compatível com a LGPD por design</span>
-  <span class="trust-item"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="7" r="2.5"/><path d="M6 8.5v7M18 9.5c0 3.6-3.5 3.2-6 4.5"/></svg>Código aberto</span>
-  <span class="trust-item"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/></svg>Windows · macOS · Linux</span>
+  <span class="trust-item"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Núcleo grátis, para sempre</span>
+  <span class="trust-item"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/></svg>Windows &middot; macOS &middot; Linux</span>
 </div></div>
 
+<section class="proof-band" id="proof" data-section="proof_pt"><div class="container proof-grid">
+  <div>
+    <div class="kicker">Encontrado no primeiro org de produção conectado</div>
+    <p class="proof-quote">Um Process Builder vinha falhando em silêncio em produção. Sem trace flag. Sem chamado. <strong>Ficou em #1 na fila Agir Agora no momento em que o org conectou.</strong></p>
+    <p class="proof-note muted">Números reais de um org enterprise ao vivo, anonimizados. Toda contagem no Black Widow abre para a evidência por trás dela, para você conferir no seu próprio org.</p>
+  </div>
+  <div class="stat-row">
+    <div class="stat"><b class="act">221</b><span>flow interviews com falha, um Process Builder</span></div>
+    <div class="stat"><b>295</b><span>usuários afetados antes de alguém notar</span></div>
+    <div class="stat"><b>#1</b><span>na fila Agir Agora, automaticamente</span></div>
+  </div>
+</div></section>
+
 <section id="monitoring" data-section="monitoring_pt"><div class="container">
-  <div class="section-kicker">Monitoramento</div>
-  <h2>Veja a saúde do org inteiro antes que alguém abra um chamado.</h2>
-  <p>Conecte um org e o hub de Monitoramento roda verificações ao vivo de confiabilidade, login e governor limits, direto da caixa &mdash; flows com falha, jobs assíncronos travados, erros de scheduled jobs, falhas de testes Apex, anomalias de login e pressão de storage/API. <strong>Sem precisar de Salesforce Shield.</strong> E é honesto por design: cada número abre para os eventos exatos por trás dele, com uma query de um clique para você conferir a contagem no seu próprio org; ele diz a idade do dado, marca palpite como &ldquo;causa provável&rdquo; em vez de fato, e nunca grita &ldquo;problema novo&rdquo; quando simplesmente não tem histórico para comparar.</p>
-  <aside style="margin-top:20px"><figure class="product-frame"><div class="product-frame__chrome"><span class="pf-dot pf-dot--r"></span><span class="pf-dot pf-dot--y"></span><span class="pf-dot pf-dot--g"></span><span class="product-frame__title">Black Widow &mdash; Monitoring</span></div><img src="../images/monitoring-hub.png" alt="Hub de Monitoramento do Black Widow: limites do org ao vivo, pilares de confiabilidade, segurança e performance, data de atualização dos dados e um veredito honesto de ação necessária" width="1200" height="585" loading="lazy" /></figure>
-  <div class="chip-row"><span class="chip">Grátis, direto da caixa</span><span class="chip">Idade do dado sempre visível</span><span class="chip">Toda contagem é verificável</span><span class="chip">Sem &ldquo;saudável&rdquo; falso</span></div></aside>
+  <div class="section-head"><div class="kicker">Monitoramento ao vivo, grátis</div><h2>Veja as falhas que o Salesforce não anuncia.</h2><p class="lede">Conecte um org e o Black Widow transforma a deriva operacional silenciosa em uma fila de trabalho ranqueada. As checagens ao vivo rodam em qualquer org &mdash; sem Shield, sem SIEM, sem licença extra.</p></div>
+  <div class="mon-grid">
+    <div class="signal-list">
+      <div class="signal"><div class="signal-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg></div><div><b>Automação com falha</b><span>Flow interviews, jobs assíncronos e agendados, erros de item em batch, testes Apex falhando.</span></div></div>
+      <div class="signal"><div class="signal-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div><div><b>Sinais de segurança</b><span>Padrões de login falho e formatos de ataque a credenciais, antes de virarem ruído no suporte.</span></div></div>
+      <div class="signal"><div class="signal-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19h16M6 15V9m4 6V5m4 10v-4m4 4V7"/></svg></div><div><b>Pressão no org</b><span>Folga de storage, API, debug logs e governor limits, mostrada antes de um limite estourar.</span></div></div>
+      <div class="signal"><div class="signal-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div><div><b>Estados honestos</b><span>Idade do dado, origem e &ldquo;precisa de Shield&rdquo; são rotulados &mdash; nada é pintado de verde por padrão.</span></div></div>
+    </div>
+    <div class="compare">
+      <input type="radio" name="cmp" id="cmp-without" checked /><input type="radio" name="cmp" id="cmp-with" />
+      <div class="seg" role="tablist" aria-label="Mesmo org, com e sem Event Monitoring"><label for="cmp-without" role="tab">Sem Shield</label><label for="cmp-with" role="tab">Com Shield</label></div>
+      <div class="cmp-pane cmp-pane--without" role="tabpanel"><figure class="product-frame"><div class="product-frame__chrome"><span class="pf-dot pf-dot--r"></span><span class="pf-dot pf-dot--y"></span><span class="pf-dot pf-dot--g"></span><span class="product-frame__title">Reliability &mdash; org sem Event Monitoring</span></div><img src="../images/monitoring-without-shield.png" alt="Página Reliability sem Event Monitoring: checagens de async, agendamento e testes limpas e um flow com falha sinalizado, enquanto os cards de exceção Apex, erro de flow e erro de UI aparecem cinza como precisa de Shield" width="1200" height="800" loading="lazy" /></figure><p><strong>Sem Shield</strong> &mdash; as checagens ao vivo de confiabilidade, login e limites rodam direto da caixa. Os cards que realmente precisam de Event Monitoring ficam cinza como &ldquo;precisa de Shield&rdquo;, nunca falsificados.</p></div>
+      <div class="cmp-pane cmp-pane--with" role="tabpanel"><figure class="product-frame"><div class="product-frame__chrome"><span class="pf-dot pf-dot--r"></span><span class="pf-dot pf-dot--y"></span><span class="pf-dot pf-dot--g"></span><span class="product-frame__title">Reliability &mdash; mesmo org com Event Monitoring</span></div><img src="../images/monitoring-with-shield.png" alt="Página Reliability com Event Monitoring: a faixa de cobertura sinaliza flows com falha, exceções Apex e erros de UI, e uma exceção Apex de null pointer é o item Agir Agora" width="1200" height="800" loading="lazy" /></figure><p><strong>Com Shield</strong> &mdash; o mesmo org agora mostra também a exceção Apex (94 ocorrências &middot; 12 usuários, marcada Agir Agora) e erros de Lightning, cada um com um veredito para aprofundar.</p></div>
+      <div class="honesty"><b>Honesto sobre o atraso.</b> Checagens ao vivo são ao vivo. A análise de Event Monitoring é construída a partir dos event log files do Salesforce, que chegam com cerca de 24 horas de atraso &mdash; o app avisa isso em todo card que os usa.</div>
+    </div>
+  </div>
+</div></section>
+
+<section id="logs" data-section="logs_pt"><div class="container">
+  <div class="section-head"><div class="kicker">Triagem de debug logs</div><h2>Um Salvar. Treze logs. Uma linha do tempo.</h2><p class="lede">Um único Salvar pode virar triggers, flows, jobs assíncronos e recarregamentos de tela &mdash; uma dúzia de logs, dezenas de milhares de linhas. Arraste a pasta e o Black Widow costura a cadeia em uma transação, separa o que o usuário sentiu do que rodou em background e diz o que corrigir primeiro.</p></div>
+  <div class="ba-grid">
+    <article class="ba-card"><div class="ba-label"><i></i>Antes &mdash; qualquer editor de texto</div><div class="rawlog" role="img" aria-label="Um debug log cru do Salesforce aberto em um editor de texto: milhares de linhas crípticas e ilegíveis"><div class="rawlog-bar"><span class="pf-dot pf-dot--r"></span><span class="pf-dot pf-dot--y"></span><span class="pf-dot pf-dot--g"></span><span class="rawlog-title">apex-07L4x000.log &mdash; 18.442 linhas &middot; 1 de 13</span></div><div class="rawlog-body" aria-hidden="true"><div class="rl"><span class="ln">1</span>61.0 APEX_CODE,FINE;APEX_PROFILING,INFO;CALLOUT,INFO;DB,FINEST;SYSTEM,DEBUG;VALIDATION,INFO;WORKFLOW,INFO</div><div class="rl"><span class="ln">2</span>12:04:51.0 (12034879)|<span class="kw">EXECUTION_STARTED</span></div><div class="rl"><span class="ln">3</span>12:04:51.0 (12041245)|<span class="kw">CODE_UNIT_STARTED</span>|[EXTERNAL]|01q4x00000KZ1|CaseTrigger on Case trigger event BeforeUpdate|__sfdc_trigger/CaseTrigger</div><div class="rl"><span class="ln">4</span>12:04:51.0 (13002145)|<span class="sq">SOQL_EXECUTE_BEGIN</span>|[14]|Aggregations:0|SELECT Id,Status,OwnerId FROM Case WHERE Id IN :caseIds</div><div class="rl"><span class="ln">5</span>12:04:51.0 (14882013)|<span class="sq">SOQL_EXECUTE_END</span>|[14]|Rows:1</div><div class="rl"><span class="ln">6</span>12:04:51.0 (15110023)|HEAP_ALLOCATE|[71]|Bytes:3</div><div class="rl"><span class="ln">7</span>12:04:51.0 (16204412)|METHOD_ENTRY|[12]|01p4x00000Aa2|CaseHandler.beforeUpdate()</div><div class="rl"><span class="ln">8</span>12:04:51.0 (17334129)|<span class="db">USER_DEBUG</span>|[88]|DEBUG|Processing 1 case record</div><div class="rl"><span class="ln">9</span>12:04:51.0 (18772301)|<span class="sq">SOQL_EXECUTE_BEGIN</span>|[34]|Aggregations:0|SELECT Id FROM Contact WHERE AccountId=:accId</div><div class="rl"><span class="ln">10</span>12:04:51.0 (19551044)|<span class="sq">SOQL_EXECUTE_END</span>|[34]|Rows:6</div><div class="rl"><span class="ln">11</span>12:04:51.0 (20114882)|ENTERING_MANAGED_PKG|[EXTERNAL]|vlocity_cmt</div><div class="rl"><span class="ln">12</span>12:04:51.0 (21887310)|<span class="mp">CODE_UNIT_STARTED</span>|[EXTERNAL]|vlocity_cmt.TriggerHandler</div><div class="rl"><span class="ln">13</span>12:04:51.0 (22440190)|DML_BEGIN|[52]|Op:Update|Type:Case|Rows:1</div><div class="rl"><span class="ln">14</span>12:04:51.0 (23998120)|DML_END|[52]</div><div class="rl"><span class="ln">15</span>12:04:51.0 (24550021)|<span class="kw">CODE_UNIT_STARTED</span>|[EXTERNAL]|Workflow:Case</div><div class="rl"><span class="ln">16</span>12:04:51.0 (25110933)|<span class="kw">FLOW_START_INTERVIEWS_BEGIN</span>|1</div><div class="rl"><span class="ln">17</span>12:04:51.0 (26773410)|<span class="sq">SOQL_EXECUTE_BEGIN</span>|[8]|Aggregations:0|SELECT Id,Email FROM User WHERE Id=:ownerId</div><div class="rl"><span class="ln">18</span>12:04:51.0 (27554120)|<span class="sq">SOQL_EXECUTE_END</span>|[8]|Rows:1</div><div class="rl"><span class="ln">19</span>12:04:51.0 (28991200)|LIMIT_USAGE_FOR_NS|(default)|SOQL: 41/100 | DML: 1/150 | CPU: 3204ms</div><div class="rl"><span class="ln">20</span>12:04:51.0 (29110044)|<span class="db">USER_DEBUG</span>|[120]|DEBUG|Recursion guard: CaseTrigger re-entry #3</div><div class="rl"><span class="ln">21</span>12:04:51.0 (30557120)|CODE_UNIT_FINISHED|CaseTrigger on Case</div><div class="rl"><span class="ln">22</span>12:04:51.0 (31200410)|CUMULATIVE_LIMIT_USAGE</div></div></div><p class="muted">Abra o log 1, leia milhares de linhas, repita treze vezes e torça para o que importava não ter sido truncado.</p></article>
+    <article class="ba-card"><div class="ba-label"><i class="after"></i>Depois &mdash; Black Widow</div><figure class="product-frame"><div class="product-frame__chrome"><span class="pf-dot pf-dot--r"></span><span class="pf-dot pf-dot--y"></span><span class="pf-dot pf-dot--g"></span><span class="product-frame__title">Black Widow &mdash; Explain</span></div><img src="../images/wedge-after.png" alt="Aba Explain do Black Widow mostrando uma explicação em linguagem simples da transação, com detecção de recursão e de pacote gerenciado" width="1600" height="1000" loading="lazy" /></figure><p class="muted">Arraste a pasta. Veja a transação inteira &mdash; 7,4 s de espera do usuário, a recursão no CaseTrigger, o pacote gerenciado que queimou a CPU &mdash; explicada em linguagem simples.</p></article>
+  </div>
+  <div class="feature-grid">
+    <article class="feature"><div class="feature-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg></div><h3>Agrupamento de transações</h3><p>Todos os logs de uma ação do usuário, detectados automaticamente e mostrados como uma linha do tempo com a espera total.</p></article>
+    <article class="feature"><div class="feature-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h6l2-5 3 10 2-5h3"/></svg></div><h3>Detecção de fases</h3><p>Triggers e flows no backend vs. carregamento de componentes no frontend vs. cauda assíncrona &mdash; o que o usuário sentiu vs. o que continuou rodando.</p></article>
+    <article class="feature"><div class="feature-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v4m0 0L6 12m6-5l6 5M6 12v5m12-5v5"/></svg></div><h3>Recursão &amp; N+1</h3><p>Reentrada de trigger, SOQL dentro de loop e carregamento serial de componentes, com a correção concreta para cada um.</p></article>
+    <article class="feature"><div class="feature-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 9v4m0 4h.01M10.3 3.9L2.5 18a2 2 0 0 0 1.7 3h15.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></div><h3>Exceções engolidas</h3><p>Erros lançados e capturados em silêncio &mdash; invisíveis para as ferramentas do próprio Salesforce &mdash; sinalizados para não esconderem uma falha real.</p></article>
+    <article class="feature"><div class="feature-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7l-8-4-8 4v10l8 4 8-4V7zM4 7l8 4 8-4M12 11v10"/></svg></div><h3>Limites por namespace</h3><p>SOQL, DML e CPU consumidos por cada pacote gerenciado, precisos mesmo quando o pacote esconde o detalhe por linha.</p></article>
+    <article class="feature"><div class="feature-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l18-8-8 18-2-8-8-2z"/></svg></div><h3>Abas de drill-down<span class="pill">Pro</span></h3><p>Árvore de execução, linha do tempo, queries e histórico de campos, além da visão Architect da transação inteira.</p></article>
+  </div>
+  <div class="vlocity" id="vlocity">
+    <div><h3>Trabalha com logs de CPQ da Vlocity / OmniStudio?</h3><p>Uma transação de carrinho pode gerar dezenas de logs. O Black Widow agrupa tudo e mostra o que o <code>vlocity_cmt</code> realmente consumiu. O deploy-diff &mdash; snapshot antes da mudança, comparação depois &mdash; está em beta. Deixe um e-mail para entrar.</p></div>
+    <form action="https://formspree.io/f/xqeralro" method="POST"><input type="email" name="email" placeholder="voce@empresa.com.br" required aria-label="Seu e-mail" /><input type="hidden" name="_subject" value="Black Widow deploy-diff beta signup (pt-BR)" /><input type="hidden" name="_next" value="https://felisbinofarms.github.io/black-widow-releases/pt/#vlocity" /><button type="submit" class="btn btn-secondary">Quero o beta</button></form>
+  </div>
 </div></section>
 
 <section id="lgpd" data-section="lgpd_pt"><div class="container">
-  <div class="section-kicker">Local-first &amp; LGPD</div>
-  <h2>&ldquo;Por que não colar o log no ChatGPT?&rdquo;</h2>
-  <p>Porque num org de verdade você não pode. Debug logs de produção estão cheios de dados pessoais (PII), configuração do org e dados de clientes &mdash; e com a LGPD, colar isso num modelo de IA na nuvem significa transferência de dados pessoais para um operador fora do seu controle, muitas vezes fora do país. A maioria dos times de segurança já proíbe. O Black Widow faz a análise <strong>na sua máquina</strong>. Sem upload, sem servidor, sem ticket para o TI. Desconecte o cabo de rede e ele continua funcionando.</p>
-  <div class="wedge-grid">
-    <article class="wedge-card"><h3>100% análise local</h3><p>Parsing, linha do tempo, health score, matemática de governor limits e detecção de recursão rodam offline, com zero chamadas de rede sobre seus logs.</p></article>
-    <article class="wedge-card"><h3>LGPD-friendly por arquitetura</h3><p>Como os logs nunca saem da sua máquina, não há transferência internacional de dados, não há operador novo para registrar, e nada para adicionar ao seu registro de operações (ROPA). A ferramenta é compatível com a política do seu time de segurança por padrão &mdash; não por promessa. <a href="../security.html#lgpd">Detalhes na página de Segurança</a>.</p></article>
+  <div class="section-head"><div class="kicker">Local-first &amp; LGPD</div><h2>&ldquo;Por que não colar o log no ChatGPT?&rdquo;</h2><p class="lede">Porque num org de verdade você não pode. Logs de produção carregam dados pessoais, IDs de registro e configuração do org &mdash; e com a LGPD, colar isso num modelo na nuvem é transferência de dados pessoais para um operador fora do seu controle. O Black Widow faz o trabalho na sua máquina.</p></div>
+  <div class="local-grid">
+    <article class="local-card"><div class="num">01</div><h3>A análise roda offline</h3><p>Parsing, linha do tempo, health score, matemática de governor limits e detecção de recursão fazem zero chamadas de rede. Desconecte o cabo &mdash; continua funcionando.</p></article>
+    <article class="local-card"><div class="num">02</div><h3>IA é opcional e sua</h3><p>O explicador em linguagem simples vem desligado. Quando você liga, ele usa a sua própria chave e envia um resumo estruturado &mdash; nunca o log cru.</p></article>
+    <article class="local-card"><div class="num">03</div><h3>LGPD por arquitetura</h3><p>Como os logs nunca saem da sua máquina, não há transferência internacional, não há operador novo para registrar e nada para adicionar ao ROPA. Compatível com a política do seu time de segurança por padrão, não por promessa.</p></article>
   </div>
+  <a class="local-link" href="../security.html#lgpd">Toda chamada de rede que o app pode fazer, listada <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6l6 6-6 6"/></svg></a>
 </div></section>
 
-<section id="how" data-section="how_pt"><div class="container">
-  <div class="section-kicker">Como funciona</div>
-  <h2>Três passos: de uma pasta de logs para uma lista de correções.</h2>
-  <p>Um único Salvar no Salesforce pode virar 13 logs entre triggers, flows, jobs assíncronos e recarregamentos de tela. O Black Widow costura essa cadeia em uma única linha do tempo.</p>
-  <div class="how-grid">
-    <div class="how-card"><h3>1) Arraste sua pasta de logs</h3><p>O Black Widow detecta logs relacionados e cria uma cadeia de transação única.</p></div>
-    <div class="how-card"><h3>2) Veja síncrono vs assíncrono</h3><p>Entenda o que o usuário sentiu vs o que continuou rodando em background.</p></div>
-    <div class="how-card"><h3>3) Corrija com prioridade</h3><p>Recomendações apontam recursão de trigger, queries N+1 e gargalos de carregamento serial.</p></div>
+<section id="pricing" data-section="pricing_pt"><div class="container">
+  <div class="section-head"><div class="kicker">Preços</div><h2>Ler o log é grátis. Para sempre.</h2><p class="lede">Monitoramento e análise principal não expiram e não precisam de conta. O Pro vende a análise profunda.</p></div>
+  <div class="price-grid">
+    <article class="plan">
+      <div class="plan-name">Grátis</div>
+      <div class="price">US$ 0<small>para sempre</small></div>
+      <div class="price-alt">Sem conta, sem cartão, sem prazo</div>
+      <p class="plan-desc">Tudo o que você precisa para ver o que está falhando e ler os logs por trás.</p>
+      <ul>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Monitoramento ao vivo do org &mdash; flows, jobs assíncronos e agendados, testes, logins, limites</li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Parsing de logs, agrupamento de transações e detecção de fases</li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Resumos Overview e Explain com recomendações ranqueadas</li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Análise e perguntas com IA usando a sua própria chave</li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Arquivos de log até 10 MB</li>
+      </ul>
+      <a href="#download" class="btn btn-secondary" id="pricing-free-cta">Baixar grátis</a>
+    </article>
+    <article class="plan plan--pro">
+      <div class="plan-name">Pro <span class="plan-badge">Preço de fundador</span></div>
+      <div class="price">US$ 19,99<small>/ mês</small></div>
+      <div class="price-alt">ou US$ 190 / ano (cerca de 20% de desconto)</div>
+      <p class="plan-desc">Tudo do Grátis, mais o drill-down e a integração com o org para quem vive nesses logs.</p>
+      <ul>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Abas de drill-down: Tree, Timeline, Queries, Field History, Architect</li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Extração automática de logs e streaming ao vivo do org</li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Enriquecimento com metadados do org</li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Análise de Event Monitoring (Shield) para orgs que têm o add-on</li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Exportação de relatórios e arquivos acima de 10 MB</li>
+      </ul>
+      <a href="#download" class="btn btn-primary" id="pricing-pro-cta">Começar teste grátis de 14 dias</a>
+      <div class="plan-foot">O teste começa dentro do app &middot; sem cartão &middot; 30 dias de garantia</div>
+    </article>
   </div>
-</div></section>
-
-<section id="vlocity" data-section="vlocity_pt"><div class="container">
-  <div class="section-kicker">Vlocity / OmniStudio</div>
-  <h2>Afogado em logs de CPQ da Vlocity?</h2>
-  <p>Uma única transação de carrinho pode gerar dezenas de logs e estourar qualquer context window. O Black Widow agrupa tudo em uma linha do tempo, mostra onde o tempo realmente vai (síncrono vs assíncrono) e entrega o SOQL / DML / CPU por namespace que o pacote Vlocity consumiu &mdash; preciso mesmo quando o código gerenciado esconde o detalhe por linha. Se o seu dia a dia é telecom ou Salesforce Industries no Brasil, essa é a parte feita para você.</p>
 </div></section>
 
 <section id="download" data-section="download_pt"><div class="container">
-  <div class="section-kicker">Download</div>
-  <h2>Grátis para sempre para a análise principal.</h2>
-  <p>Parsing, agrupamento de transações, recomendações e análise com IA (sua própria chave) são grátis para sempre. O Pro adiciona a análise profunda: abas de drill-down (Tree, Timeline, Queries, Field History, Architect), extração automática de logs e streaming ao vivo do org, enriquecimento com metadados, dashboard Shield, exportação de relatórios e arquivos acima de 10 MB &mdash; US$ 19/mês ou US$ 190/ano, com teste grátis de 14 dias (sem cartão).</p>
+  <div class="section-head"><div class="kicker">Download</div><h2>Instale em menos de um minuto.</h2><p class="lede">App desktop para Windows, macOS e Linux. Sem admin, sem conta. Abra uma pasta de logs ou conecte um org e pronto. A interface do app está em inglês; este site e o suporte falam português.</p></div>
   <div class="download-grid" id="download-grid">
-    <article class="dl"><div class="skel skel-line" style="width:55%;height:16px"></div><div class="skel skel-line" style="width:38%"></div><div class="skel skel-line" style="width:70%;height:30px;margin-top:14px"></div></article>
-    <article class="dl"><div class="skel skel-line" style="width:55%;height:16px"></div><div class="skel skel-line" style="width:38%"></div><div class="skel skel-line" style="width:70%;height:30px;margin-top:14px"></div></article>
-    <article class="dl"><div class="skel skel-line" style="width:55%;height:16px"></div><div class="skel skel-line" style="width:38%"></div><div class="skel skel-line" style="width:70%;height:30px;margin-top:14px"></div></article>
-    <article class="dl"><div class="skel skel-line" style="width:55%;height:16px"></div><div class="skel skel-line" style="width:38%"></div><div class="skel skel-line" style="width:70%;height:30px;margin-top:14px"></div></article>
+    <article class="dl"><div class="skel skel-line" style="width:55%;height:16px"></div><div class="skel skel-line" style="width:38%"></div><div class="skel skel-line" style="width:100%;height:38px;margin-top:14px"></div></article>
+    <article class="dl"><div class="skel skel-line" style="width:55%;height:16px"></div><div class="skel skel-line" style="width:38%"></div><div class="skel skel-line" style="width:100%;height:38px;margin-top:14px"></div></article>
+    <article class="dl"><div class="skel skel-line" style="width:55%;height:16px"></div><div class="skel skel-line" style="width:38%"></div><div class="skel skel-line" style="width:100%;height:38px;margin-top:14px"></div></article>
+    <article class="dl"><div class="skel skel-line" style="width:55%;height:16px"></div><div class="skel skel-line" style="width:38%"></div><div class="skel skel-line" style="width:100%;height:38px;margin-top:14px"></div></article>
   </div>
-  <div class="proof">
-    <h3>Feito em público</h3>
-    <p>Criado por Victor Felisbino, um dev Salesforce brasileiro que cansou de ler log cru às 2h da manhã &mdash; toda correção e ideia vai para um backlog público no GitHub. A interface do app está em inglês (como o resto do seu stack Salesforce); este site e o suporte falam português.</p>
-    <div class="hero-actions" style="margin-top:14px"><a class="btn-secondary" href="https://github.com/felisbinofarms/black-widow-releases" target="_blank" rel="noopener" id="proof-github">Ver no GitHub</a></div>
+  <p class="dl-note">Todos os releases, checksums e changelogs estão na <a href="https://github.com/felisbinofarms/black-widow-releases/releases" target="_blank" rel="noopener">página de releases no GitHub</a>. Os builds Windows ainda não têm assinatura de código, então o SmartScreen mostra um aviso no primeiro uso &mdash; veja o FAQ abaixo.</p>
+</div></section>
+
+<section id="faq" data-section="faq_pt"><div class="container">
+  <div class="section-head"><div class="kicker">FAQ</div><h2>Perguntas que as pessoas fazem antes de instalar.</h2></div>
+  <div class="faq">
+    <details><summary>O plano grátis é grátis mesmo, ou é um teste?</summary><p>Grátis. Monitoramento ao vivo, parsing de logs, agrupamento de transações, detecção de fases, os resumos Overview e Explain e a análise com IA usando a sua chave não expiram e não precisam de conta. O Pro é uma camada separada e opcional &mdash; adiciona as abas de drill-down, extração e streaming de logs do org, análise de Shield, exportações e arquivos acima de 10 MB.</p></details>
+    <details><summary>Preciso de Salesforce Shield ou Event Monitoring?</summary><p>Não. As checagens ao vivo &mdash; flows com falha, jobs assíncronos e agendados, testes Apex, logins, limites &mdash; rodam contra objetos padrão em qualquer org. Se o seu org tiver Event Monitoring, o Pro adiciona a análise desses event log files também, e o app marca o atraso de ~24 horas em todo card que os usa, em vez de fingir que são ao vivo.</p></details>
+    <details><summary>Algum dado do org sai da minha máquina?</summary><p>Debug logs crus, nunca. A análise roda offline. O monitoramento fala com o seu org via OAuth padrão, direto da sua máquina &mdash; não há servidor no meio. Se você ligar a IA, um resumo estruturado &mdash; não o log &mdash; vai para o provedor que você escolheu, com a sua própria chave. A lista completa de chamadas de rede está na <a href="../security.html#lgpd">página de Segurança &amp; Privacidade</a> (em inglês, com seção LGPD bilíngue).</p></details>
+    <details><summary>Por que o Windows mostra um aviso do SmartScreen?</summary><p>O instalador Windows ainda não tem assinatura de código, então o Windows avisa no primeiro uso. Clique em <em>Mais informações</em> e depois em <em>Executar assim mesmo</em>. Ele instala no seu perfil de usuário e não precisa de admin. Os builds macOS são assinados e notarizados; a assinatura para Windows está no roadmap.</p></details>
+    <details><summary>Como funciona o teste do Pro?</summary><p>Comece dentro do app quando encontrar um recurso Pro. Catorze dias, sem cartão. Se comprar e mudar de ideia, há garantia de reembolso de 30 dias &mdash; detalhes na <a href="../security.html">página de Segurança &amp; Privacidade</a>.</p></details>
+    <details><summary>Ele decodifica os internos do pacote gerenciado da Vlocity?</summary><p>Nenhuma ferramenta consegue &mdash; o Salesforce suprime o detalhe por linha de pacotes gerenciados para todo mundo. O que o Black Widow entrega é exatamente quanto SOQL, DML e CPU o namespace <code>vlocity_cmt</code> consumiu na transação e onde na linha do tempo isso aconteceu, que costuma ser a pergunta que você realmente tem.</p></details>
   </div>
 </div></section>
 
-<footer><div class="container footer-row">
-  <div class="footer-links"><a href="https://github.com/felisbinofarms/black-widow-releases/releases" target="_blank" rel="noopener">Releases</a><a id="footer-github" href="https://github.com/felisbinofarms/black-widow-releases" target="_blank" rel="noopener">GitHub</a><a href="../" hreflang="en">English version</a></div>
-  <p style="font-size:.82rem">Analytics anônimo do site via Plausible. App desktop: logs são analisados localmente e telemetria é opt-in &mdash; detalhes completos e política de reembolso de 30 dias na <a href="../security.html">página de Segurança &amp; Privacidade</a> (em inglês).</p>
+<footer><div class="container">
+  <div class="foot-grid">
+    <div class="foot-story"><h3>Feito pela pessoa para quem foi feito.</h3><p>Eu sou o Victor &mdash; um dev Salesforce brasileiro que passou anos fazendo isso do jeito difícil: um incidente em produção, uma pasta de debug logs, um editor de texto às 2h da manhã e uma política de segurança que proibia colar qualquer coisa no ChatGPT. O Black Widow é a ferramenta que eu queria naquelas noites. Todo bug e ideia vai para um backlog público; me diga o que corrigir em seguida.</p></div>
+    <div class="foot-col"><b>Produto</b><a href="#monitoring">Monitoramento</a><a href="#logs">Análise de logs</a><a href="#pricing">Preços</a><a href="#download">Download</a><a href="https://github.com/felisbinofarms/black-widow-releases/releases" target="_blank" rel="noopener">Notas de release</a></div>
+    <div class="foot-col"><b>Projeto</b><a id="footer-github" href="https://github.com/felisbinofarms/black-widow-releases" target="_blank" rel="noopener">GitHub</a><a href="https://github.com/felisbinofarms/black-widow-releases/issues/new?title=Bug%3A%20&amp;labels=bug&amp;body=Thanks%20for%20helping%20improve%20Black%20Widow.%0A%0A**What%20happened%3F**%0A%0A%0A**Steps%20to%20reproduce**%0A1.%20%0A%0A**Black%20Widow%20version**%0A%0A**OS**%20(Windows%20%2F%20macOS%20%2F%20Linux)%0A" target="_blank" rel="noopener">Reportar um bug</a><a href="https://github.com/felisbinofarms/black-widow-releases/issues/new?title=Feature%20request%3A%20&amp;labels=enhancement&amp;body=**What%20would%20you%20like%20Black%20Widow%20to%20do%3F**%0A%0A%0A**Why%20it%20matters%20%2F%20what%20are%20you%20trying%20to%20accomplish%3F**%0A" target="_blank" rel="noopener">Pedir um recurso</a><a href="../security.html">Segurança &amp; Privacidade</a><a href="../" hreflang="en" lang="en">English version</a></div>
+  </div>
+  <div class="foot-legal"><span>Analytics anônimo do site via <a href="https://plausible.io/felisbinofarms.github.io" target="_blank" rel="noopener">Plausible</a> (público). No app, a telemetria é opt-in.</span><span>&copy; Victor Felisbino</span></div>
 </div></footer>
 
 <script>
@@ -171,32 +425,42 @@
   const osLabel = (() => { const ua = navigator.userAgent; if (/Windows/i.test(ua)) return 'Windows'; if (/Macintosh|Mac OS X/i.test(ua)) return 'macOS'; if (/Linux/i.test(ua)) return 'Linux'; return 'Windows'; })();
   const osPrefix = osLabel === 'Windows' ? 'win' : osLabel === 'macOS' ? 'macos' : 'linux';
   const track = (name, props = {}) => { if (window.plausible) window.plausible(name, { props: { ...props, lang: 'pt-BR' } }); };
-  document.querySelectorAll('section[data-section]').forEach(section => { const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) track('section_viewed', { section: section.dataset.section }); }); }, { threshold: 0.45 }); observer.observe(section); });
+
+  document.querySelectorAll('[data-section]').forEach(section => { const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { track('section_viewed', { section: section.dataset.section }); observer.disconnect(); } }); }, { threshold: 0.4 }); observer.observe(section); });
+  let scrollBucket = 0; window.addEventListener('scroll', () => { const pct = Math.min(100, Math.round((window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100)); const current = pct >= 100 ? 100 : pct >= 75 ? 75 : pct >= 50 ? 50 : pct >= 25 ? 25 : 0; if (current > scrollBucket) { scrollBucket = current; track('scroll_depth', { percent: current }); } }, { passive: true });
+
+  document.getElementById('cmp-with')?.addEventListener('change', () => track('shield_compare_toggled', { view: 'with' }));
+  document.getElementById('cmp-without')?.addEventListener('change', () => track('shield_compare_toggled', { view: 'without' }));
+  ['hero-primary-cta','nav-download','pricing-free-cta','pricing-pro-cta'].forEach(id => document.getElementById(id)?.addEventListener('click', () => track('download_cta_clicked', { source: id })));
+  document.getElementById('hero-secondary-cta')?.addEventListener('click', () => track('hero_secondary_clicked', { target: 'monitoring' }));
+  document.getElementById('nav-en')?.addEventListener('click', () => track('lang_switch_clicked', { to: 'en' }));
+  document.getElementById('nav-github')?.addEventListener('click', () => track('github_clicked', { source: 'nav' }));
+  document.getElementById('footer-github')?.addEventListener('click', () => track('github_clicked', { source: 'footer' }));
+
+  const installSteps = { 'win-x64': 'Execute o BlackWidow Setup. Instala no seu perfil de usuário — não precisa de admin. O SmartScreen vai avisar no primeiro uso: clique em Mais informações e depois em Executar assim mesmo.', 'macos-arm64': 'Abra o .dmg e arraste o Black Widow para Aplicativos. Assinado e notarizado, abre normalmente.', 'macos-x64': 'Abra o .dmg e arraste o Black Widow para Aplicativos. Assinado e notarizado, abre normalmente.', 'linux-x64': 'Extraia o arquivo e execute ./BlackWidow.' };
   const setDownloads = async () => {
     const grid = document.getElementById('download-grid');
-    const platforms = [{ key: 'win-x64', name: 'Windows x64', method: 'instalador', platform: 'win-x64' },{ key: 'macos-arm64', name: 'macOS Apple Silicon', method: 'dmg', platform: 'macos-arm64' },{ key: 'macos-x64', name: 'macOS Intel', method: 'dmg', platform: 'macos-x64' },{ key: 'linux-x64', name: 'Linux x64', method: 'tar.gz', platform: 'linux-x64' }];
-    const ordered = [...platforms].sort((a, b) => (b.platform.startsWith(osPrefix) ? 1 : 0) - (a.platform.startsWith(osPrefix) ? 1 : 0));
+    const platforms = [{ key: 'win-x64', name: 'Windows x64', method: 'Instalador (.exe)' },{ key: 'macos-arm64', name: 'macOS Apple Silicon', method: 'Imagem de disco (.dmg)' },{ key: 'macos-x64', name: 'macOS Intel', method: 'Imagem de disco (.dmg)' },{ key: 'linux-x64', name: 'Linux x64', method: 'Arquivo (.tar.gz)' }];
+    const ordered = [...platforms].sort((a, b) => (b.key.startsWith(osPrefix) ? 1 : 0) - (a.key.startsWith(osPrefix) ? 1 : 0));
     try {
-      const relRes = await fetch('https://api.github.com/repos/' + REPO_RELEASES + '/releases/latest'); if (!relRes.ok) throw new Error('latest'); const rel = await relRes.json(); const version = rel.tag_name || 'latest';
+      const relRes = await fetch('https://api.github.com/repos/' + REPO_RELEASES + '/releases/latest'); if (!relRes.ok) throw new Error('latest');
+      const rel = await relRes.json(); const version = rel.tag_name || 'latest';
+      const meta = document.getElementById('hero-cta-meta'); if (meta) meta.innerHTML = '<span>' + version + '</span><span>Windows</span><span>macOS</span><span>Linux</span><span>Núcleo grátis, sem conta</span>';
       grid.innerHTML = ordered.map(p => {
         const asset = (rel.assets || []).find(a => a.name.includes(p.key));
-        const recommended = p.platform.startsWith(osPrefix);
-        const badge = recommended ? ' <span style="font-size:.68rem;font-weight:700;color:var(--ok);border:1px solid var(--ok);border-radius:999px;padding:2px 7px;vertical-align:middle">Seu SO</span>' : '';
-        if (!asset) { return `<article class="dl"><h3>${p.name}${badge}</h3><p>Build assinado a caminho</p><a href="https://github.com/${REPO_RELEASES}/releases" data-platform-watch="${p.platform}" target="_blank" rel="noopener">Acompanhar o release</a><details><summary>Por que a espera?</summary><p style="margin-top:8px;font-size:.88rem">Só distribuímos builds com assinatura de código. O build ${p.name} volta assim que a assinatura estiver pronta &mdash; acompanhe o repositório para ser avisado.</p></details></article>`; }
-        const href = asset.browser_download_url;
-        return `<article class="dl"><h3>${p.name}${badge}</h3><p>${version} - ${p.method}</p><a href="${href}" data-platform="${p.platform}">Baixar</a><details><summary>Como instalar</summary><p style="margin-top:8px;font-size:.88rem">${p.platform === 'win-x64' ? 'Execute o instalador (BlackWidow Setup). Não precisa de admin — instala no seu perfil de usuário. Windows SmartScreen: clique em Mais informações e depois Executar assim mesmo no primeiro uso.' : p.platform.includes('macos') ? 'Abra o .dmg, arraste para Aplicativos e, no primeiro uso, clique com o botão direito em Abrir.' : 'Extraia e execute ./BlackWidow.'}</p></details></article>`;
+        const you = p.key.startsWith(osPrefix) ? '<span class="you">Seu SO</span>' : '';
+        if (!asset) { return `<article class="dl"><h3>${p.name}${you}</h3><p>Ainda não está no ${version}</p><a class="btn btn-secondary btn-sm" href="https://github.com/${REPO_RELEASES}/releases" data-platform-watch="${p.key}" target="_blank" rel="noopener">Acompanhar releases</a><details><summary>Por que está faltando?</summary><p>Este build não saiu no último release. Normalmente volta no próximo — acompanhe o repositório para ser avisado.</p></details></article>`; }
+        return `<article class="dl"><h3>${p.name}${you}</h3><p>${version} &middot; ${p.method}</p><a class="btn ${p.key.startsWith(osPrefix) ? 'btn-primary' : 'btn-secondary'} btn-sm" href="${asset.browser_download_url}" data-platform="${p.key}">Baixar</a><details><summary>Como instalar</summary><p>${installSteps[p.key]}</p></details></article>`;
       }).join('');
-      grid.querySelectorAll('a[data-platform]').forEach(link => { link.addEventListener('click', () => track('download_clicked', { platform: link.dataset.platform })); });
-      grid.querySelectorAll('a[data-platform-watch]').forEach(link => { link.addEventListener('click', () => track('release_watch_clicked', { platform: link.dataset.platformWatch })); });
-    } catch { grid.innerHTML = '<article class="dl"><h3>Último release</h3><a href="https://github.com/' + REPO_RELEASES + '/releases/latest">Abrir releases no GitHub</a></article>'; }
+      grid.querySelectorAll('a[data-platform]').forEach(link => link.addEventListener('click', () => track('download_clicked', { platform: link.dataset.platform })));
+      grid.querySelectorAll('a[data-platform-watch]').forEach(link => link.addEventListener('click', () => track('release_watch_clicked', { platform: link.dataset.platformWatch })));
+    } catch { grid.innerHTML = '<article class="dl"><h3>Último release</h3><p>Não foi possível acessar o GitHub daqui.</p><a class="btn btn-primary btn-sm" href="https://github.com/' + REPO_RELEASES + '/releases/latest">Abrir releases no GitHub</a></article>'; }
   };
-  document.getElementById('nav-en')?.addEventListener('click', () => track('lang_switch_clicked', { to: 'en' }));
-  document.getElementById('proof-github')?.addEventListener('click', () => track('github_clicked', { source: 'proof_pt' }));
-  document.getElementById('footer-github')?.addEventListener('click', () => track('github_clicked', { source: 'footer_pt' }));
-  let initialized = false;
-  const init = () => { if (initialized) return; initialized = true; setDownloads(); };
-  const dl = document.getElementById('download');
-  if (dl && 'IntersectionObserver' in window) { const io = new IntersectionObserver((entries) => { entries.forEach((e) => { if (e.isIntersecting) { init(); io.disconnect(); } }); }, { rootMargin: '150px 0px' }); io.observe(dl); } else { setTimeout(init, 1200); }
+
+  let started = false;
+  const start = () => { if (started) return; started = true; setDownloads(); };
+  const target = document.getElementById('pricing') || document.getElementById('download');
+  if (target && 'IntersectionObserver' in window) { const io = new IntersectionObserver((entries) => { entries.forEach((e) => { if (e.isIntersecting) { start(); io.disconnect(); } }); }, { rootMargin: '400px 0px' }); io.observe(target); } else { setTimeout(start, 1200); }
 })();
 </script>
 </body>
